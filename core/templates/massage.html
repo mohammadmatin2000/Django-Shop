@@ -1,0 +1,59 @@
+<!-- پیام‌های Django با Toastify -->
+{% if messages %}
+  <script>
+    {% for message in messages %}
+      Toastify({
+        text: "{{ message|escapejs }}",
+        className: "{{ message.tags }}",
+        duration: 5000,
+        close: true,
+        gravity: "top",
+        position: "right",
+        style: {
+          background: `{% if "success" in message.tags %}linear-gradient(to right, #00b09b, #96c93d)
+                       {% elif "error" in message.tags %}linear-gradient(to right, #f44336, #e57373)
+                       {% elif "warning" in message.tags %}linear-gradient(to right, #ff9800, #ffc107)
+                       {% else %}linear-gradient(to right, #2196f3, #03a9f4){% endif %}`,
+          color: "#fff",
+        }
+      }).showToast();
+    {% endfor %}
+  </script>
+{% endif %}
+
+<!-- خطاهای فرم (Toastify برای هر خطا) -->
+{% if form.errors %}
+  <script>
+    {% for field in form %}
+      {% for error in field.errors %}
+        Toastify({
+          text: "{{ field.label }}: {{ error|escapejs }}",
+          className: "error",
+          duration: 5000,
+          close: true,
+          gravity: "top",
+          position: "right",
+          style: {
+            background: "linear-gradient(to right, #f44336, #e57373)",
+            color: "#fff",
+          }
+        }).showToast();
+      {% endfor %}
+    {% endfor %}
+
+    {% for error in form.non_field_errors %}
+      Toastify({
+        text: "{{ error|escapejs }}",
+        className: "error",
+        duration: 5000,
+        close: true,
+        gravity: "top",
+        position: "right",
+        style: {
+          background: "linear-gradient(to right, #f44336, #e57373)",
+          color: "#fff",
+        }
+      }).showToast();
+    {% endfor %}
+  </script>
+{% endif %}
