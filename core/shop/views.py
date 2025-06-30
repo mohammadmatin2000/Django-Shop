@@ -1,9 +1,6 @@
-from django.urls import path
-from .views import IndexView,AboutView
+from django.shortcuts import render
+from django.views.generic import TemplateView
 # ======================================================================================================================
-app_name = 'website'
-urlpatterns = [
-    path('', IndexView.as_view(), name='index'),
-    path('about/', AboutView.as_view(), name='about'),
-]
+class ProductGridView(TemplateView):
+    template_name = 'shop/product-grid.html'
 # ======================================================================================================================
