@@ -24,3 +24,9 @@ class ProductView(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 # ======================================================================================================================
+class ProductImageView(models.Model):
+    product = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
+    file = models.ImageField(upload_to="images/", null=True, blank=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+# ======================================================================================================================
