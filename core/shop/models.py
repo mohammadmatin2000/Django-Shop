@@ -1,32 +1,49 @@
 from django.db import models
+from django.utils.text import slugify
+
 # ======================================================================================================================
-class ProductStatusView(models.IntegerChoices):
+class ProductStatusModels(models.IntegerChoices):
     publish = 1, "فعال"
-    draft = 2, "غیر فعال"
+    draft = 2, "غیرفعال"
+
+
 # ======================================================================================================================
-class ProductCategoryView(models.Model):
+class ProductCategoryModels(models.Model):
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
 # ======================================================================================================================
-class ProductView(models.Model):
+class ProductModels(models.Model):
     user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
-    category = models.ManyToManyField(ProductCategoryView, blank=True)
+    category = models.ManyToManyField(ProductCategoryModels, blank=True)
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255)
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
     image = models.ImageField(upload_to="images/", null=True, blank=True, default="images/default.jpg")
     description = models.TextField()
+    brief_description = models.TextField(null=True, blank=True)
     stock = models.PositiveIntegerField(default=0)
-    status = models.IntegerField(choices=ProductStatusView.choices, default=ProductStatusView.publish)
+    status = models.IntegerField(choices=ProductStatusModels.choices, default=ProductStatusModels.publish)
     price = models.DecimalField(max_digits=10, decimal_places=0)
     discount_percent = models.IntegerField(default=0)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super(ProductModels, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+
 # ======================================================================================================================
-class ProductImageView(models.Model):
-    product = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
+class ProductImageModels(models.Model):
+    product = models.ForeignKey("shop.ProductModels", on_delete=models.CASCADE)  # اصلاح ارجاع به مدل ProductModels
     file = models.ImageField(upload_to="images/", null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-# ======================================================================================================================

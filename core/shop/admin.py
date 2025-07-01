@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import ProductView,ProductCategoryView,ProductImageView
+from .models import ProductModels,ProductImageModels,ProductCategoryModels
 # ======================================================================================================================
-@admin.register(ProductView)
+@admin.register(ProductModels)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('title', 'price','created_date', 'updated_date')  # نمایش برخی از فیلدهای محصول
     search_fields = ('title', 'description')  # جستجو بر اساس نام و توضیحات
@@ -11,7 +11,7 @@ class ProductAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_date'  # امکان فیلتر بر اساس تاریخ
 
 # ======================================================================================================================
-@admin.register(ProductCategoryView)
+@admin.register(ProductCategoryModels)
 class ProductCategoryAdmin(admin.ModelAdmin):
     list_display = ('title','created_date')  # نمایش نام، والد، وضعیت فعال بودن و تاریخ ایجاد
     search_fields = ('title',)  # جستجو بر اساس نام دسته‌بندی
@@ -19,7 +19,7 @@ class ProductCategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}  # پر کردن خودکار slug بر اساس نام
 
 # ======================================================================================================================
-@admin.register(ProductImageView)
+@admin.register(ProductImageModels)
 class ProductImageAdmin(admin.ModelAdmin):
     list_display = ('product','created_date')  # نمایش محصول، تصویر، وضعیت برجسته بودن و تاریخ ایجاد
     list_filter = ('created_date',)  # فیلتر بر اساس وضعیت برجسته بودن و تاریخ ایجاد
