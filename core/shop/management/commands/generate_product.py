@@ -6,6 +6,7 @@ from ...models import ProductModels, ProductCategoryModels, ProductStatusModels
 from accounts.models import User, UserType
 from pathlib import Path
 from django.core.files import File
+
 # ======================================================================================================================
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -38,6 +39,7 @@ class Command(BaseCommand):
         for _ in range(10):  # Generate 10 fake products
             num_categories = random.randint(1, 4)
             num_categories = min(num_categories, len(categories))  # محدود کردن تعداد انتخاب به تعداد موجود دسته‌بندی‌ها
+            # انتخاب دسته‌بندی‌های رندوم
             selected_categories = random.sample(list(categories), num_categories)
 
             title = ' '.join([fake.word() for _ in range(1, 3)])
@@ -67,7 +69,8 @@ class Command(BaseCommand):
                     price=price,
                     discount_percent=discount_percent,
                 )
+
+                # اضافه کردن دسته‌بندی‌های انتخاب شده به محصول
                 product.category.set(selected_categories)
 
         self.stdout.write(self.style.SUCCESS('Successfully generated 10 fake products'))
-# ======================================================================================================================
