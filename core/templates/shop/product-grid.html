@@ -195,7 +195,7 @@
                         <div class="card-body">
                             <div class="mb-2">
                                 {% for category in object.category.all %}
-                                <a class="link-sm link-secondary" href="#">{{ category.title }}</a>
+                                <a class="link-sm link-secondary" href="">{{ category.title }}</a>
                                 {% if not forloop.last %}, {% endif %}
                                 {% empty %}
                                 <p>No categories available.</p>
@@ -205,7 +205,7 @@
 
                             <h4 class="card-title">
                                 <a class="text-dark"
-                                   href="">{{object.title}}</a>
+                                   href="{% url 'shop:products-detail' slug=object.slug %}">{{object.title}}</a>
                             </h4>
                             {% if object.is_discounted %}
                             <p class="card-text text-dark fs-4">

@@ -22,7 +22,7 @@ class ProductModels(models.Model):
     user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
     category = models.ManyToManyField(ProductCategoryModels, blank=True)
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, unique=True, blank=True)
+    slug = models.SlugField(allow_unicode=True, unique=True)
     image = models.ImageField(upload_to="images/", null=True, blank=True, default="images/default.jpg")
     description = models.TextField()
     brief_description = models.TextField(null=True, blank=True)
