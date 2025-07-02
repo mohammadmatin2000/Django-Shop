@@ -3,7 +3,7 @@ from .models import ProductModels,ProductImageModels,ProductCategoryModels
 # ======================================================================================================================
 @admin.register(ProductModels)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'price','created_date', 'updated_date')  # نمایش برخی از فیلدهای محصول
+    list_display = ('title', 'status','price','created_date', 'updated_date')  # نمایش برخی از فیلدهای محصول
     search_fields = ('title', 'description')  # جستجو بر اساس نام و توضیحات
     list_filter = ('category', 'created_date')  # فیلتر کردن محصولات بر اساس دسته‌بندی و تاریخ ایجاد
     ordering = ('-created_date',)  # مرتب‌سازی محصولات بر اساس تاریخ ایجاد به صورت نزولی

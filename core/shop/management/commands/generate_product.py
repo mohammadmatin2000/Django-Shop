@@ -14,7 +14,7 @@ class Command(BaseCommand):
     help = 'Generate fake products'
 
     def handle(self, *args, **options):
-        fake = Faker()
+        fake = Faker("fa_IR")
 
         try:
             user = User.objects.get(type=UserType.admin.value)
