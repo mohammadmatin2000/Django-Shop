@@ -128,46 +128,48 @@
                 </div>
 
                 <div class="col-sm-auto">
-                    <div class="d-sm-flex justify-content-sm-end align-items-center">
-                        <!-- Select -->
-                        <div class="mb-2 mb-sm-0 me-sm-2">
-                            <select class="form-select form-select-sm" id="order-by-filter">
-                                <option value="" selected>مرتب سازی</option>
-                                <option value="-created_date">جدیدترین</option>
-                                <option value="created_date">قدیمی ترین</option>
-                                <option value="-price">بیشترین قیمت</option>
-                                <option value="price">کمترین قیمت</option>
-                            </select>
-                        </div>
-                        <!-- End Select -->
-                        <!-- Select -->
-                        <div class="mb-2 mb-sm-0 me-sm-2">
-                            <select class="form-select form-select-sm" id="page-size-filter">
-                                <option value="" selected>تعداد در صفحه</option>
-                                <option value="5">5</option>
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="30">30</option>
-                                <option value="50">50</option>
-                            </select>
-                        </div>
-                        <!-- End Select -->
+                    <form action="{% url 'shop:products-grid' %}">
+                        <div class="d-sm-flex justify-content-sm-end align-items-center">
+                            <!-- Select -->
+                            <div class="mb-2 mb-sm-0 me-sm-2">
+                                <select class="form-select form-select-sm" id="order-by">
+                                    <option value="" selected>مرتب سازی</option>
+                                    <option value="-created_date">جدیدترین</option>
+                                    <option value="created_date">قدیمی ترین</option>
+                                    <option value="-price">بیشترین قیمت</option>
+                                    <option value="price">کمترین قیمت</option>
+                                </select>
+                            </div>
+                            <!-- End Select -->
+                            <!-- Select -->
+                            <div class="mb-2 mb-sm-0 me-sm-2">
+                                <select class="form-select form-select-sm" id="page-size">
+                                    <option value="" selected>تعداد در صفحه</option>
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                            <!-- End Select -->
 
-                        <!-- Nav -->
-                        <ul class="nav nav-segment">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="">
-                                    <i class="bi-grid-fill"></i>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">
-                                    <i class="bi-list"></i>
-                                </a>
-                            </li>
-                        </ul>
-                        <!-- End Nav -->
-                    </div>
+                            <!-- Nav -->
+                            <ul class="nav nav-segment">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="">
+                                        <i class="bi-grid-fill"></i>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">
+                                        <i class="bi-list"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                            <!-- End Nav -->
+                        </div>
+                    </form>
                 </div>
             </div>
             <!-- End Row -->
