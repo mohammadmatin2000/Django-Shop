@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 
 postgres/data
+core\media\images\
