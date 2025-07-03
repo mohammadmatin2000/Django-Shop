@@ -56,6 +56,7 @@ class ProductModels(models.Model):
     def __str__(self):
         return self.title
 
+
 # ======================================================================================================================
 class ProductImageModels(models.Model):
     product = models.ForeignKey("shop.ProductModels", on_delete=models.CASCADE)  # اصلاح ارجاع به مدل ProductModels
