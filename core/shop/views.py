@@ -10,7 +10,8 @@ class ProductsGridView(ListView):
     paginate_by = 10
 
     def get_paginate_by(self, queryset):
-        page_size = self.request.GET.get("page_size")
+
+        page_size = self.request.GET.get("page_size",10)
         if page_size:
             try:
                 return int(page_size)

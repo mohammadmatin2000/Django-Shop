@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
-
+{% load shop_tags %}
 {% block content %}
 <!-- Hero -->
 <div class="position-relative content-space-t-2 content-space-t-lg-3">
@@ -387,7 +386,7 @@
 </div>
 <!-- End Card Grid -->
 
-
+{% latest_products %}
 
 <!-- Subscribe -->
 <div class="bg-light">
