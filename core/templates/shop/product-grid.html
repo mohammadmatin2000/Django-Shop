@@ -395,6 +395,28 @@
         $("#max-price-filter").val(current_url_params.get("max_price") || "")
         $("#category-id-filter").val(current_url_params.get("category_id") || "")
     });
+    $(document).ready(function () {
+    function updateFilters() {
+        let pageSize = $('#page-size-filter').val() || 12;
+        let orderBy = $('#order-by-filter').val() || '';
+        let minPrice = $('#min-price-filter').val();
+        let maxPrice = $('#max-price-filter').val();
+
+        let url = `/shop/products/grid/?page_size=${pageSize}`;
+        if (orderBy) url += `&order_by=${orderBy}`;
+        if (minPrice) url += `&min_price=${minPrice}`;
+        if (maxPrice) url += `&max_price=${maxPrice}`;
+
+        window.location.href = url;
+    }
+
+    $('#page-size-filter, #order-by-filter, #min-price-filter, #max-price-filter').change(updateFilters);
+    });
+
+
+
+
+</script>
 
 
 </script>
