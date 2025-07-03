@@ -16,7 +16,7 @@ def similar_products(product):
     return {'products': products}
 # ======================================================================================================================
 @register.filter
-def formatted_price():
+def formatted_price(value):
     try:
         value = float(value)
         formatted = f"{value:,.3f}".replace(".", "٬").replace(".", "٫")
