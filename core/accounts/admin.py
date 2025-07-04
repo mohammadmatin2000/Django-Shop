@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.sessions.models import Session
 from .models import User, Profile
-
 
 # ======================================================================================================================
 # Custom Django Admin Configuration for User model
@@ -86,8 +86,10 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
     )
-
-
+class SessionAdmin(admin.ModelAdmin):
+    def _session_data(self, obj):
+        return obj.get_decoded()
+    list_display = ['session_key', '_session_data', 'expire_date']
 # ======================================================================================================================
 # Registers the User model with the custom admin configuration
 admin.site.register(User, CustomUserAdmin)
@@ -95,4 +97,6 @@ admin.site.register(User, CustomUserAdmin)
 # Registers the Profile model in the admin panel
 admin.site.register(Profile)
 
+admin.site.register(Session, SessionAdmin)
 # ======================================================================================================================
+
