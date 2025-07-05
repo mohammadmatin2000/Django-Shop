@@ -23,6 +23,7 @@ class CartSession:
     def get_add_product(self):
         return self.cart['items']
 
+
     def save(self):
         self.session.modified = True
 # ======================================================================================================================

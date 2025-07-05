@@ -1,9 +1,9 @@
-from django.views.generic import View
+from django.views.generic import View,TemplateView
 from .cart import CartSession
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
-
+# ======================================================================================================================
 @method_decorator(csrf_exempt, name='dispatch')
 class SessionAddProductsView(View):
     def post(self, request):
@@ -14,3 +14,7 @@ class SessionAddProductsView(View):
         return JsonResponse({
             "cart": cart_session.get_add_product(),
         })
+# ======================================================================================================================
+class CartSummaryView(TemplateView):
+    template_name = 'cart/cart-summary.html'
+# ======================================================================================================================
