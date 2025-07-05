@@ -384,6 +384,8 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
 
     $(document).ready(function () {
@@ -412,13 +414,29 @@
 
     $('#page-size-filter, #order-by-filter, #min-price-filter, #max-price-filter').change(updateFilters);
     });
+</script>
+<script>
+    function addToCart(productId) {
+        console.log("📦 اضافه به سبد:", productId);
 
-
-
-
+        $.ajax({
+            url: '{% url 'cart:add-products' %}',  // آدرس درست ویو شما
+            type: 'POST',
+            data: {
+                product_id: productId,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(response) {
+                console.log("✅ موفق: ", response);
+            },
+            error: function(xhr) {
+                console.error("❌ خطا:", xhr.status, xhr.statusText);
+            }
+        });
+    }
 </script>
 
 
-</script>
+
 
 {% endblock %}
