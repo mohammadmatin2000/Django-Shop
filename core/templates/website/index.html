@@ -1,5 +1,6 @@
 {% extends 'basses/base.html' %}
 {% load static %}
+{% load humanize %}
 {% load shop_tags %}
 {% block content %}
 <!-- Hero -->
@@ -21,7 +22,8 @@
                             </div>
 
                             <div class="d-flex gap-2">
-                                <a class="btn btn-primary rounded-pill" href="{% url 'shop:products-detail' slug=products.slug %}">نمایش جزئیات محصول</a>
+                                <a class="btn btn-primary rounded-pill"
+                                   href="{% url 'shop:products-detail' slug=products.slug %}">نمایش جزئیات محصول</a>
                             </div>
                         </div>
                         <!-- End Col -->
@@ -56,7 +58,7 @@
                 <div class="swiper-slide">
                     <a class="js-swiper-thumb-progress swiper-thumb-progress-avatar" href="javascript:;" tabindex="0">
                         <img class="swiper-thumb-progress-avatar-img" src="{{ products.image.url }}"
-                            alt="Image Description">
+                             alt="Image Description">
                     </a>
                 </div>
                 <!-- End Slide -->
@@ -77,7 +79,7 @@
                 <div class="d-flex">
                     <div class="flex-shrink-0">
                         <img class="ps-2 avatar avatar-4x3" src="{% static 'svg/illustrations/oc-protected-card.svg' %}"
-                            alt="Image Description">
+                             alt="Image Description">
                     </div>
                     <div class="flex-grow-1 ms-4">
                         <h4 class="mb-1">تسویه حساب ایمن</h4>
@@ -93,7 +95,7 @@
                 <div class="d-flex">
                     <div class="flex-shrink-0">
                         <img class="ps-2  avatar avatar-4x3" src="{% static 'svg/illustrations/oc-return.svg' %}"
-                            alt="Image Description">
+                             alt="Image Description">
                     </div>
                     <div class="flex-grow-1 ms-4">
                         <h4 class="mb-1">30 روز بازگشت</h4>
@@ -109,7 +111,7 @@
                 <div class="d-flex">
                     <div class="flex-shrink-0">
                         <img class="ps-2 avatar avatar-4x3" src="{% static 'svg/illustrations/oc-truck.svg' %}"
-                            alt="Image Description">
+                             alt="Image Description">
                     </div>
                     <div class="flex-grow-1 ms-4">
                         <h4 class="mb-1">ارسال رایگان</h4>
@@ -135,83 +137,31 @@
     <!-- End Heading -->
 
     <div class="row mb-2">
+        {% for products in products|slice:":3" %}
         <div class="col-sm-6 col-md-4 mb-4">
             <!-- Card -->
             <div class="card card-bordered shadow-none overflow-hidden">
                 <div class="card-body d-flex align-items-center border-bottom p-0">
                     <div class="w-65 border-end">
-                        <img class="img-fluid" src="{% static '/img/380x400/img3.jpg' %}" alt="Image Description">
+                        <img class="img-fluid" src="{{ products.image.url }}" alt="Image Description">
                     </div>
                     <div class="w-35">
                         <div class="border-bottom">
-                            <img class="img-fluid" src="{% static '/img/380x360/img8.jpg' %}" alt="Image Description">
+                            <img class="img-fluid" src="{{ products.image.url }}" alt="Image Description">
                         </div>
-                        <img class="img-fluid" src="{% static '/img/380x360/img7.jpg' %}" alt="Image Description">
+                        <img class="img-fluid" src="{{ products.image.url }}" alt="Image Description">
                     </div>
                 </div>
 
                 <div class="card-footer text-center">
-                    <h3 class="card-title">تی شرت</h3>
-                    <p class="card-text text-muted small">شروع از 29.99 تومان</p>
-                    <a class="btn btn-outline-primary btn-sm btn-transition rounded-pill px-6" href="#">مشاهده
-                        همه</a>
+                    <h3 class="card-title">{{ products.title }}</h3>
+                    <p class="card-text text-muted small">{{ products.price|intcomma }}</p>
+                    <a class="btn btn-outline-primary btn-sm btn-transition rounded-pill px-6" href="{% url 'shop:products-grid' %}">مشاهده همه</a>
                 </div>
             </div>
             <!-- End Card -->
         </div>
-        <!-- End Col -->
-
-        <div class="col-sm-6 col-md-4 mb-4">
-            <!-- Card -->
-            <div class="card card-bordered shadow-none overflow-hidden">
-                <div class="card-body d-flex align-items-center border-bottom p-0">
-                    <div class="w-65 border-end">
-                        <img class="img-fluid" src="{% static '/img/380x400/img4.jpg' %}" alt="Image Description">
-                    </div>
-                    <div class="w-35">
-                        <div class="border-bottom">
-                            <img class="img-fluid" src="{% static '/img/380x360/img6.jpg' %}" alt="Image Description">
-                        </div>
-                        <img class="img-fluid" src="{% static '/img/380x360/img5.jpg' %}" alt="Image Description">
-                    </div>
-                </div>
-
-                <div class="card-footer text-center">
-                    <h3 class="card-title">پوشش های فنی</h3>
-                    <p class="card-text text-muted small">شروع از 399.99 تومان</p>
-                    <a class="btn btn-outline-primary btn-sm btn-transition rounded-pill px-6" href="#">مشاهده
-                        همه</a>
-                </div>
-            </div>
-            <!-- End Card -->
-        </div>
-        <!-- End Col -->
-
-        <div class="col-sm-6 col-md-4 mb-4">
-            <!-- Card -->
-            <div class="card card-bordered shadow-none overflow-hidden">
-                <div class="card-body d-flex align-items-center border-bottom p-0">
-                    <div class="w-65 border-end">
-                        <img class="img-fluid" src="{% static '/img/380x400/img2.jpg' %}" alt="Image Description">
-                    </div>
-                    <div class="w-35">
-                        <div class="border-bottom">
-                            <img class="img-fluid" src="{% static '/img/380x360/img4.jpg' %}" alt="Image Description">
-                        </div>
-                        <img class="img-fluid" src="{% static '/img/380x360/img3.jpg' %}" alt="Image Description">
-                    </div>
-                </div>
-
-                <div class="card-footer text-center">
-                    <h3 class="card-title">کلاه</h3>
-                    <p class="card-text text-muted small">شروع از 13.99 تومان</p>
-                    <a class="btn btn-outline-primary btn-sm btn-transition rounded-pill px-6" href="#">مشاهده
-                        همه</a>
-                </div>
-            </div>
-            <!-- End Card -->
-        </div>
-        <!-- End Col -->
+        {% endfor %}
     </div>
     <!-- End Row -->
 
@@ -222,15 +172,16 @@
 <!-- End Card Grid -->
 
 <!-- Card Grid -->
+{% for products in products|slice:":1" %}
 <div class="container">
     <div class="row">
         <div class="col-md-6 mb-4 mb-md-0">
             <!-- Card -->
             <div class="card card-lg bg-img-start"
-                style="background-image: url({% static '/img/900x900/img3.jpg' %}); min-height: 30rem;">
+                 style="background-image: url({% static '/img/900x900/img3.jpg' %}); min-height: 30rem;">
                 <div class="card-body">
                     <span class="card-subtitle text-danger">فقط برای زمانی محدود</span>
-                    <h2 class="card-title display-4">70% تخفیف</h2>
+                    <h2 class="card-title display-4">{{ products.discount_percent }} تخفیف</h2>
 
                     <div class="w-md-65">
                         <!-- Countdown -->
@@ -274,7 +225,7 @@
                         <!-- End Row -->
                     </div>
 
-                    <a class="btn btn-light btn-sm btn-transition rounded-pill px-6" href="#">خرید کنید</a>
+                    <a class="btn btn-light btn-sm btn-transition rounded-pill px-6" href="{% url 'shop:products-grid' %}">خرید کنید</a>
                 </div>
             </div>
             <!-- End Card -->
@@ -283,17 +234,15 @@
         <div class="col-md-6">
             <!-- Card -->
             <div class="card card-lg bg-img-start"
-                style="background-image: url({% static '/img/900x900/img4.jpg' %}); min-height: 30rem;">
+                 style="background-image: url({% static '/img/900x900/img4.jpg' %}); min-height: 30rem;">
                 <div class="card-body">
                     <div class="mb-4">
-                        <h2 class="card-title text-white">$109.99</h2>
-                        <h3 class="card-title text-white">دوچرخه Nakto 26</h3>
-                        <p class="card-text text-white">دوچرخه های NAKTO برای نجات محیط زیست و به ارمغان آوردن
-                            سرگرمی برای
-                            دوستانمان!</p>
+                        <h2 class="card-title text-white">{{ products.price|intcomma }} تومان</h2>
+                        <h3 class="card-title text-white">{{ products.title }}</h3>
+                        <p class="card-text text-white">{{ products.description|truncatechars:100 }}</p>
                     </div>
 
-                    <a class="btn btn-light btn-sm btn-transition rounded-pill px-6" href="#">خرید کنید</a>
+                    <a class="btn btn-light btn-sm btn-transition rounded-pill px-6" href="{% url 'shop:products-grid' %}">خرید کنید</a>
                 </div>
             </div>
             <!-- End Card -->
@@ -301,7 +250,7 @@
     </div>
 </div>
 <!-- End Card Grid -->
-
+{% endfor %}
 {% latest_products %}
 
 <!-- Subscribe -->
@@ -323,7 +272,7 @@
                         <div class="input-card-form">
                             <label for="subscribeForm" class="form-label visually-hidden">ایمیل را وارد کنید</label>
                             <input type="email" class="form-control form-control-lg" name="email"
-                                placeholder="ایمیل خود را وارد نمایید" aria-label="ایمیل خود را وارد کنید" required>
+                                   placeholder="ایمیل خود را وارد نمایید" aria-label="ایمیل خود را وارد کنید" required>
                         </div>
                         <button type="submit" class="btn btn-primary btn-lg rounded-pill">ثبت نام</button>
                     </div>

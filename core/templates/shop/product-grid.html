@@ -210,14 +210,14 @@
                             </h4>
                             {% if object.is_discounted %}
                             <p class="card-text text-dark fs-4">
-                                <span class="formatted-price">{{ object.discount_price|intcomma }} تومان</span>
+                                <span class="formatted-price">{{ object.discount_price|floatformat:0 }} تومان</span>
                                 <span class="text-body me-1 fs-6 formatted-price text-decoration-line-through">
-                                {{ object.price|intcomma }} تومان
+                                {{ object.price }} تومان
                             </span>
                             </p>
                             {% else %}
                             <p class="card-text text-dark fs-4 formatted-price">
-                                {{ object.price|intcomma }} تومان
+                                {{ object.price }} تومان
                             </p>
                             {% endif %}
 

@@ -68,8 +68,14 @@
                                             <div class="d-grid gap-1">
                                                 <div class="text-body">
                                                     <span class="small">دسته بندی:</span>
-                                                    <span class="fw-semibold small">{{ item.product.category.title }}</span>
+                                                    {% for category in item.product.category.all %}
+                                                        <a class="link-sm link-secondary" href="#">{{ category.title }}</a>
+                                                        {% if not forloop.last %}, {% endif %}
+                                                    {% empty %}
+                                                        <p>No categories available.</p>
+                                                    {% endfor %}
                                                 </div>
+
 
                                                 <div class="text-body">
                                                     <span class="small">تعداد:</span>
@@ -83,11 +89,17 @@
                                             <div class="row">
                                                 <div class="col-auto">
                                                     <!-- Select -->
-                                                    <select class="form-select form-select-sm mb-3" name="quantity">
+                                                    <select class="form-select form-select-sm mb-3"
+                                                            name="quantity"
+                                                            onchange="updateQuantity({{ item.product.id }}, this.value)">
                                                       {% for i in "123456789"|make_list %}
-                                                        <option value="{{ i }}" {% if i|stringformat:"i" == item.quantity %}selected{% endif %}>{{ i }}</option>
+                                                        <option value="{{ i }}"
+                                                          {% if i|stringformat:"i" == item.quantity|stringformat:"i" %}selected{% endif %}>
+                                                          {{ i }}
+                                                        </option>
                                                       {% endfor %}
                                                     </select>
+
 
 
                                                     <!-- End Select -->
@@ -95,9 +107,10 @@
 
                                                 <div class="col-auto">
                                                     <div class="d-grid gap-2">
-                                                        <a class="link-sm link-secondary small" href="javascript:;">
+                                                        <a href="javascript:void(0);" class="link-sm link-secondary small" onclick="removeFromCart({{ item.product.id }})" id="remove-link-{{ item.product.id }}">
                                                             <i class="bi-trash me-1"></i> حذف
                                                         </a>
+
 
                                                         <a class="link-sm link-secondary small" href="javascript:;">
                                                             <i class="bi-heart-fill ms-1 "></i>جزو علایق
@@ -114,7 +127,9 @@
                                                 {% if item.discounted_price %}
                                                     {{ item.discounted_price }} تومان
                                                 {% else %}
-                                                    {{ item.price|floatformat:3|intcomma }} تومان
+                                                    <p class="text-dark fw-bold">
+                                                      {{ item.price|floatformat:0|intcomma }} تومان
+                                                    </p>
                                                 {% endif %}
                                             </span>
                                         </div>
@@ -161,7 +176,9 @@
 
                                     <dl class="row">
                                         <dt class="col-sm-6">جمع</dt>
-                                        <dd class="col-sm-12 text-sm-end mb-0"> {{ total_price|floatformat:3|intcomma }}  تومان </dd>
+                                        <dd class="col-sm-12 text-sm-end mb-0">
+                                          {{ total_price|floatformat:0|intcomma }} تومان
+                                        </dd>
                                     </dl>
                                     <!-- End Row -->
                                 </div>
@@ -288,6 +305,9 @@
 <!-- JS Implementing Plugins -->
 <script src="{% static 'assets/js/vendor.min.js' %}"></script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 <!-- JS Front -->
 <script src="{% static 'assets/js/theme.min.js' %}"></script>
 
@@ -328,6 +348,60 @@
       new HSGoTo('.js' %}-go-to')
     })()
 </script>
+<script>
+    function removeFromCart(productId) {
+        console.log("🗑 حذف از سبد:", productId);
+
+        $.ajax({
+            url: '{% url "cart:delete-products" %}',  // آدرس URL حذف شما
+            type: 'POST',
+            data: {
+                product_id: productId,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(response) {
+                console.log("✅ حذف شد:", response);
+                location.reload();
+
+
+                // اختیاری: آیتم رو از DOM حذف کن
+                $("#cart-item-" + productId).remove();
+
+                // یا تعداد محصولات در navbar رو آپدیت کن
+                // $("#cart-count").text(response.cart.length);
+            },
+            error: function(xhr) {
+                console.error("❌ خطا در حذف:", xhr.status, xhr.statusText);
+            }
+        });
+    }
+</script>
+
+<script>
+function updateQuantity(product_id,quantity){
+        $.ajax({
+            url: "{%  url 'cart:update-quantity' %}",
+            method: 'POST',
+            data: {
+                product_id: product_id,
+                quantity: quantity,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+
+            },
+            success: function (response) {
+                console.log(response);
+                window.location.reload();
+                // do something with the response data
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+                // handle the error case
+            }
+        });
+    }
+
+</script>
+
 </body>
 
 </html>

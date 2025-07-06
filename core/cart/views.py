@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 # ======================================================================================================================
 @method_decorator(csrf_exempt, name='dispatch')
-class SessionAddProductsView(View):
+class CartAddProductsView(View):
     def post(self, request):
         product_id = request.POST.get('product_id')
         if product_id:
@@ -38,6 +38,7 @@ class CartSummaryView(TemplateView):
                     'quantity_str': str(quantity),
                     'price': price,
                     'total': total,
+
                 })
             except ProductModels.DoesNotExist:
                 continue
@@ -48,5 +49,24 @@ class CartSummaryView(TemplateView):
             'total': total_price,
         })
         return context
+# ======================================================================================================================
+class CartDeleteView(View):
+    def post(self, request):
+        product_id = request.POST.get('product_id')
+        if product_id:
+            cart_session = CartSession(request)
+            cart_session.remove_product(product_id)
+        return JsonResponse({
+            "cart": cart_session.get_add_product(),
+        })
+# ======================================================================================================================
+class CartUpdateQuantityView(View):
+    def post(self, request):
+        product_id = request.POST.get('product_id')
+        quantity = int(request.POST.get('quantity', 1))
 
+        cart_session = CartSession(request)
+        cart_session.update_quantity(product_id, quantity)
+
+        return JsonResponse({"status": "ok", "cart": cart_session.get_add_product()})
 # ======================================================================================================================

@@ -1,6 +1,6 @@
 from django.core.paginator import EmptyPage, PageNotAnInteger
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView,DeleteView
 from django.core.exceptions import FieldError
 from .models import ProductModels, ProductStatusModels, ProductCategoryModels
 
@@ -11,7 +11,7 @@ class ProductsGridView(ListView):
 
     def get_paginate_by(self, queryset):
 
-        page_size = self.request.GET.get("page_size",10)
+        page_size = self.request.GET.get("page_size",9)
         if page_size:
             try:
                 return int(page_size)
@@ -50,8 +50,6 @@ class ProductsGridView(ListView):
         context["total_items"] = self.get_queryset().count()
 
         return context
-
-
 # ======================================================================================================================
 class ProductsDetailView(DetailView):
     template_name = "shop/product-detail.html"

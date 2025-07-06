@@ -44,14 +44,10 @@ class ProductModels(models.Model):
 
     @property
     def discount_price(self):
-        if self.is_discounted:
+        if self.is_discounted():
             discount_amount = (Decimal(self.discount_percent) / 100) * self.price
             return self.price - discount_amount
         return self.price
-
-    @property
-    def get_price(self):
-        return self.discount_price if self.is_discounted else self.price
 
     def __str__(self):
         return self.title

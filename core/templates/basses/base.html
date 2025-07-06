@@ -456,6 +456,10 @@
 <!-- JS Implementing Plugins -->
 <script src="{% static 'js/vendor.min.js' %}"></script>
 
+<!-- این خط باید حتماً قبل از <script> تابع AJAX باشه -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 <!-- JS Front -->
 <script src="{% static 'js/theme.min.js' %}"></script>
 
@@ -597,7 +601,7 @@
 
         //console.log(product_id)
         $.ajax({
-            url: "",
+            url: "{% url 'cart:add-products' %}",
             method: 'POST',
             data: {
                 product_id: product_id,
@@ -619,7 +623,7 @@
 
         //console.log(product_id)
         $.ajax({
-            url: "",
+            url: "{% url 'cart:add-products' %}",
             method: 'POST',
             data: {
                 product_id: product_id,
