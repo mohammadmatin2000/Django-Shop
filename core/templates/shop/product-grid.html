@@ -210,9 +210,9 @@
                             </h4>
                             {% if object.is_discounted %}
                             <p class="card-text text-dark fs-4">
-                                <span class="formatted-price">{{ object.discount_price|floatformat:0 }} تومان</span>
+                                <span class="formatted-price">{{ object.discount_price|floatformat:0|intcomma }} تومان</span>
                                 <span class="text-body me-1 fs-6 formatted-price text-decoration-line-through">
-                                {{ object.price }} تومان
+                                {{ object.price|intcomma }} تومان
                             </span>
                             </p>
                             {% else %}
@@ -416,27 +416,58 @@
     });
 </script>
 <script>
-    function addToCart(productId) {
-        console.log("📦 اضافه به سبد:", productId);
+    function addToCart(product_id) {
 
+        //console.log(product_id)
         $.ajax({
-            url: '{% url 'cart:add-products' %}',  // آدرس درست ویو شما
-            type: 'POST',
+            url: "{% url 'cart:add-products' %}",
+            method: 'POST',
             data: {
-                product_id: productId,
+                product_id: product_id,
                 csrfmiddlewaretoken: '{{ csrf_token }}'
+
             },
-            success: function(response) {
-                console.log("✅ موفق: ", response);
+            success: function (response) {
+                $("#total-cart-item-count").html(response.total_quantity)
+                console.log(response);
+                // do something with the response data
             },
-            error: function(xhr) {
-                console.error("❌ خطا:", xhr.status, xhr.statusText);
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+                // handle the error case
             }
         });
     }
+    function addToWishlist(element,product_id) {
+
+        //console.log(product_id)
+        $.ajax({
+            url: "{% url 'cart:add-products' %}",
+            method: 'POST',
+            data: {
+                product_id: product_id,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+
+            },
+            success: function (response) {
+            window.location.reload();
+                Toastify({
+                    text:response.message,
+                    className: `info`,
+                    style: {
+                      background: "blue",
+                    }
+                  }).showToast();
+                $(element).toggleClass('active');
+
+                // do something with the response data
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+                // handle the error case
+            }
+        });
+    }
+
 </script>
-
-
-
-
 {% endblock %}
