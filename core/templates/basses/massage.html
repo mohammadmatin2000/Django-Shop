@@ -27,7 +27,7 @@
     {% for field in form %}
       {% for error in field.errors %}
         Toastify({
-          text: "{{ field.label }}: {{ error|escapejs }}",
+          text: "{{ error|escapejs }}",
           className: "error",
           duration: 5000,
           close: true,
