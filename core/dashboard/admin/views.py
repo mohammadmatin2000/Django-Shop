@@ -9,7 +9,7 @@ from .forms import PasswordChangeForm
 class AdminDashboardHomeView(LoginRequiredMixin,HasAdminPermission,TemplateView):
     template_name = "dashboard/admin/home.html"
 # ======================================================================================================================
-class AdminSecurityView(LoginRequiredMixin,HasAdminPermission,TemplateView,PasswordChangeView,SuccessMessageMixin):
+class AdminSecurityView(LoginRequiredMixin,HasAdminPermission,SuccessMessageMixin,TemplateView,PasswordChangeView):
     template_name = "dashboard/admin/profile/security.html"
     form_class = PasswordChangeForm
     success_url = reverse_lazy("dashboard:admin:security")

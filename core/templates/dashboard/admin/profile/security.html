@@ -22,14 +22,15 @@
     <!-- Body -->
     <div class="card-body">
         <!-- Form -->
-        <form>
+        <form action="{% url 'dashboard:admin:security' %}" method="post">
+            {% csrf_token %}
             <!-- Form -->
             <div class="row mb-4">
                 <label for="currentPasswordLabel" class="col-sm-3 col-form-label form-label">رمز عبور فعلی</label>
 
                 <div class="col-sm-9">
                     <input type="password" class="form-control" name="old_password" id="currentPasswordLabel"
-                           placeholder="Enter current password" aria-label="Enter current password">
+                           placeholder="رمز عبور فعلی را وارد کنید" aria-label="Enter current password">
                 </div>
             </div>
             <!-- End Form -->
@@ -40,7 +41,7 @@
 
                 <div class="col-sm-9">
                     <input type="password" class="form-control" name="new_password1" id="newPassword"
-                           placeholder="Enter new password" aria-label="Enter new password">
+                           placeholder="رمز عبور جدید را وارد کنید" aria-label="Enter new password">
                 </div>
             </div>
             <!-- End Form -->
@@ -52,8 +53,8 @@
 
                 <div class="col-sm-9">
                     <div class="mb-3">
-                        <input type="password" class="form-control" name="new_password1"
-                               id="confirmNewPasswordLabel" placeholder="Confirm your new password"
+                        <input type="password" class="form-control" name="new_password2"
+                               id="confirmNewPasswordLabel" placeholder="رمز عبور جدید را تکرار کنید"
                                aria-label="Confirm your new password">
                     </div>
 
