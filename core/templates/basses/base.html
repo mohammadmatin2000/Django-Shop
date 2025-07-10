@@ -110,7 +110,7 @@
                         <button class="btn btn-ghost-secondary btn-icon" id="dropdownMenuLink"
                                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="avatar avatar-sm avatar-circle">
-                                    <img class="avatar-img" src="{% static 'img/160x160/img10.jpg' %}"
+                                    <img class="avatar-img" src="{{request.user.user_profile.image.url}}"
                                          alt="Image Description">
                                 </span>
                         </button>
@@ -458,10 +458,10 @@
         integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="
         crossorigin="anonymous"></script>
 <!-- JS Implementing Plugins -->
-<script src="{% static 'assets/js/vendor.min.js' %}"></script>
+<script src="{% static 'js/vendor.min.js' %}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- JS Front -->
-<script src="{% static 'assets/js/theme.min.js' %}"></script>
+
 <!-- JS Implementing Plugins -->
 <script src="{% static 'js/vendor.min.js' %}"></script>
 <!-- این خط باید حتماً قبل از <script> تابع AJAX باشه -->

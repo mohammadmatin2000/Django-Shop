@@ -28,6 +28,7 @@
             <!-- عکس پروفایل -->
             <div class="row mb-4">
                 <label class="col-sm-3 col-form-label form-label">عکس پروفایل</label>
+                <form action="{% url 'dashboard:admin:profile-image' %}" method="post" enctype="multipart/form-data">
                 <div class="col-sm-9">
                     <div class="d-flex align-items-center">
                         <label class="avatar avatar-xl avatar-circle" for="avatarUploader">
@@ -49,10 +50,11 @@
                                           "allowTypes": [".png", ".jpeg", ".jpg"]
                                        }'>
                             </div>
-                            <button type="button" class="js-file-attach-reset-img btn btn-white btn-sm">حذف</button>
+                            <button type="submit" class="js-file-attach-reset-img btn btn-white btn-sm">ارسال</button>
                         </div>
                     </div>
                 </div>
+                </form>
             </div>
 
             <!-- نام و نام خانوادگی -->
