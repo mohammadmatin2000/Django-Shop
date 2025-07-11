@@ -7,47 +7,39 @@ class CartSession:
             "total_items": 0,
         })
         self.session['cart'] = self.cart
-        self.session.modified = True
         self.save()
 
+    def save(self):
+        self.session.modified = True
+
     def remove_product(self, product_id):
-        for item in self.cart["items"]:
-            if product_id == item["product_id"]:
-                self.cart["items"].remove(item)
-                break
-        else:
-            return
+        self.cart["items"] = [
+            item for item in self.cart["items"] if str(item["product_id"]) != str(product_id)
+        ]
         self.save()
 
     def update_quantity(self, product_id, quantity):
         for item in self.cart["items"]:
-            if product_id == item["product_id"]:
+            if str(item["product_id"]) == str(product_id):
                 item["quantity"] = int(quantity)
                 break
-        else:
-            return
         self.save()
 
-    def add_product(self, product_id):
+    def add_product(self, product_id, quantity=1):
         for item in self.cart['items']:
-            if item['product_id'] == product_id:
-                item['quantity'] += 1
+            if str(item['product_id']) == str(product_id):
+                item['quantity'] += int(quantity)
                 break
         else:
-            new_item = {
-                "product_id": product_id,
-                "quantity": 1,
-            }
-            self.cart['items'].append(new_item)
+            self.cart['items'].append({
+                "product_id": str(product_id),
+                "quantity": int(quantity),
+            })
         self.save()
 
-    def get_add_product(self):
+    def get_products(self):
         return self.cart['items']
 
     def get_total_quantity(self):
         return sum(item["quantity"] for item in self.cart["items"])
-
-    # بقیه متدها بدون تغییر
-    def save(self):
-        self.session.modified = True
-
+# ======================================================================================================================

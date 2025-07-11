@@ -101,7 +101,8 @@
                         {% if request.user.is_authenticated %}
                         <a href="{% url 'cart:cart-summary' %}" class="btn btn-ghost-secondary btn-icon">
                             <i class="bi-basket"></i>
-                            <span class="cart-item-count" id="total-cart-item-count">{{ cart.get_total_quantity }}</span>
+                            <span class="cart-item-count"
+                                  id="total-cart-item-count">{{ cart.get_total_quantity }}</span>
                         </a>
                         {% endif %}
                         <!-- End Shopping Cart -->
@@ -564,7 +565,7 @@
                 seconds = item.querySelector('.js-cd-seconds')
 
             countdown(oneYearFromNow.setFullYear(
-                oneYearFromNow.getFullYear() + 1),
+                    oneYearFromNow.getFullYear() + 1),
                 ts => {
                     days.innerHTML = ts.days
                     hours.innerHTML = ts.hours
@@ -624,33 +625,26 @@
             }
         });
     }
-    function addToWishlist(element,product_id) {
 
-        //console.log(product_id)
+    function addToWishlist(element, product_id, quantity) {
+        console.log('product_id:', product_id);
+        console.log('quantity:', quantity);
+
         $.ajax({
             url: "{% url 'cart:add-products' %}",
             method: 'POST',
             data: {
                 product_id: product_id,
+                quantity: quantity,
                 csrfmiddlewaretoken: '{{ csrf_token }}'
-
             },
             success: function (response) {
-            window.location.reload();
-                Toastify({
-                    text:response.message,
-                    className: `info`,
-                    style: {
-                      background: "blue",
-                    }
-                  }).showToast();
-                $(element).toggleClass('active');
-
-                // do something with the response data
+                console.log('response', response);
+                window.location.reload();
+                // به‌روزرسانی UI یا ...
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log(errorThrown);
-                // handle the error case
+                console.log('Error:', errorThrown);
             }
         });
     }
@@ -659,39 +653,35 @@
 <!-- JS Plugins Init. -->
 <script>
     (function () {
-      // INITIALIZATION OF MEGA MENU
-      // =======================================================
-      new HSMegaMenu('.js' %}-mega-menu', {
-        desktop: {
-          position: 'left'
-        }
-      })
+        // INITIALIZATION OF MEGA MENU
+        // =======================================================
+        new HSMegaMenu('.js-mega-menu', {
+            desktop: {
+                position: 'left'
+            }
+        });
 
+        // INITIALIZATION OF SHOW ANIMATIONS
+        // =======================================================
+        new HSShowAnimation('.js-animation-link');
 
-      // INITIALIZATION OF SHOW ANIMATIONS
-      // =======================================================
-      new HSShowAnimation('.js' %}-animation-link')
+        // INITIALIZATION OF BOOTSTRAP VALIDATION
+        // =======================================================
+        HSBsValidation.init('.js-validate', {
+            onSubmit: data => {
+                data.event.preventDefault();
+                alert('Submitted');
+            }
+        });
 
+        // INITIALIZATION OF BOOTSTRAP DROPDOWN
+        // =======================================================
+        HSBsDropdown.init();
 
-      // INITIALIZATION OF BOOTSTRAP VALIDATION
-      // =======================================================
-      HSBsValidation.init('.js' %}-validate', {
-        onSubmit: data => {
-          data.event.preventDefault()
-          alert('Submited')
-        }
-      })
-
-
-      // INITIALIZATION OF BOOTSTRAP DROPDOWN
-      // =======================================================
-      HSBsDropdown.init()
-
-
-      // INITIALIZATION OF GO TO
-      // =======================================================
-      new HSGoTo('.js' %}-go-to')
-    })()
+        // INITIALIZATION OF GO TO
+        // =======================================================
+        new HSGoTo('.js-go-to');
+    })();
 </script>
 
 <script>
@@ -705,7 +695,7 @@
                 product_id: productId,
                 csrfmiddlewaretoken: '{{ csrf_token }}'
             },
-            success: function(response) {
+            success: function (response) {
                 console.log("✅ حذف شد:", response);
                 location.reload();
 
@@ -716,7 +706,7 @@
                 // یا تعداد محصولات در navbar رو آپدیت کن
                 // $("#cart-count").text(response.cart.length);
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 console.error("❌ خطا در حذف:", xhr.status, xhr.statusText);
             }
         });
@@ -724,7 +714,7 @@
 </script>
 
 <script>
-function updateQuantity(product_id,quantity){
+    function updateQuantity(product_id, quantity) {
         $.ajax({
             url: "{%  url 'cart:update-quantity' %}",
             method: 'POST',

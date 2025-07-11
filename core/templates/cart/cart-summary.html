@@ -69,10 +69,10 @@
                                                 <div class="text-body">
                                                     <span class="small">دسته بندی:</span>
                                                     {% for category in item.product.category.all %}
-                                                        <a class="link-sm link-secondary" href="#">{{ category.title }}</a>
-                                                        {% if not forloop.last %}, {% endif %}
+                                                    <a class="link-sm link-secondary" href="#">{{ category.title }}</a>
+                                                    {% if not forloop.last %}, {% endif %}
                                                     {% empty %}
-                                                        <p>No categories available.</p>
+                                                    <p>No categories available.</p>
                                                     {% endfor %}
                                                 </div>
 
@@ -92,14 +92,14 @@
                                                     <select class="form-select form-select-sm mb-3"
                                                             name="quantity"
                                                             onchange="updateQuantity({{ item.product.id }}, this.value)">
-                                                      {% for i in "123456789"|make_list %}
+                                                        {% for i in "123456789"|make_list %}
                                                         <option value="{{ i }}"
-                                                          {% if i|stringformat:"i" == item.quantity|stringformat:"i" %}selected{% endif %}>
-                                                          {{ i }}
+                                                                {% if i== item.quantity|stringformat:
+                                                        "s" %}selected>
+                                                        {{ i }}
                                                         </option>
-                                                      {% endfor %}
+                                                        {% endfor %}
                                                     </select>
-
 
 
                                                     <!-- End Select -->
@@ -107,7 +107,10 @@
 
                                                 <div class="col-auto">
                                                     <div class="d-grid gap-2">
-                                                        <a href="javascript:void(0);" class="link-sm link-secondary small" onclick="removeFromCart({{ item.product.id }})" id="remove-link-{{ item.product.id }}">
+                                                        <a href="javascript:void(0);"
+                                                           class="link-sm link-secondary small"
+                                                           onclick="removeFromCart({{ item.product.id }})"
+                                                           id="remove-link-{{ item.product.id }}">
                                                             <i class="bi-trash me-1"></i> حذف
                                                         </a>
 
@@ -123,7 +126,8 @@
                                         </div>
                                         <!-- End Col -->
 
-                                       <div class="col-4 col-sm-2 d-none d-sm-inline-block text-right">                                            <span class="h5 d-block mb-1">
+                                        <div class="col-4 col-sm-2 d-none d-sm-inline-block text-right">                                            <span
+                                                class="h5 d-block mb-1">
                                                 {% if item.discounted_price %}
                                                     {{ item.discounted_price }} تومان
                                                 {% else %}
@@ -177,7 +181,7 @@
                                     <dl class="row">
                                         <dt class="col-sm-6">جمع</dt>
                                         <dd class="col-sm-12 text-sm-end mb-0">
-                                          {{ total_price|floatformat:0|intcomma }} تومان
+                                            {{ total_price|floatformat:0|intcomma }} تومان
                                         </dd>
                                     </dl>
                                     <!-- End Row -->
@@ -301,7 +305,6 @@
     </div>
 </div>
 <!-- ========== END SECONDARY CONTENTS ========== -->
-
 
 
 </body>

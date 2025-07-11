@@ -139,13 +139,15 @@
                     <div class="col">
                         <span class="d-block small">تعداد را انتخاب کنید</span>
                         <input type="number"
-                               class="js-result form-control form-control-quantity-counter"
-                               name="quantity"
-                               min="1"
-                               max="9"
-                               value="{{ item.quantity }}"
-                               onchange="updateQuantity({{ item.product.id }}, this.value)">
+                           id="quantity-{{ object.id }}"
+                           class="js-result form-control form-control-quantity-counter"
+                           name="quantity"
+                           min="1"
+                           max="9"
+                           value="1"
+                           onchange="updateQuantity({{ object.product.id }}, this.value)">
                     </div>
+
 
                     <!-- End Col -->
 
@@ -246,11 +248,11 @@
             </div>
             <!-- End Accordion -->
 
-            <div class="d-grid mb-4">
-                <button type="button" class="btn btn-primary btntransition"
-                        onclick="addToWishlist(this,`{{object.id}}`)">افزودن به سبد خرید
-                </button>
-            </div>
+            <button type="button" class="btn btn-primary btntransition"
+                    onclick="addToWishlist(this, '{{ object.id }}', document.getElementById('quantity-{{ object.id }}').value)">
+                افزودن به سبد خرید
+            </button>
+
 
             <!-- Media -->
             <div class="d-flex align-items-center">
@@ -598,29 +600,25 @@
 <script>
     function updateQuantity(product_id, quantity) {
         $.ajax({
-            url: "{% url 'cart:add-products' %}",
+            url: "{%  url 'cart:update-quantity' %}",
             method: 'POST',
             data: {
                 product_id: product_id,
                 quantity: quantity,
                 csrfmiddlewaretoken: '{{ csrf_token }}'
+
             },
             success: function (response) {
-                $("#total-cart-item-count").html(response.total_quantity);
-                Toastify({
-                    text: response.message || 'تعداد با موفقیت به‌روزرسانی شد',
-                    className: 'info',
-                    style: {
-                        background: "green",
-                    }
-                }).showToast();
                 console.log(response);
+                window.location.reload();
+                // do something with the response data
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);
+                // handle the error case
             }
         });
     }
-</script>
 
+</script>
 {% endblock content %}
