@@ -48,6 +48,10 @@ class ProductModels(models.Model):
             discount_amount = (Decimal(self.discount_percent) / 100) * self.price
             return self.price - discount_amount
         return self.price
+    def is_status(self):
+        if self.status == ProductStatusModels.publish:
+            return self.status == ProductStatusModels.publish
+
 
     def __str__(self):
         return self.title

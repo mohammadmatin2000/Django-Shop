@@ -5,3 +5,4 @@ Pillow
 Faker
 # database modules
 psycopg[binary]
+django-widget-tweaks

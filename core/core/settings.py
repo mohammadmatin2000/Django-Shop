@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'contact',
     'cart',
     'dashboard',
+
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
