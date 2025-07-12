@@ -1,13 +1,12 @@
 {% extends 'dashboard/admin/base.html' %}
 {% load static %}
 {% load widget_tweaks %}
-
 {% block breadcrumb %}
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-light mb-0">
-
+        <li class="breadcrumb-item">حساب</li>
         <li class="breadcrumb-item active" aria-current="page">
-          ویرایش محصول
+            ایجاد محصول
         </li>
     </ol>
 </nav>
@@ -15,7 +14,7 @@
 
 {% block content %}
 
-<form action="{% url 'dashboard:admin:product-update' pk=form.instance.pk %}" method="post" enctype="multipart/form-data" class="card">
+<form action="{% url 'dashboard:admin:product-create' %}" method="post" enctype="multipart/form-data" class="card">
   {% csrf_token %}
 
   <!-- Header -->
@@ -107,11 +106,9 @@
 
   <!-- Footer -->
   <div class="card-footer d-flex pt-4 justify-content-end gap-3">
-    <a class="btn btn-danger" href="{% url 'dashboard:admin:product-delete' pk=object.pk %}">حذف</a>
     <a class="btn btn-secondary" href="{% url 'dashboard:admin:products-list' %}">بازگشت</a>
-    <button type="submit" class="btn btn-primary">ثبت تغییرات</button>
+    <button type="submit" class="btn btn-primary">ایجاد محصول</button>
   </div>
 </form>
-
 
 {% endblock %}

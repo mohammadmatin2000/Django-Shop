@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, UpdateView, ListView, DeleteView
+from django.views.generic import TemplateView, UpdateView, ListView, DeleteView , CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -97,4 +97,15 @@ class AdminProductDeleteView(LoginRequiredMixin,HasAdminPermission,SuccessMessag
     queryset = ProductModels.objects.all()
     success_message = "محصول شما با موفقیت حذف شد"
     success_url = reverse_lazy('dashboard:admin:products-list')
+# ======================================================================================================================
+class AdminProductCreateView(LoginRequiredMixin,HasAdminPermission,SuccessMessageMixin,CreateView):
+    template_name = "dashboard/admin/product/product-create.html"
+    queryset = ProductModels.objects.all()
+    success_message = "محصول شما با موفقیت ایجاد شد"
+    success_url = reverse_lazy('dashboard:admin:products-list')
+    form_class = AdminUpdateProductForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user  
+        return super().form_valid(form)
 # ======================================================================================================================
