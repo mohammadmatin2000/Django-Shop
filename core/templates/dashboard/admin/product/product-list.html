@@ -91,12 +91,12 @@
                         {% else %}
                         <span class="badge bg-danger">ذخیره</span> {% endif %}
                         <td>{{ object.discount_percent }}</td>
-                        <td>
+                        <td class="d-flex">
                             <a class="btn btn-sm btn-icon btn-ghost-secondary"
-                               href="{% url 'dashboard:admin:product-update' pk=object.id %}"><i class="bi-pencil-square"></i></a>
-                            {% if object.is_status  %}
-                            <a class="btn btn-sm btn-icon btn-ghost-primary" href="{% url 'shop:products-detail' slug=object.slug %}"><i
-                                    class="bi-eye"></i></a>
+                               href="{% url 'dashboard:admin:product-update' pk=object.pk %}"><i class="bi-pencil-square"></i></a>
+                            {% if object.is_status %}
+                            <a class="btn btn-sm btn-icon btn-ghost-primary"
+                               href="{% url 'shop:products-detail' slug=object.slug %}"><i class="bi-eye"></i></a>
                             {% endif %}
                         </td>
                     </tr>
