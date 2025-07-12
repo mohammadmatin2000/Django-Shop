@@ -6,3 +6,4 @@ Faker
 # database modules
 psycopg[binary]
 django-widget-tweaks
+django-ckeditor

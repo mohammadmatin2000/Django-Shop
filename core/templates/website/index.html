@@ -55,12 +55,30 @@
             <div class="swiper-wrapper">
                 {% for products in products %}
                 <!-- Slide -->
-                <div class="swiper-slide">
-                    <a class="js-swiper-thumb-progress swiper-thumb-progress-avatar" href="javascript:;" tabindex="0">
-                        <img class="swiper-thumb-progress-avatar-img" src="{{ products.image.url }}"
-                             alt="Image Description">
-                    </a>
+                <div class="swiper mySwiper">
+                    <div class="swiper-wrapper">
+
+                        <!-- عکس اصلی -->
+                        <div class="swiper-slide">
+                            <a class="js-swiper-thumb-progress swiper-thumb-progress-avatar" href="javascript:;">
+                                <img class="swiper-thumb-progress-avatar-img" src="{{ product.image.url }}"
+                                     alt="{{ product.title }}">
+                            </a>
+                        </div>
+
+                        <!-- عکس‌های اضافه -->
+                        {% for img in product.images.all %}
+                        <div class="swiper-slide">
+                            <a class="js-swiper-thumb-progress swiper-thumb-progress-avatar" href="javascript:;">
+                                <img class="swiper-thumb-progress-avatar-img" src="{{ img.file.url }}"
+                                     alt="عکس {{ forloop.counter }}">
+                            </a>
+                        </div>
+                        {% endfor %}
+
+                    </div>
                 </div>
+
                 <!-- End Slide -->
                 {% endfor %}
             </div>
@@ -156,7 +174,8 @@
                 <div class="card-footer text-center">
                     <h3 class="card-title">{{ products.title }}</h3>
                     <p class="card-text text-muted small">{{ products.price|intcomma }}</p>
-                    <a class="btn btn-outline-primary btn-sm btn-transition rounded-pill px-6" href="{% url 'shop:products-grid' %}">مشاهده همه</a>
+                    <a class="btn btn-outline-primary btn-sm btn-transition rounded-pill px-6"
+                       href="{% url 'shop:products-grid' %}">مشاهده همه</a>
                 </div>
             </div>
             <!-- End Card -->
@@ -225,7 +244,8 @@
                         <!-- End Row -->
                     </div>
 
-                    <a class="btn btn-light btn-sm btn-transition rounded-pill px-6" href="{% url 'shop:products-grid' %}">خرید کنید</a>
+                    <a class="btn btn-light btn-sm btn-transition rounded-pill px-6"
+                       href="{% url 'shop:products-grid' %}">خرید کنید</a>
                 </div>
             </div>
             <!-- End Card -->
@@ -242,7 +262,8 @@
                         <p class="card-text text-white">{{ products.description|truncatechars:100 }}</p>
                     </div>
 
-                    <a class="btn btn-light btn-sm btn-transition rounded-pill px-6" href="{% url 'shop:products-grid' %}">خرید کنید</a>
+                    <a class="btn btn-light btn-sm btn-transition rounded-pill px-6"
+                       href="{% url 'shop:products-grid' %}">خرید کنید</a>
                 </div>
             </div>
             <!-- End Card -->
@@ -325,4 +346,5 @@
     <!-- End Row -->
 </div>
 <!-- End Clients -->
+
 {% endblock content %}

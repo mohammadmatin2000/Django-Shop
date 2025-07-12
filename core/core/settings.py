@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'dashboard',
 
     'widget_tweaks',
+    'ckeditor'
 ]
 
 MIDDLEWARE = [

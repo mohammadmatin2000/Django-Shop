@@ -106,6 +106,6 @@ class AdminProductCreateView(LoginRequiredMixin,HasAdminPermission,SuccessMessag
     form_class = AdminUpdateProductForm
 
     def form_valid(self, form):
-        form.instance.user = self.request.user  
+        form.instance.user = self.request.user
         return super().form_valid(form)
 # ======================================================================================================================

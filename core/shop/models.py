@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 from decimal import Decimal
-
+from ckeditor.fields import RichTextField
 # ======================================================================================================================
 class ProductStatusModels(models.IntegerChoices):
     publish = 1, "فعال"
@@ -25,8 +25,8 @@ class ProductModels(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(allow_unicode=True, unique=True)
     image = models.ImageField(upload_to="images/", null=True, blank=True, default="images/default.jpg")
-    description = models.TextField()
-    brief_description = models.TextField(null=True, blank=True)
+    description = RichTextField()  # استفاده از CKEditor
+    brief_description = models.TextField(null=True, blank=True)  # اختیاری: می‌تونی اینم RichTextField کنی
     stock = models.PositiveIntegerField(default=0)
     status = models.IntegerField(choices=ProductStatusModels.choices, default=ProductStatusModels.publish)
     price = models.DecimalField(max_digits=10, decimal_places=0)
@@ -48,18 +48,19 @@ class ProductModels(models.Model):
             discount_amount = (Decimal(self.discount_percent) / 100) * self.price
             return self.price - discount_amount
         return self.price
-    def is_status(self):
-        if self.status == ProductStatusModels.publish:
-            return self.status == ProductStatusModels.publish
 
+    def is_status(self):
+        return self.status == ProductStatusModels.publish
 
     def __str__(self):
         return self.title
 
 
+
 # ======================================================================================================================
 class ProductImageModels(models.Model):
-    product = models.ForeignKey("shop.ProductModels", on_delete=models.CASCADE)  # اصلاح ارجاع به مدل ProductModels
+    product = models.ForeignKey("shop.ProductModels", on_delete=models.CASCADE)
     file = models.ImageField(upload_to="images/", null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+# ======================================================================================================================
