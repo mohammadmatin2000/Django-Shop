@@ -69,12 +69,13 @@
         <div class="text-danger small">{{ form.price.errors }}</div>
       </div>
 
+
       <!-- درصد تخفیف (اختیاری اگر در فرم هست) -->
-      {% if form.discount %}
+      {% if form.discount_percent %}
       <div class="col-md-2 mb-3">
-        <label for="{{ form.discount.id_for_label }}">درصد تخفیف</label>
-        {{ form.discount|add_class:"form-control is-valid" }}
-        <div class="text-danger small">{{ form.discount.errors }}</div>
+        <label for="{{ form.discount_percent.id_for_label }}">درصد تخفیف</label>
+        {{ form.discount_percent|add_class:"form-control is-valid" }}
+        <div class="text-danger small">{{ form.discount_percent.errors }}</div>
       </div>
       {% endif %}
 
@@ -106,7 +107,7 @@
 
   <!-- Footer -->
   <div class="card-footer d-flex pt-4 justify-content-end gap-3">
-    <a class="btn btn-danger">حذف</a>
+    <a class="btn btn-danger" href="{% url 'dashboard:admin:product-delete' pk=object.pk %}">حذف</a>
     <a class="btn btn-secondary" href="{% url 'dashboard:admin:products-list' %}">بازگشت</a>
     <button type="submit" class="btn btn-primary">ثبت تغییرات</button>
   </div>

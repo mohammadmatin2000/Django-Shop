@@ -31,6 +31,7 @@ class AdminUpdateProductForm(forms.ModelForm):
         "brief_description",
         "stock",
         "status",
+        "discount_percent",
         "price"
         )
 # ======================================================================================================================
