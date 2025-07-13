@@ -1,3 +1,5 @@
+from .models import CartModels,CartItemsModels
+# ======================================================================================================================
 class CartSession:
     def __init__(self, request):
         self.session = request.session
@@ -44,7 +46,9 @@ class CartSession:
         return sum(item["quantity"] for item in self.cart["items"])
 
     def sync_cart_items_from_db(self):
-        pass
+        cart,_ = CartModels.objects.get_or_create(user=self.user)
+        cart_items = CartItemsModels.objects.filter(cart=cart)
     def merge_session_cart_in_db(self):
-        pass
+        cart,_ = CartModels.objects.get_or_create(user=self.user)
+        cart_items = CartItemsModels.objects.filter(cart=cart)
 # ======================================================================================================================
