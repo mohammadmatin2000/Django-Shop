@@ -42,4 +42,9 @@ class CartSession:
 
     def get_total_quantity(self):
         return sum(item["quantity"] for item in self.cart["items"])
+
+    def sync_cart_items_from_db(self):
+        pass
+    def merge_session_cart_in_db(self):
+        pass
 # ======================================================================================================================
