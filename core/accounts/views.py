@@ -1,8 +1,25 @@
 from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordResetView
-from .forms import CustomAuthenticationForm
+from django.views import View
+from django.shortcuts import render, redirect
+
+from django.contrib import messages
+from .forms import CustomAuthenticationForm,CustomSignupForm
 from .utils.email_thread import EmailThread
+# ======================================================================================================================
+class SignupView(View):
+    def get(self, request):
+        form = CustomSignupForm()
+        return render(request, 'accounts/signup.html', {'form': form})
+
+    def post(self, request):
+        form = CustomSignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'ثبت‌نام با موفقیت انجام شد! اکنون وارد شوید.')
+            return redirect('accounts:login')
+        return render(request, 'accounts/signup.html', {'form': form})
 # ======================================================================================================================
 class LoginView(auth_views.LoginView):
     template_name = 'accounts/login.html'

@@ -1,10 +1,11 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from .views import LoginView, LogoutView
+from .views import LoginView, LogoutView,SignupView
 from .forms import SetPasswordForm
 # ======================================================================================================================
 app_name = 'accounts'
 urlpatterns = [
+    path('signup/', SignupView.as_view(), name='signup'),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     # path('register/', Register.as_view(), name='register'),

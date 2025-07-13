@@ -6,14 +6,14 @@ class CartModels(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     def __str__(self):
-        return self.user.username
+        return str(self.user)
 # ======================================================================================================================
 class CartItemsModels(models.Model):
-    cart = models.ForeignKey(CartModels, on_delete=models.CASCADE)
+    cart = models.ForeignKey(CartModels, on_delete=models.CASCADE,related_name="items")
     product = models.ForeignKey('shop.ProductModels', on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     def __str__(self):
-        return self.cart.user.username
+        return str(self.cart)
 # ======================================================================================================================

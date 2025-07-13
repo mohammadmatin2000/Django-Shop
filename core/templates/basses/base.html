@@ -98,13 +98,13 @@
                             <i class="bi-basket"></i>
                             <span class="cart-item-count ">3</span>
                         </button> -->
-                        {% if request.user.is_authenticated %}
+
                         <a href="{% url 'cart:cart-summary' %}" class="btn btn-ghost-secondary btn-icon">
                             <i class="bi-basket"></i>
                             <span class="cart-item-count"
-                                  id="total-cart-item-count">{{ cart.get_total_quantity }}</span>
+                                  id="total-cart-item-count">{{ total_quantity }}</span>
                         </a>
-                        {% endif %}
+
                         <!-- End Shopping Cart -->
                         {% if request.user.is_authenticated %}
 
@@ -739,8 +739,6 @@
     }
 
 </script>
-
-
 {% endblock extra_js %}
 {% block extra_js_no_compress %} {% endblock extra_js_no_compress %}
 {% include 'basses/massage.html' %}

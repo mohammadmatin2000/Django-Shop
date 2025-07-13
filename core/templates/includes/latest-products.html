@@ -47,7 +47,7 @@
                     <span class="formatted-price">
                       {{ latest_product.discount_price|floatformat:0 }} تومان
                     </span>
-                                        <span class="text-body me-1 fs-6 formatted-price text-decoration-line-through">
+                        <span class="text-body me-1 fs-6 formatted-price text-decoration-line-through">
                       {{ latest_product.price|floatformat:0 }} تومان
                     </span>
                     </p>
@@ -77,10 +77,10 @@
                     <!-- End Rating -->
 
                     <button type="button" class="btn btn-outline-primary btn-sm btn-transition rounded-pill"
-                            onclick="addToCart('{{latest_product.id}}')">افزودن به
-                        سبد
-                        خرید
+                            onclick="addToCart('{{ latest_product.id }}')">
+                        افزودن به سبد خرید
                     </button>
+
                 </div>
             </div>
             <!-- End Card -->
@@ -100,4 +100,58 @@
             محصولات</a>
     </div>
 </div>
-<!-- End Card Grid -->
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    function addToCart(product_id) {
+
+        //console.log(product_id)
+        $.ajax({
+            url: "{% url 'cart:add-products' %}",
+            method: 'POST',
+            data: {
+                product_id: product_id,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+
+            },
+            success: function (response) {
+
+                $("#total-cart-item-count").html(response.total_quantity)
+                alert('موفقیت');
+                window.location.reload();
+                // do something with the response data
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(errorThrown);
+                // handle the error case
+            }
+        });
+    }
+
+    function addToWishlist(element, product_id, quantity) {
+        console.log('product_id:', product_id);
+        console.log('quantity:', quantity);
+
+        $.ajax({
+            url: "{% url 'cart:add-products' %}",
+            method: 'POST',
+            data: {
+                product_id: product_id,
+                quantity: quantity,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function (response) {
+                console.log('response', response);
+                window.location.reload();
+                // به‌روزرسانی UI یا ...
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log('Error:', errorThrown);
+            }
+        });
+    }
+
+</script>
+{% endblock %}

@@ -1,9 +1,7 @@
 {% extends 'basses/base.html' %}
 {% load static %}
 {% load humanize %}
-
 {% block content %}
-
 <!-- Breadcrumb -->
 <div>
     <div class="container content-space-t-2 content-space-t-lg-3">
@@ -238,10 +236,17 @@
                             <!--                            </a>-->
                             <!-- End Rating -->
 
-                            <a href="" type="button" class="btn btn-outline-primary btn-sm btn-transition rounded-pill"
-                                    onclick="addToCart('{{object.id}}')">افزودن به سبد
-                                خرید
-                            </a>
+                            {% if user.is_authenticated %}
+                                <a type="button" class="btn btn-outline-primary btn-sm btn-transition rounded-pill"
+                                   onclick="addToCart('{{ object.id }}')">
+                                    افزودن به سبد خرید
+                                </a>
+                            {% else %}
+                                <a href="{% url 'accounts:login' %}?next={{ request.path }}" type="button" class="btn btn-outline-primary btn-sm btn-transition rounded-pill">
+                                    افزودن به سبد خرید
+                                </a>
+                            {% endif %}
+
                         </div>
                     </div>
                     <!-- End Card -->
@@ -384,6 +389,7 @@
 {% endblock %}
 
 {% block extra_js %}
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
@@ -429,6 +435,7 @@
             },
             success: function (response) {
                 $("#total-cart-item-count").html(response.total_quantity)
+                window.location.reload();
                 console.log(response);
                 // do something with the response data
             },
@@ -470,4 +477,5 @@
     }
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock %}
