@@ -1,0 +1,77 @@
+ساخت سیگنال شخصی‌سازی‌شده در Django
+🎯 مقدمه:
+سیگنال‌ها در جنگو به شما اجازه می‌دهند به رخدادهای خاصی در برنامه‌تان واکنش نشان دهید. مثلاً وقتی یک شی جدید ذخیره می‌شود یا وقتی کاربر لاگین می‌کند. Django چند سیگنال پیش‌فرض دارد، ولی شما می‌توانید سیگنال دلخواه خودتان را هم بسازید.
+✅ مراحل ساخت یک سیگنال شخصی‌سازی‌شده
+1. 📁 ایجاد فایل سیگنال‌ها
+در اپ خود (مثلاً accounts)، فایلی به نام signals.py بسازید.
+2. ✏️ تعریف سیگنال (در signals.py)
+
+from django.dispatch import Signal
+
+# تعریف یک سیگنال سفارشی
+user_verified = Signal()
+
+3. 🧠 ایجاد یک receiver برای واکنش به سیگنال
+
+from django.dispatch import receiver
+from .signals import user_verified
+from django.core.mail import send_mail
+
+@receiver(user_verified)
+def handle_user_verified(sender, **kwargs):
+    user = kwargs.get('user')
+    if user:
+        send_mail(
+            'تایید حساب',
+            'حساب شما با موفقیت تایید شد!',
+            'from@example.com',
+            [user.email],
+            fail_silently=True
+        )
+
+4. 🚀 ارسال سیگنال در جای مناسب
+
+from .signals import user_verified
+
+def verify_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    user.is_verified = True
+    user.save()
+
+    # ارسال سیگنال
+    user_verified.send(sender=user.__class__, user=user)
+
+    return redirect('some-view')
+
+5. 🧩 اتصال سیگنال به اپلیکیشن
+
+# accounts/apps.py
+from django.apps import AppConfig
+
+class AccountsConfig(AppConfig):
+    name = 'accounts'
+
+    def ready(self):
+        import accounts.receivers
+
+# settings.py
+INSTALLED_APPS = [
+    'accounts.apps.AccountsConfig',
+    ...
+]
+
+📦 جمع‌بندی ساختار سیگنال
+
+مرحله | توضیح
+-------|------
+تعریف سیگنال | Signal() در signals.py
+تعریف receiver | با دکوریتور @receiver
+ارسال سیگنال | با .send() در view یا مدل
+اتصال در apps.py | با import receivers در متد ready()
+
+💡 نکات مهم
+
+- سیگنال‌ها نباید بیش از حد استفاده شوند.
+- در تست‌ها، از dispatch_uid برای جلوگیری از تکرار استفاده کنید.
+- در صورت نیاز به async یا صف، celery را بررسی کنید.
+
