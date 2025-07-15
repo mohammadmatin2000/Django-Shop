@@ -20,6 +20,15 @@ class CouponModels(models.Model):
     def __str__(self):
         return f"{self.code} - {self.discount_percent}%"
 # ======================================================================================================================
+class UserAddressModel(models.Model):
+    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
+    address = models.CharField(max_length=250)
+    state = models.CharField(max_length=50)
+    city = models.CharField(max_length=50)
+    zip_code = models.CharField(max_length=50)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+# ======================================================================================================================
 class OrderModels(models.Model):
     user = models.ForeignKey("accounts.User", on_delete=models.PROTECT, related_name="orders")
     address = models.CharField(max_length=255)

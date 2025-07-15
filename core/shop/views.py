@@ -1,6 +1,4 @@
-from django.core.paginator import EmptyPage, PageNotAnInteger
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView,DeleteView
+from django.views.generic import ListView, DetailView
 from django.core.exceptions import FieldError
 from .models import ProductModels, ProductStatusModels, ProductCategoryModels
 
