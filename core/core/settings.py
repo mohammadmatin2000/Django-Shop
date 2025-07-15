@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'contact',
     'cart',
     'dashboard',
+    'order',
 
     'widget_tweaks',
     'ckeditor'
