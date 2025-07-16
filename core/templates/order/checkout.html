@@ -10,62 +10,36 @@
             <h4 class="mb-3">انتخاب آدرس </h4>
 
             <!-- Form -->
-            <form class="needs-validation" novalidate>
+            <form class="needs-validation" id="checkout-form" >
 
 
                 <hr class="my-4">
 
                 <div class="d-grid gap-2">
-
-                    <!-- Check -->
+                    {% for address in addresses %}
                     <div class="form-check">
-                        <input type="radio" class="form-check-input" name="address" id="address-1" checked
+                        <input type="radio" class="form-check-input" name="address" id="address-{{ address.id }}"
                                required>
-                        <label class="form-check-label" for="address"> کرج، xxxx ، بلوار xxx ، خیابان xxx ، بلوک
-                            xxx</label>
+                        <label class="form-check-label" for="address-{{ address.id }}">
+                            {{ address.address }} - {{ address.city }} - {{ address.state }} - {{ address.zip_code }}
+                        </label>
                     </div>
-                    <div class="form-check">
-                        <input type="radio" class="form-check-input" name="address" id="address-2" required>
-                        <label class="form-check-label" for="address-2"> کرج، xxxx ، بلوار xxx ، خیابان xxx ، بلوک
-                            xxx</label>
-                    </div>
-                    <!-- End Check -->
+                    {% empty %}
+                    <p class="text-danger">هیچ آدرسی ثبت نشده است.</p>
+                    {% endfor %}
+
                     <div>
-                        <a class="" href="./account-address.html">مدیریت آدرس ها</a>
+                        <a class="" href="{% url 'dashboard:customer:address-list' %}">مدیریت آدرس ها</a>
                     </div>
                 </div>
 
-                <hr class="my-4">
 
-                <h4 class="mb-3">روش پرداخت</h4>
-
-                <div class="my-3">
-                    <!-- Check -->
-                    <div class="form-check">
-                        <input id="creditShopCheckout" name="paymentMethod" type="radio" class="form-check-input"
-                               checked
-                               required>
-                        <label class="form-check-label" for="creditShopCheckout">پرداخت آنلاین</label>
-                    </div>
-                    <!-- End Check -->
-
-                    <!-- Check -->
-                    <div class="form-check">
-                        <input id="debitShopCheckout" name="paymentMethod" type="radio" class="form-check-input"
-                               required>
-                        <label class="form-check-label" for="debitShopCheckout">کارت به کارت</label>
-                    </div>
-                    <!-- End Check -->
-                </div>
-
-
-                <hr class="my-4">
 
                 <div class="row align-items-center">
 
 
                     <div class="col-sm text-center text-sm-start">
-                        <a class="link" href="/cart.html">
+                        <a class="link" href="{% url 'cart:cart-summary' %}">
                             <i class="bi-chevron-left small ms-1"></i> بازگشت به سبد خرید
                         </a>
                     </div>
@@ -90,7 +64,7 @@
 
                             <div class="input-group border-bottom pb-4 mb-3 ">
                                 <input type="text" class="form-control text-center" name="name" placeholder="کد تخفیف"
-                                       aria-label="کد تخفیف">
+                                       aria-label="کد تخفیف" form="#checkout-form">
                                 <button class="btn btn-primary"> بررسی</button>
                             </div>
 
@@ -124,7 +98,7 @@
                             </div>
 
                             <div class="d-grid">
-                                <a class="btn btn-primary btn-lg" href="/order-completed.html">ثبت نهایی</a>
+                                <button class="btn btn-primary btn-lg" form="#checkout-form">ثبت نهایی</button>
                             </div>
                         </form>
                     </div>
