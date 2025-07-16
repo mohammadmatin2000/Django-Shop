@@ -39,7 +39,7 @@ class CustomerProfileImageDashboardView(LoginRequiredMixin,HasCustomerPermission
         return redirect(reverse_lazy(self.success_url))
 # ======================================================================================================================
 class CustomerAddressListView(LoginRequiredMixin, HasCustomerPermission, ListView):
-    template_name = "dashboard/customer/addresses/address-list.html"
+    template_name = "dashboard/customer/address/address-list.html"
 
     def get_queryset(self):
         queryset = UserAddressModel.objects.filter(user=self.request.user)
@@ -49,10 +49,9 @@ class CustomerAddressListView(LoginRequiredMixin, HasCustomerPermission, ListVie
             except FieldError:
                 pass
         return queryset
-
 # ======================================================================================================================
 class CustomerAddressCreateView(LoginRequiredMixin, HasCustomerPermission, SuccessMessageMixin, CreateView):
-    template_name = "dashboard/customer/addresses/address-create.html"
+    template_name = "dashboard/customer/address/address-create.html"
 
     form_class = CustomUserAddressForm
     success_message = "ایجاد آدرس با موفقیت انجام شد"
@@ -67,10 +66,9 @@ class CustomerAddressCreateView(LoginRequiredMixin, HasCustomerPermission, Succe
 
     def get_success_url(self):
         return reverse_lazy("dashboard:customer:address-list")
-
 # ======================================================================================================================
 class CustomerAddressEditView(LoginRequiredMixin, HasCustomerPermission, SuccessMessageMixin, UpdateView):
-    template_name = "dashboard/customer/addresses/address-edit.html"
+    template_name = "dashboard/customer/address/address-edit.html"
 
     form_class = CustomUserAddressForm
     success_message = "ویرایش آدرس با موفقیت انجام شد"
@@ -80,10 +78,9 @@ class CustomerAddressEditView(LoginRequiredMixin, HasCustomerPermission, Success
 
     def get_success_url(self):
         return reverse_lazy("dashboard:customer:address-edit", kwargs={"pk": self.get_object().pk})
-
 # ======================================================================================================================
 class CustomerAddressDeleteView(LoginRequiredMixin, HasCustomerPermission, SuccessMessageMixin, DeleteView):
-    template_name = "dashboard/customer/addresses/address-delete.html"
+    template_name = "dashboard/customer/address/address-delete.html"
 
     success_url = reverse_lazy("dashboard:customer:address-list")
     success_message = "حذف آدرس با موفقیت انجام شد"

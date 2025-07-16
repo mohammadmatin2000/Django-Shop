@@ -1,0 +1,37 @@
+{% extends 'dashboard/admin/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light mb-0">
+        <li class="breadcrumb-item"><a href="{% url 'dashboard:customer:address-list' %}">مدیریت ادرس</a></li>
+        <li class="breadcrumb-item active" aria-current="page">حذف محصول</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header border-bottom">
+        <h4 class="card-header-title text-danger">تأیید حذف محصول</h4>
+    </div>
+
+    <div class="card-body text-center">
+
+
+        <div class="mb-4">
+            <p>نام محصول: <strong>{{ object.title }}</strong></p>
+            <p>کد محصول (ID): <strong>{{ object.pk }}</strong></p>
+        </div>
+
+        <form action="{% url 'dashboard:customer:address-delete' pk=object.pk %}" method="post">
+            {% csrf_token %}
+            <div class="d-flex justify-content-center gap-3">
+                <a href="{% url 'dashboard:customer:address-list' %}" class="btn btn-secondary">بازگشت</a>
+                <button type="submit" class="btn btn-danger">بله، حذف شود</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
