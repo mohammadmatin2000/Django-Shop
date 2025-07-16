@@ -49,6 +49,9 @@ class ProductModels(models.Model):
             return self.price - discount_amount
         return self.price
 
+    def get_price(self):
+        return self.discount_price if self.discount_price else self.price
+
     def is_status(self):
         return self.status == ProductStatusModels.publish
 
