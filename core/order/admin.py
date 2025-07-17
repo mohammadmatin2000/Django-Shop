@@ -9,7 +9,7 @@ class OrderItemInline(admin.TabularInline):
 # ======================================================================================================================
 @admin.register(OrderModels)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', 'user', 'status', 'total_price', 'created_date', 'updated_date']
+    list_display = ['id', 'user', 'status', 'total_price', 'created_date', 'updated_date','address']
     list_filter = ['status', 'created_date', 'updated_date']
     search_fields = ['user__email', 'user__username', 'address', 'city', 'zip_code']
     date_hierarchy = 'created_date'
