@@ -10,7 +10,7 @@ class OrderStatusModels(models.IntegerChoices):
 class CouponModels(models.Model):
     code = models.CharField(max_length=20, unique=True)
     discount_percent = models.DecimalField(max_digits=5, decimal_places=2)
-    max_usage_limit = models.PositiveIntegerField(verbose_name="حداکثر دفعات استفاده")
+    max_usage_limit = models.PositiveIntegerField()
     used_by = models.ManyToManyField("accounts.User", blank=True)
     expiration_date = models.DateField()
     created_date = models.DateTimeField(auto_now_add=True)
