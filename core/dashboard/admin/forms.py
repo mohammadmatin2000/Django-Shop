@@ -3,7 +3,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 from accounts.models import Profile
 from shop.models import ProductModels
-
+from order.models import CouponModels
 # ======================================================================================================================
 class AdminPasswordChangeForm(auth_forms.PasswordChangeForm):
     error_messages = {
@@ -34,4 +34,9 @@ class AdminUpdateProductForm(forms.ModelForm):
         "discount_percent",
         "price"
         )
+# ======================================================================================================================
+class AdminCouponForm(forms.ModelForm):
+    class Meta:
+        model = CouponModels
+        fields = ("code","discount_percent","max_usage_limit","used_by","expiration_date")
 # ======================================================================================================================

@@ -6,7 +6,8 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.shortcuts import redirect
 from ..permission import HasAdminPermission
-from .forms import AdminPasswordChangeForm,AdminChangeProfileForm,AdminUpdateProductForm
+from .forms import AdminPasswordChangeForm,AdminChangeProfileForm,AdminUpdateProductForm,AdminCouponForm
+from order.models import CouponModels
 from django.core.exceptions import FieldError
 from shop.models import ProductModels, ProductStatusModels, ProductCategoryModels
 # ======================================================================================================================
@@ -37,6 +38,7 @@ class AdminProfileImageView(LoginRequiredMixin,HasAdminPermission,SuccessMessage
     def form_valid(self, form):
         messages.error("آپلود عکس به مشکل خورده لطفا دوباره تلاش کنید")
         return redirect(reverse_lazy(self.success_url))
+
 # ======================================================================================================================
 class AdminProductListView(LoginRequiredMixin,HasAdminPermission,SuccessMessageMixin,ListView):
     template_name = "dashboard/admin/product/product-list.html"
@@ -108,4 +110,50 @@ class AdminProductCreateView(LoginRequiredMixin,HasAdminPermission,SuccessMessag
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+# ======================================================================================================================
+class AdminCouponsListView(LoginRequiredMixin,HasAdminPermission,SuccessMessageMixin,ListView):
+    paginate_by = 10
+    model = CouponModels
+    template_name = "dashboard/admin/coupon/coupon-list.html"
+    context_object_name = "coupons"
+    def get_queryset(self):
+        qs = CouponModels.objects.all()
+        q = self.request.GET.get("q")
+        if q:
+            qs = qs.filter(code__icontains=q)
+        order_by = self.request.GET.get("order_by")
+        if order_by:
+            qs = qs.order_by(order_by)
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total_items"] = CouponModels.objects.count()
+        return context
+# ======================================================================================================================
+class AdminCouponCreateView(LoginRequiredMixin,HasAdminPermission,SuccessMessageMixin,CreateView):
+    model = CouponModels
+    form_class = AdminCouponForm
+    template_name = "dashboard/admin/coupon/coupon-create.html"
+    success_url = reverse_lazy('dashboard:admin:coupon-list')
+
+    def form_valid(self, form):
+        messages.success(self.request, "کد تخفیف با موفقیت ایجاد شد.")
+        return super().form_valid(form)
+# ======================================================================================================================
+class AdminCouponUpdateView(LoginRequiredMixin,HasAdminPermission,SuccessMessageMixin,UpdateView):
+    model = CouponModels
+    form_class = AdminCouponForm
+    template_name = "dashboard/admin/coupon/coupon-update.html"
+    success_url = reverse_lazy('dashboard:admin:coupon-list')
+    def form_valid(self, form):
+        messages.success(self.request, "کد تخفیف با موفقیت ویرایش شد.")
+        return super().form_valid(form)
+# ======================================================================================================================
+class AdminCouponDeleteView(LoginRequiredMixin,HasAdminPermission,SuccessMessageMixin,DeleteView):
+    model = CouponModels
+    template_name = "dashboard/admin/coupon/coupon-delete.html"
+    success_url = reverse_lazy('dashboard:admin:coupon-list')
+
 # ======================================================================================================================

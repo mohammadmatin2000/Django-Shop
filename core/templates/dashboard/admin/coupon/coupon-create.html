@@ -1,0 +1,72 @@
+{% extends 'dashboard/admin/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light mb-0">
+        <li class="breadcrumb-item">حساب</li>
+        <li class="breadcrumb-item">داشبورد ادمین</li>
+        <li class="breadcrumb-item">تخفیف‌ها</li>
+        <li class="breadcrumb-item active" aria-current="page">ایجاد کد تخفیف</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <!-- Header -->
+    <div class="card-header border-bottom d-flex justify-content-between align-items-center">
+        <h5 class="card-header-title mb-0">ایجاد کد تخفیف جدید</h5>
+        <a class="btn btn-sm btn-secondary" href="{% url 'dashboard:admin:coupon-list' %}"><i class="bi-arrow-right"></i> بازگشت</a>
+    </div>
+    <!-- End Header -->
+
+    <!-- Form -->
+    <form method="post" action=".">
+        {% csrf_token %}
+        <div class="card-body">
+            <div class="row g-4">
+
+                <div class="col-md-6">
+                    <label for="{{ form.code.id_for_label }}" class="form-label">کد تخفیف</label>
+                    {{ form.code|add_class:"form-control" }}
+                    {% if form.code.errors %}
+                        <div class="text-danger small">{{ form.code.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6">
+                    <label for="{{ form.discount_percent.id_for_label }}" class="form-label">درصد تخفیف</label>
+                    {{ form.discount_percent|add_class:"form-control" }}
+                    {% if form.discount_percent.errors %}
+                        <div class="text-danger small">{{ form.discount_percent.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6">
+                    <label for="{{ form.max_usage_limit.id_for_label }}" class="form-label">حداکثر استفاده</label>
+                    {{ form.max_usage_limit|add_class:"form-control" }}
+                    {% if form.max_limit_usage.errors %}
+                        <div class="text-danger small">{{ form.max_usage_limit.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6">
+                    <label for="{{ form.expiration_date.id_for_label }}" class="form-label">تاریخ انقضا</label>
+                    {{ form.expiration_date|add_class:"form-control" }}
+                    {% if form.expiration_date.errors %}
+                        <div class="text-danger small">{{ form.expiration_date.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card-footer d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">
+                <i class="bi-plus-circle me-1"></i> ثبت کد تخفیف
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'dashboard/admin/base.html' %}
+{% load static %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light mb-0">
+        <li class="breadcrumb-item">داشبورد ادمین</li>
+        <li class="breadcrumb-item">تخفیف‌ها</li>
+        <li class="breadcrumb-item active" aria-current="page">
+            حذف کد تخفیف
+        </li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card shadow-sm">
+    <div class="card-body text-center">
+        <h4 class="text-danger mb-4">آیا مطمئن هستید که می‌خواهید این کد تخفیف را حذف کنید؟</h4>
+
+        <p>کد تخفیف: <strong>{{ object.code }}</strong></p>
+        <p>درصد تخفیف: <strong>{{ object.discount_percent }}%</strong></p>
+        <p>تاریخ انقضا: <strong>{{ object.expiration_date|date:"Y-m-d" }}</strong></p>
+
+        <form method="post" action="{% url 'dashboard:admin:coupon-delete' pk=object.pk %}">
+            {% csrf_token %}
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <a href="{% url 'dashboard:admin:coupon-update' object.pk %}" class="btn btn-secondary">
+                    بازگشت
+                </a>
+                <button type="submit" class="btn btn-danger">
+                    بله، حذف شود
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
