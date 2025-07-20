@@ -129,7 +129,7 @@ class OrderCheckOutView(HasCustomerPermission, LoginRequiredMixin, FormView):
             payment.authority = authority
             payment.save()
 
-
+            messages.error(self.request, "سفارش شما با شکست مواجه شد")
             order = OrderModels.payment = payment
             order.save()
 
