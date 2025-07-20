@@ -167,9 +167,10 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 
+
+
 MERCHANT_ID = config('MERCHANT_ID', default="4ced0a1e-4ad8-4309-9668-3ea3ae8e8897")
 
 ZARINPAL_MERCHANT_ID = '4ced0a1e-4ad8-4309-9668-3ea3ae8e8897'
 
-ZARINPAL_CALLBACK_URL = 'http://127.0.0.1:8000/order/checkout/'  # اگر توی لوکال هستی
-
+ZARINPAL_CALLBACK_URL = "http://127.0.0.1:8000/payment/verify/"

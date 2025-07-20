@@ -1,9 +1,9 @@
 from django.db import models
 # ======================================================================================================================
 class PaymentStatusModels(models.IntegerChoices):
-    PENDING = 0,'در انتطار'
-    SUCCESS = 1,'موفقیت'
-    FAILED = 2,'شکست خورده'
+    pending = 0,'در انتطار'
+    success = 1,'موفقیت'
+    failed = 2,'شکست خورده'
 # ======================================================================================================================
 class PaymentModels(models.Model):
     amount = models.DecimalField(decimal_places=2, max_digits=10)
@@ -11,7 +11,7 @@ class PaymentModels(models.Model):
     description = models.TextField()
     mobile = models.TextField()
     email = models.TextField()
-    status = models.IntegerField(choices=PaymentStatusModels.choices, default=PaymentStatusModels.PENDING)
+    status = models.IntegerField(choices=PaymentStatusModels.choices, default=PaymentStatusModels.pending)
     authority = models.CharField(max_length=255, null=True, blank=True)
     ref_id = models.CharField(max_length=255, null=True, blank=True)
     is_verified = models.BooleanField(default=False)

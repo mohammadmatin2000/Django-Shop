@@ -11,8 +11,7 @@ from cart.models import CartModels, CartItemsModels
 from payment.models import PaymentModels, PaymentStatusModels
 from .forms import OrderCreateForm
 from payment import zarinpal_payment
-
-
+from django.contrib import messages
 # ======================================================================================================================
 class OrderCheckOutView(HasCustomerPermission, LoginRequiredMixin, FormView):
     template_name = 'order/checkout.html'
@@ -94,44 +93,14 @@ class OrderCheckOutView(HasCustomerPermission, LoginRequiredMixin, FormView):
             except CouponModels.DoesNotExist:
                 self.request.session.pop("coupon_code", None)
 
-        order = OrderModels.objects.create(
-            user=user,
-            address=address_obj.address,
-            state=address_obj.state,
-            city=address_obj.city,
-            zip_code=address_obj.zip_code,
-            total_price=total_price,
-            tax=tax,
-            final_price=final_price,
-            coupon=coupon if coupon else None,
-        )
-
-        for item in cart_items:
-            OrderItemModels.objects.create(
-                order=order,
-                product=item.product,
-                quantity=item.quantity,
-                price=item.product.price,
-            )
-
-        if coupon:
-            coupon.used_by.add(user)
-            self.request.session.pop("coupon_code", None)
-
-        cart_items.delete()
-        messages.success(self.request, "سفارش با موفقیت ثبت شد.")
-
         payment = PaymentModels.objects.create(
             amount=int(final_price),
             callback_url=settings.ZARINPAL_CALLBACK_URL,
-            description=f"پرداخت سفارش #{order.pk}",
-            mobile=getattr(user, "phone_number", ""),
-            email=getattr(user, "email", ""),
-            status=PaymentStatusModels.PENDING,
+            description=f"پرداخت سفارش #{OrderModels.pk}",
+            mobile="09905353125",
+            email=str(user.email or ""),
+            status=PaymentStatusModels.pending,
         )
-
-        order.payment = payment
-        order.save()
 
         data = {
             "merchant_id": settings.ZARINPAL_MERCHANT_ID,
@@ -139,10 +108,9 @@ class OrderCheckOutView(HasCustomerPermission, LoginRequiredMixin, FormView):
             "callback_url": settings.ZARINPAL_CALLBACK_URL,
             "description": payment.description,
             "metadata": {
-                "mobile": "09905353125",
-                "email": str(payment.email or ""),
+                "mobile": payment.mobile,
+                "email": payment.email,
             }
-
         }
 
         headers = {
@@ -150,27 +118,25 @@ class OrderCheckOutView(HasCustomerPermission, LoginRequiredMixin, FormView):
             'Accept': 'application/json'
         }
 
-        print("در حال ارسال درخواست پرداخت به زرین پال، داده‌ها:", data)
-        response = requests.post('https://api.zarinpal.com/pg/v4/payment/request.json', data=json.dumps(data), headers=headers)
+        response = requests.post('https://api.zarinpal.com/pg/v4/payment/request.json', data=json.dumps(data),
+                                 headers=headers)
         result = response.json()
 
-        print("پاسخ زرین پال:", result)  # برای دیباگ
+        print(result)
 
         if result.get('data') and result['data'].get('code') == 100:
             authority = result['data']['authority']
             payment.authority = authority
             payment.save()
 
-            # اگر فیلد authority تو مدل Order داری، این خط رو نگه دار
-            # order.authority = authority
-            # order.save()
+
+            order = OrderModels.payment = payment
+            order.save()
 
             return redirect(f"https://www.zarinpal.com/pg/StartPay/{authority}")
         else:
             messages.error(self.request, "خطا در اتصال به درگاه پرداخت.")
-            print("خطا در اتصال به زرین پال:", result)  # لاگ خطا
             return redirect("cart:checkout")
-
 
 # ======================================================================================================================
 class CheckCouponView(View):
@@ -204,4 +170,7 @@ class CheckCouponView(View):
 # ======================================================================================================================
 class OrderCompleteView(HasCustomerPermission, LoginRequiredMixin, TemplateView):
     template_name = 'order/complete.html'
+# ======================================================================================================================
+class OrderFailedView(HasCustomerPermission, LoginRequiredMixin, TemplateView):
+    template_name = 'order/failed.html'
 # ======================================================================================================================
