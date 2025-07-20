@@ -7,3 +7,5 @@ Faker
 psycopg[binary]
 django-widget-tweaks
 django-ckeditor
+requests
+psycopg2
