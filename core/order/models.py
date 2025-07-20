@@ -1,6 +1,9 @@
 from django.db import models
 from django.utils import timezone
 from shop.models import ProductModels
+from payment.models import PaymentStatusModels
+
+
 # ======================================================================================================================
 class OrderStatusModels(models.IntegerChoices):
     PENDING = 1, "در انتظار"
@@ -37,6 +40,7 @@ class OrderModels(models.Model):
     state = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
     zip_code = models.CharField(max_length=20)
+    payment = models.ForeignKey("payment.PaymentModels", on_delete=models.PROTECT,default=PaymentStatusModels.PENDING)
     tax = models.DecimalField(max_digits=10, decimal_places=0,default=0)
     final_price = models.DecimalField(max_digits=10, decimal_places=0,default=0)
     total_price = models.DecimalField(max_digits=12, decimal_places=0)

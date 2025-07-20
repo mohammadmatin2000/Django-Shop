@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'cart',
     'dashboard',
     'order',
+    'payment',
 
     'widget_tweaks',
     'ckeditor'
@@ -166,4 +167,4 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 
-
+MERCHANT_ID = config('MERCHANT_ID', default="4ced0a1e-4ad8-4309-9668-3ea3ae8e8897")

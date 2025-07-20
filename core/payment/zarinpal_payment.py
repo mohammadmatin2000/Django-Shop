@@ -1,52 +1,74 @@
 import requests
 import json
+from django.conf import settings
 
 class ZarinpalPayment:
-    payment_request_url="https://api.zarinpal.com/pg/v4/payment/request.json"
-    payment_verify_url = "https://api.zarinpal.com/pg/v4/payment/verify.json"
-    payment_page_url = "https://api.zarinpal.com/pg/v4/payment/page.json"
+    BASE_URL = "https://api.zarinpal.com/pg/v4/payment/"
+    MERCHANT_ID = settings.MERCHANT_ID
+
+    def __init__(self, amount, callback_url, description, mobile="", email=""):
+        self.amount = amount
+        self.callback_url = callback_url
+        self.description = description
+        self.metadata = {
+            "mobile": mobile,
+            "email": email
+        }
+
     def payment_request(self):
-        payment_request=requests.get(self.payment_request_url)
-        url = "https://api.zarinpal.com/pg/v4/payment/request.json"
-
-        payload = json.dumps({
-            "merchant_id": "4ced0a1e-4ad8-4309-9668-3ea3ae8e8897",
-            "amount": "1010",
-            "callback_url": "http://redreseller.com/verify",
-            "description": "افزایش اعتبار کاربر شماره ۱۱۳۴۶۲۹",
-            "metadata": {
-                "mobile": "09195523234",
-                "email": "info.davari@gmail.com"
-            }
-        })
+        url = self.BASE_URL + "request.json"
+        payload = {
+            "merchant_id": self.MERCHANT_ID,
+            "amount": self.amount,
+            "callback_url": self.callback_url,
+            "description": self.description,
+            "metadata": self.metadata,
+        }
         headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
 
-        response = requests.request("POST", url, headers=headers, data=payload)
+        response = requests.post(url, headers=headers, data=json.dumps(payload))
+        return response.json()
 
-        print(response.text)
-
-    def payment_verify(self):
-        payment_verify=requests.get(self.payment_verify_url)
-
-        url = "https://api.zarinpal.com/pg/v4/payment/verify.json"
-
-        payload = json.dumps({
-            "merchant_id": "4ced0a1e-4ad8-4309-9668-3ea3ae8e8897",
-            "amount": "1000",
-            "authority": "A00000000000000000000000000000000002"
-        })
+    def payment_verify(self, authority):
+        url = self.BASE_URL + "verify.json"
+        payload = {
+            "merchant_id": self.MERCHANT_ID,
+            "amount": self.amount,
+            "authority": authority
+        }
         headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
 
-        response = requests.request("POST", url, headers=headers, data=payload)
+        response = requests.post(url, headers=headers, data=json.dumps(payload))
+        return response.json()
 
-        print(response.text)
+    def get_gateway_url(self, authority):
+        return f"https://www.zarinpal.com/pg/StartPay/{authority}"
 
-    def payment_page(self):
-        payment_page=requests.get(self.payment_page_url)
 
+
+if __name__ == "__main__":
+    zp = ZarinpalPayment(
+        amount=10000,
+        callback_url="https://yoursite.com/verify",
+        description="افزایش اعتبار",
+        mobile="09123456789",
+        email="your@email.com"
+    )
+
+    # ارسال درخواست پرداخت
+    result = zp.payment_request()
+    print("✅ Payment Request Response:")
+    print(result)
+
+    if result.get("data") and result["data"].get("authority"):
+        authority = result["data"]["authority"]
+        print("👉 برای پرداخت، کاربر رو بفرست به این آدرس:")
+        print(zp.get_gateway_url(authority))
+    else:
+        print("❌ مشکلی در ارسال درخواست پرداخت وجود دارد.")
