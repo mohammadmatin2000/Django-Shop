@@ -4,7 +4,9 @@ from .views import (CustomerDashboardHomeView,CustomerSecurityDashboardView,Cust
                     CustomerAddressListView,
                     CustomerAddressEditView,
                     CustomerAddressDeleteView,
-                    CustomerAddressCreateView)
+                    CustomerAddressCreateView,
+                    CustomerOrdersListView,
+                    CustomerOrdersDetailView)
 # ======================================================================================================================
 app_name='customer'
 urlpatterns = [
@@ -17,5 +19,8 @@ urlpatterns = [
     path('address/<int:pk>/edit/',CustomerAddressEditView.as_view(),name='address-edit'),
     path('address/<int:pk>/delete/',CustomerAddressDeleteView.as_view(),name='address-delete'),
     path('address/create/',CustomerAddressCreateView.as_view(),name='address-create'),
+
+    path('orders/list/',CustomerOrdersListView.as_view(),name='orders-list'),
+    path('orders/<slug:str>/detail',CustomerOrdersDetailView.as_view(),name='orders-detail'),
 ]
 # ======================================================================================================================

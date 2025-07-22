@@ -51,7 +51,7 @@ class OrderModels(models.Model):
 # ======================================================================================================================
 class OrderItemModels(models.Model):
     order = models.ForeignKey(OrderModels, on_delete=models.CASCADE, related_name="items")
-    product = models.ForeignKey(ProductModels, on_delete=models.PROTECT)
+    product = models.ForeignKey(ProductModels, on_delete=models.PROTECT,related_name="product_items")
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField()
     created_date = models.DateTimeField(auto_now_add=True)

@@ -25,8 +25,8 @@ class ProductModels(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(allow_unicode=True, unique=True)
     image = models.ImageField(upload_to="images/", null=True, blank=True, default="images/default.jpg")
-    description = RichTextField()  # استفاده از CKEditor
-    brief_description = models.TextField(null=True, blank=True)  # اختیاری: می‌تونی اینم RichTextField کنی
+    description = RichTextField()
+    brief_description = models.TextField(null=True, blank=True)
     stock = models.PositiveIntegerField(default=0)
     status = models.IntegerField(choices=ProductStatusModels.choices, default=ProductStatusModels.publish)
     price = models.DecimalField(max_digits=10, decimal_places=0)

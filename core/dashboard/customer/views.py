@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView,UpdateView,DeleteView,CreateView,ListView
+from django.views.generic import TemplateView,UpdateView,DeleteView,CreateView,ListView,DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -8,7 +8,7 @@ from django.shortcuts import redirect
 from ..permission import HasCustomerPermission
 from .forms import CustomerChangeProfileForm,CustomerPasswordChangeForm,CustomUserAddressForm
 from django.core.exceptions import FieldError
-from order.models import UserAddressModel
+from order.models import UserAddressModel,OrderModels
 # ======================================================================================================================
 class CustomerDashboardHomeView(LoginRequiredMixin,HasCustomerPermission,TemplateView):
     template_name = "dashboard/customer/home.html"
@@ -87,4 +87,30 @@ class CustomerAddressDeleteView(LoginRequiredMixin, HasCustomerPermission, Succe
 
     def get_queryset(self):
         return UserAddressModel.objects.filter(user=self.request.user)
+# ======================================================================================================================
+class CustomerOrdersListView(LoginRequiredMixin, HasCustomerPermission, ListView):
+    template_name = "dashboard/customer/orders/order-list.html"
+    context_object_name = "object_list"
+    paginate_by = 10
+
+    def get_paginate_by(self, queryset):
+        page_size = self.request.GET.get("page_size", 10)
+        try:
+            return int(page_size)
+        except (TypeError, ValueError):
+            return 10
+
+    def get_queryset(self):
+
+        return OrderModels.objects.filter(user=self.request.user).prefetch_related("items")
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total_items"] = self.get_queryset().count()
+        return context
+
+# ======================================================================================================================
+class CustomerOrdersDetailView(LoginRequiredMixin, HasCustomerPermission,DetailView):
+    template_name = "dashboard/customer/orders/order-detail.html"
 # ======================================================================================================================
