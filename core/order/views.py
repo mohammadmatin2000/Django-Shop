@@ -2,7 +2,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import FormView, TemplateView, View
 from django.urls import reverse_lazy
 from django.shortcuts import redirect, get_object_or_404
-from django.contrib import messages
 from .permission import HasCustomerPermission
 from django.conf import settings
 import requests, json
@@ -137,7 +136,6 @@ class OrderCheckOutView(HasCustomerPermission, LoginRequiredMixin, FormView):
         else:
             messages.error(self.request, "خطا در اتصال به درگاه پرداخت.")
             return redirect("cart:checkout")
-
 # ======================================================================================================================
 class CheckCouponView(View):
     def post(self, request, *args, **kwargs):

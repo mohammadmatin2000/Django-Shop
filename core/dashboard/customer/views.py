@@ -113,4 +113,7 @@ class CustomerOrdersListView(LoginRequiredMixin, HasCustomerPermission, ListView
 # ======================================================================================================================
 class CustomerOrdersDetailView(LoginRequiredMixin, HasCustomerPermission,DetailView):
     template_name = "dashboard/customer/orders/order-detail.html"
+    context_object_name = "object"
+    def get_queryset(self):
+        return OrderModels.objects.filter(user=self.request.user)
 # ======================================================================================================================

@@ -61,7 +61,6 @@ class CartUpdateQuantityView(View):
             item.save()
 
         return JsonResponse({"status": "بروزرسانی انجام شد"})
-
 # ======================================================================================================================
 class CartSummaryView(TemplateView):
     template_name = 'cart/cart-summary.html'
@@ -92,6 +91,4 @@ class CartSummaryView(TemplateView):
             'total': total_price,
         })
         return context
-
-
 # ======================================================================================================================

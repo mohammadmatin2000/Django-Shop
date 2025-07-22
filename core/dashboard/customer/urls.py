@@ -21,6 +21,6 @@ urlpatterns = [
     path('address/create/',CustomerAddressCreateView.as_view(),name='address-create'),
 
     path('orders/list/',CustomerOrdersListView.as_view(),name='orders-list'),
-    path('orders/<slug:str>/detail',CustomerOrdersDetailView.as_view(),name='orders-detail'),
+    path('orders/<int:pk>/detail',CustomerOrdersDetailView.as_view(),name='orders-detail'),
 ]
 # ======================================================================================================================

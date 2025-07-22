@@ -68,7 +68,7 @@
 
                                 <div class="col-6 col-md">
                                     <small class="card-subtitle mb-0">زمان سفارش:</small>
-                                    <small class="text-dark fw-semibold">{{ object.created_date|date:"d F Y" }}</small>
+                                    <small class="text-dark fw-semibold">{{ object.created_date|date:"Y-m-d h:i" }}</small>
                                 </div>
                             </div>
 
@@ -90,7 +90,7 @@
                                     <div class="col-md-4">
                                         <div class="d-grid gap-2">
                                             <a class="btn btn-white btn-sm" href="#">مشاهده فاکتور</a>
-                                            <a class="btn btn-primary btn-sm" href="#">دیدن سفارش</a>
+                                            <a class="btn btn-primary btn-sm" href="{% url 'dashboard:customer:orders-detail' pk=object.id %}">دیدن سفارش</a>
                                         </div>
                                     </div>
                                 </div>

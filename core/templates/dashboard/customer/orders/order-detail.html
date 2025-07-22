@@ -1,0 +1,110 @@
+{% extends 'dashboard/customer/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light mb-0">
+        <li class="breadcrumb-item">حساب</li>
+        <li class="breadcrumb-item active" aria-current="page">جزئیات سفارش</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<!-- Card -->
+<div class="card mb-5">
+    <!-- Header -->
+    <div class="card-header border-bottom">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="">سفارش شماره {{ object.id }}</h5>
+            <a class="btn btn-primary" href="#" target="_blank">مشاهده فاکتور</a>
+        </div>
+    </div>
+    <!-- End Header -->
+
+    <!-- Body -->
+    <div class="card-body">
+        <!-- Table -->
+        <div class="table-responsive mb-4">
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th>#</th>
+                    <th>تصویر</th>
+                    <th>کد محصول</th>
+                    <th>نام محصول</th>
+                    <th>تعداد</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in object.items.all %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                        <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}"
+                             width="60" height="60" style="object-fit: cover;">
+                    </td>
+                    <td>{{ item.product.id }}</td>
+                    <td>{{ item.product.title }}</td>
+                    <td>{{ item.quantity }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-danger">هیچ آیتمی برای این سفارش ثبت نشده است.</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <!-- End Table -->
+
+        <!-- اطلاعات سفارش -->
+        <!-- اطلاعات سفارش -->
+        <div class="row mb-3 align-items-center">
+            <div class="col-md-3 fw-bold">سفارش دهنده:</div>
+            <div class="col-md-3">{{ request.user.get_full_name }}</div>
+
+            <div class="col-md-3 fw-bold">وضعیت سفارش:</div>
+            <div class="col-md-3">
+                <select class="form-select">
+                    <option value="1" {% if object.status == 1 %}selected{% endif %}>در انتظار</option>
+                    <option value="2" {% if object.status == 2 %}selected{% endif %}>موفق</option>
+                    <option value="3" {% if object.status == 3 %}selected{% endif %}>ناموفق</option>
+                </select>
+
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3 fw-bold">تاریخ سفارش:</div>
+            <div class="col-md-3">{{ object.created_date|date:"Y/m/d" }}</div>
+
+            <div class="col-md-3 fw-bold">نوع ارسال:</div>
+            <div class="col-md-3">پیشتاز</div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3 fw-bold">آدرس:</div>
+            <div class="col-md-3">{{ object.address }}</div>
+
+            <div class="col-md-3 fw-bold">کد پستی:</div>
+            <div class="col-md-3">{{ object.zip_code }}</div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3 fw-bold">قیمت کل سفارش:</div>
+            <div class="col-md-3">{{ object.total_price|intcomma }} تومان</div>
+        </div>
+
+        <!-- دکمه‌ها -->
+        <div class="d-flex pt-4 justify-content-end">
+            <a class="btn btn-secondary ms-3" href="{% url 'dashboard:customer:orders-list' %}">بازگشت</a>
+            <button class="btn btn-primary ms-3" type="submit">ثبت تغییرات</button>
+        </div>
+
+    </div>
+    <!-- End Body -->
+</div>
+<!-- End Card -->
+{% endblock %}
