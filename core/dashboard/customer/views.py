@@ -102,18 +102,34 @@ class CustomerOrdersListView(LoginRequiredMixin, HasCustomerPermission, ListView
 
     def get_queryset(self):
 
-        return OrderModels.objects.filter(user=self.request.user).prefetch_related("items")
-
+        queryset = OrderModels.objects.filter(user=self.request.user).prefetch_related("items")
+        search = self.request.GET.get("q")
+        if search:
+            queryset = queryset.filter(title__icontains=search)
+        order_by = self.request.GET.get("order_by")
+        try:
+            if order_by:
+                queryset = queryset.order_by(order_by)
+        except FieldError:
+            pass
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["total_items"] = self.get_queryset().count()
         return context
-
 # ======================================================================================================================
 class CustomerOrdersDetailView(LoginRequiredMixin, HasCustomerPermission,DetailView):
     template_name = "dashboard/customer/orders/order-detail.html"
     context_object_name = "object"
     def get_queryset(self):
         return OrderModels.objects.filter(user=self.request.user)
+# ======================================================================================================================
+class CustomerOrdersInvoiceView(LoginRequiredMixin,HasCustomerPermission,DetailView):
+    template_name = "dashboard/customer/orders/invoice.html"
+    context_object_name = "object"
+
+    def get_queryset(self):
+        return OrderModels.objects.all()
+
 # ======================================================================================================================

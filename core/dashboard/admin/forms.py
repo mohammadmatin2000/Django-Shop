@@ -4,6 +4,9 @@ from django.utils.translation import gettext_lazy as _
 from accounts.models import Profile
 from shop.models import ProductModels
 from order.models import CouponModels
+from order.models import OrderModels
+
+
 # ======================================================================================================================
 class AdminPasswordChangeForm(auth_forms.PasswordChangeForm):
     error_messages = {
@@ -39,4 +42,13 @@ class AdminCouponForm(forms.ModelForm):
     class Meta:
         model = CouponModels
         fields = ("code","discount_percent","max_usage_limit","used_by","expiration_date")
+# ======================================================================================================================
+class AdminOrdersForm(forms.ModelForm):
+    class Meta:
+        model = OrderModels
+        fields = [
+            'status',
+            'address',
+            'zip_code',
+        ]
 # ======================================================================================================================

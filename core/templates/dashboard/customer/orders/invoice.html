@@ -1,0 +1,112 @@
+{% extends 'dashboard/customer/base.html' %}
+{% load static %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb breadcrumb-light mb-0">
+    <li class="breadcrumb-item">حساب</li>
+    <li class="breadcrumb-item active" aria-current="page">داشبورد</li>
+  </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="container content-space-2">
+  <div class="w-lg-85 mx-lg-auto">
+
+    <!-- فاکتور -->
+    <div class="card card-lg mb-5">
+      <div class="card-body">
+
+        <!-- Header -->
+        <div class="row justify-content-between mb-4">
+          <div class="col-sm-6">
+            <h2 class="mb-1">فاکتور شماره:</h2>
+            <span class="text-muted">{{ object.id }}</span>
+          </div>
+          <div class="col-sm-6 text-start">
+            <img src="{% static 'svg/logos/logo-short.svg' %}" alt="Logo" style="height: 40px;" class="mb-2">
+            <h4 class="text-primary">فروشگاه ما</h4>
+          </div>
+        </div>
+
+        <!-- اطلاعات سفارش‌دهنده -->
+        <div class="row mb-4">
+          <div class="col-md-6">
+            <div class="mb-2"><strong>نام سفارش دهنده:</strong> {{ object.user.user_profile.get_fullname }}</div>
+            <div class="mb-2"><strong>آدرس:</strong> {{ object.address }}, {{ object.city }}, {{ object.state }}</div>
+            <div class="mb-2"><strong>کد پستی:</strong> {{ object.zip_code }}</div>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <div class="mb-2"><strong>تاریخ سفارش:</strong> {{ object.created_date|date:"Y/m/d" }}</div>
+            <div class="mb-2"><strong>نوع ارسال:</strong> {{ object.get_shipping_type_display }}</div>
+            <div class="mb-2"><strong>وضعیت:</strong> {{ object.get_status.label }}</div>
+          </div>
+        </div>
+
+        <!-- لیست کالاها -->
+        <div class="table-responsive mb-4">
+          <table class="table table-bordered table-hover text-center">
+            <thead class="table-light">
+              <tr>
+                <th>کالا</th>
+                <th>تعداد</th>
+                <th>قیمت واحد</th>
+                <th>جمع</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in object.items.all %}
+              <tr>
+                <td>{{ item.product.title }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.product.price|floatformat:"0" }} تومان</td>
+                <td>{{ item.get_total_price|floatformat:"0" }} تومان</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- خلاصه نهایی -->
+        <div class="row justify-content-center">
+          <div class="col-md-6">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-between">
+                <span>هزینه ارسال:</span>
+                <span>{{ object.shipping_cost|default:"0"|floatformat:"0" }} تومان</span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between">
+                <span>مالیات:</span>
+                <span>{{ object.tax|default:"0"|floatformat:"0" }} تومان</span>
+              </li>
+              {% if object.coupon %}
+              <li class="list-group-item d-flex justify-content-between text-danger">
+                <span>تخفیف ({{ object.coupon.code }}):</span>
+                <span>-{{ object.get_discount_amount|floatformat:"0" }} تومان</span>
+              </li>
+              {% endif %}
+              <li class="list-group-item d-flex justify-content-between fw-bold text-success">
+                <span>مبلغ نهایی:</span>
+                <span>{{ object.get_price|floatformat:"0" }} تومان</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- عملیات -->
+    <div class="d-flex justify-content-end gap-3 d-print-none">
+      <a class="btn btn-white" href="#">
+        <i class="bi-file-earmark-arrow-down me-1"></i> دانلود PDF
+      </a>
+      <a class="btn btn-primary" href="javascript:;" onclick="window.print(); return false;">
+        <i class="bi-printer me-1"></i> چاپ فاکتور
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

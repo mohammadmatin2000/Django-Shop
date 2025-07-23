@@ -1,0 +1,133 @@
+{% extends 'dashboard/admin/base.html' %}
+{% load static %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light mb-0">
+        <li class="breadcrumb-item">حساب</li>
+        <li class="breadcrumb-item active">داشبورد ادمین</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header border-bottom">
+        <h5 class="card-header-title">لیست سفارشات ({{ total_items }})</h5>
+    </div>
+
+    <div class="card-body">
+        <!-- فرم فیلتر -->
+        <form method="get" class="row g-2 align-items-center mb-4">
+            <div class="col-md-4">
+                <input type="text" name="search" value="{{ request.GET.search }}" class="form-control"
+                       placeholder="جستجوی شماره سفارش">
+            </div>
+            <div class="col-md-3">
+                <select name="order_by" class="form-select">
+                    <option value="">مرتب‌سازی پیش‌فرض</option>
+                    <option value="-created_date" {% if request.GET.order_by == '-created_date' %}selected{% endif %}>جدیدترین</option>
+                    <option value="created_date" {% if request.GET.order_by == 'created_date' %}selected{% endif %}>قدیمی‌ترین</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-select">
+                    <option value="">همه وضعیت‌ها</option>
+                    {% for value, label in statuses %}
+                        <option value="{{ value }}" {% if request.GET.status == value|stringformat:"s" %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2 d-grid">
+                <button type="submit" class="btn btn-primary"><i class="bi-search"></i></button>
+            </div>
+        </form>
+
+        <!-- جدول سفارشات -->
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>#</th>
+                        <th>شماره سفارش</th>
+                        <th>سفارش‌دهنده</th>
+                        <th>قیمت کالا</th>
+                        <th>تاریخ ثبت</th>
+                        <th>وضعیت</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for order in object_list %}
+                  <tr>
+                    <td>{{ forloop.counter0|add:page_obj.start_index }}</td>
+                    <td><a href="{% url 'dashboard:admin:orders-update' pk=order.id %}">#{{ order.id }}</a></td>
+                    <td>{{ order.user.user_profile.get_fullname }}</td>
+                    <td>
+                      {% for item in order.items.all %}
+                        {% if order.status == 1 or order.status == 2 %}
+                          {{ item.product.title }}: {{ item.price|floatformat:"0" }} تومان<br>
+                        {% endif %}
+                      {% endfor %}
+                    </td>
+
+                    <td>{{ order.created_date|date:"Y/m/d" }}</td>
+                    <td>
+                      {% if order.status == 1 %}
+                        <span class="badge bg-warning">در حال پردازش</span>
+                      {% elif order.status == 2 %}
+                        <span class="badge bg-success">انجام شده</span>
+                      {% elif order.status == 3 %}
+                        <span class="badge bg-danger">لغو شده</span>
+                      {% else %}
+                        <span class="badge bg-secondary">نامشخص</span>
+                      {% endif %}
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="6" class="text-center">سفارشی یافت نشد.</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- صفحه‌بندی -->
+        {% if page_obj.has_other_pages %}
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}&search={{ request.GET.search }}&order_by={{ request.GET.order_by }}&status={{ request.GET.status }}">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                    {% if num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
+                        {% if page_obj.number == num %}
+                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                        {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}&search={{ request.GET.search }}&order_by={{ request.GET.order_by }}&status={{ request.GET.status }}">{{ num }}</a>
+                        </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}&search={{ request.GET.search }}&order_by={{ request.GET.order_by }}&status={{ request.GET.status }}">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

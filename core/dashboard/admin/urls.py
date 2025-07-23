@@ -7,7 +7,10 @@ from .views import (AdminDashboardHomeView, AdminSecurityView, AdminProfileView,
                     AdminCouponsListView,
                     AdminCouponCreateView,
                     AdminCouponDeleteView,
-                    AdminCouponUpdateView)
+                    AdminCouponUpdateView,
+                    AdminOrdersListView,
+                    AdminOrdersUpdateView,
+                    AdminOrdersInvoiceVIew)
 # ======================================================================================================================
 app_name='admin'
 urlpatterns = [
@@ -25,6 +28,10 @@ urlpatterns = [
     path('coupons/create/',AdminCouponCreateView.as_view(),name='coupon-create'),
     path('coupons/<int:pk>/delete/',AdminCouponDeleteView.as_view(),name='coupon-delete'),
     path('coupons/<int:pk>/update/',AdminCouponUpdateView.as_view(),name='coupon-update'),
+
+    path('orders/list/',AdminOrdersListView.as_view(),name='orders-list'),
+    path('orders/<int:pk>/update/',AdminOrdersUpdateView.as_view(),name='orders-update'),
+    path('orders/<int:pk>/invoice/',AdminOrdersInvoiceVIew.as_view(),name='orders-invoice'),
 
 ]
 # ======================================================================================================================
