@@ -1,0 +1,132 @@
+{% extends 'dashboard/customer/base.html' %}
+{% load static %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light mb-0">
+        <li class="breadcrumb-item">حساب</li>
+        <li class="breadcrumb-item active" aria-current="page">داشبورد</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<!-- Card -->
+<div class="card">
+    <div class="card-header d-sm-flex justify-content-sm-between align-items-sm-center border-bottom">
+        <h5 class="card-header-title">لیست علاقه‌مندی‌ها</h5>
+        <span>{{ page_obj.paginator.count }} مورد</span>
+    </div>
+
+    <!-- Body -->
+    <div class="card-body">
+        {% if page_obj.object_list %}
+        <!-- List Group -->
+        <ul class="list-group list-group-flush list-group-no-gutters">
+            {% for item in page_obj.object_list %}
+            <!-- Item -->
+            <li class="list-group-item">
+                <div class="d-flex">
+                    <div class="flex-shrink-0">
+                        <img class="avatar avatar-xl avatar-4x3"
+                             src="{{ item.product.image.url|default:'./assets/img/default-product.jpg' }}"
+                             alt="{{ item.product.title }}">
+                    </div>
+
+                    <div class="flex-grow-1 ms-3">
+                        <div class="row">
+                            <div class="col-sm-7 mb-3 mb-sm-0">
+                                <h5><a class="text-dark" href="{% url 'shop:products-detail' slug=item.product.slug %}">{{ item.product.title }}</a></h5>
+
+                                <div class="d-grid gap-1">
+                                    <div class="text-body">
+                                        <span class="small">رنگ:</span>
+                                        {% for category in item.product.category.all %}
+                                          <a class="link-sm link-secondary" href="#"> {{category.title}} </a>
+                                          {% if not forloop.last %}
+                                          ,
+                                          {% endif %}
+                                          {% endfor %}
+
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Col -->
+                            <div class="col-sm-3 d-flex align-items-center">
+                                <div class="col-auto">
+                                    <div class="d-grid gap-2">
+                                        <form method="post" action="{% url 'dashboard:customer:wishlist-delete' pk=item.pk %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-link link-danger small p-0">
+                                                <i class="bi-trash me-1"></i> حذف
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End Col -->
+                        </div>
+                        <!-- End Row -->
+                    </div>
+                    <!-- End flex-grow -->
+                </div>
+                <!-- End d-flex -->
+            </li>
+            <!-- End Item -->
+            {% endfor %}
+        </ul>
+        <!-- End List Group -->
+
+        {% if page_obj.has_other_pages %}
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <button class="page-link" onclick="changePage(`{{ page_obj.previous_page_number }}`)"
+                                aria-label="Previous">
+                            <span aria-hidden="true">
+                                <i class="bi-chevron-double-right small"></i>
+                            </span>
+                        </button>
+                    </li>
+                    {% endif %}
+                    {{page_obj.page_range}}
+                    {% for i in page_obj.paginator.page_range %}
+                    {% if page_obj.number == i %}
+                    <li class="page-item active"><a class="page-link">{{ i }}</a></li>
+                    {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                    <li class="page-item">
+                        <button class="page-link" onclick="changePage(`{{i}}`)">{{ i }}</button>
+                    </li>
+
+                    {% endif %}
+
+                    {% endfor %}
+
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <button class="page-link" onclick="changePage(`{{ page_obj.next_page_number }}`)"
+                                aria-label="Previous">
+                                <span aria-hidden="true">
+                                    <i class="bi-chevron-double-left small"></i>
+                                </span>
+                        </button>
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </nav>
+        {% endif %}
+
+        {% else %}
+        <p class="text-center text-muted my-5">شما هنوز هیچ محصولی به لیست علاقه‌مندی‌ها اضافه نکرده‌اید.</p>
+        {% endif %}
+    </div>
+    <!-- End Body -->
+
+    <a class="card-footer card-link text-center border-top" href="{% url 'shop:products-grid' %}">به خرید ادامه دهید</a>
+</div>
+<!-- End Card -->
+{% endblock %}

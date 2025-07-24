@@ -9,6 +9,7 @@ from ..permission import HasCustomerPermission
 from .forms import CustomerChangeProfileForm,CustomerPasswordChangeForm,CustomUserAddressForm
 from django.core.exceptions import FieldError
 from order.models import UserAddressModel,OrderModels
+from shop.models import WishListModels
 # ======================================================================================================================
 class CustomerDashboardHomeView(LoginRequiredMixin,HasCustomerPermission,TemplateView):
     template_name = "dashboard/customer/home.html"
@@ -131,5 +132,45 @@ class CustomerOrdersInvoiceView(LoginRequiredMixin,HasCustomerPermission,DetailV
 
     def get_queryset(self):
         return OrderModels.objects.all()
+# ======================================================================================================================
+class CustomerWishListView(LoginRequiredMixin, HasCustomerPermission,ListView):
+    template_name = "dashboard/customer/wishlist/wishlist.html"
 
+    paginate_by = 10
+
+    def get_paginate_by(self, queryset):
+        page_size = self.request.GET.get("page_size", 10)
+        try:
+            return int(page_size)
+        except (TypeError, ValueError):
+            return 10
+
+    def get_queryset(self):
+
+        queryset = WishListModels.objects.filter(user=self.request.user)
+        search = self.request.GET.get("q")
+        if search:
+            queryset = queryset.filter(title__icontains=search)
+        order_by = self.request.GET.get("order_by")
+        category_id = self.request.GET.get("category_id")
+        if category_id:
+            queryset = queryset.filter(category__id=category_id)
+        try:
+            if order_by:
+                queryset = queryset.order_by(order_by)
+        except FieldError:
+            pass
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total_items"] = self.get_queryset().count()
+        return context
+# ======================================================================================================================
+class CustomerWishListDeleteView(LoginRequiredMixin, HasCustomerPermission,DeleteView):
+    http_method_names = ["post"]
+    success_url = reverse_lazy("dashboard:customer:wishlist")
+    success_message = "محصول با موفقیت از لیست حذف شد"
+    def get_queryset(self):
+        return WishListModels.objects.filter(user=self.request.user)
 # ======================================================================================================================

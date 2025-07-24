@@ -10,21 +10,15 @@ from .forms import AdminPasswordChangeForm, AdminChangeProfileForm, AdminUpdateP
 from order.models import CouponModels, OrderModels
 from django.core.exceptions import FieldError
 from shop.models import ProductModels, ProductStatusModels, ProductCategoryModels
-
-
 # ======================================================================================================================
 class AdminDashboardHomeView(LoginRequiredMixin, HasAdminPermission, TemplateView):
     template_name = "dashboard/admin/home.html"
-
-
 # ======================================================================================================================
 class AdminSecurityView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, TemplateView, PasswordChangeView):
     template_name = "dashboard/admin/profile/security.html"
     form_class = AdminPasswordChangeForm
     success_url = reverse_lazy("dashboard:admin:security")
     success_message = "رمز با موفقیت تغییر کرد"
-
-
 # ======================================================================================================================
 class AdminProfileView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView):
     template_name = "dashboard/admin/profile/profile.html"
@@ -34,8 +28,6 @@ class AdminProfileView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMix
 
     def get_object(self, queryset=None):
         return self.request.user.user_profile
-
-
 # ======================================================================================================================
 class AdminProfileImageView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView):
     http_method_names = ["post"]
@@ -49,8 +41,6 @@ class AdminProfileImageView(LoginRequiredMixin, HasAdminPermission, SuccessMessa
     def form_valid(self, form):
         messages.error("آپلود عکس به مشکل خورده لطفا دوباره تلاش کنید")
         return redirect(reverse_lazy(self.success_url))
-
-
 # ======================================================================================================================
 class AdminProductListView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, ListView):
     template_name = "dashboard/admin/product/product-list.html"
@@ -97,8 +87,6 @@ class AdminProductListView(LoginRequiredMixin, HasAdminPermission, SuccessMessag
         context["total_items"] = self.get_queryset().count()
 
         return context
-
-
 # ======================================================================================================================
 class AdminProductUpdateView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView):
     template_name = "dashboard/admin/product/product-update.html"
@@ -108,16 +96,12 @@ class AdminProductUpdateView(LoginRequiredMixin, HasAdminPermission, SuccessMess
 
     def get_success_url(self):
         return reverse_lazy('dashboard:admin:product-update', kwargs={'pk': self.object.pk})
-
-
 # ======================================================================================================================
 class AdminProductDeleteView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, DeleteView):
     template_name = "dashboard/admin/product/product-delete.html"
     queryset = ProductModels.objects.all()
     success_message = "محصول شما با موفقیت حذف شد"
     success_url = reverse_lazy('dashboard:admin:products-list')
-
-
 # ======================================================================================================================
 class AdminProductCreateView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, CreateView):
     template_name = "dashboard/admin/product/product-create.html"
@@ -129,8 +113,6 @@ class AdminProductCreateView(LoginRequiredMixin, HasAdminPermission, SuccessMess
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
-
-
 # ======================================================================================================================
 class AdminCouponsListView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, ListView):
     paginate_by = 10
@@ -152,8 +134,6 @@ class AdminCouponsListView(LoginRequiredMixin, HasAdminPermission, SuccessMessag
         context = super().get_context_data(**kwargs)
         context["total_items"] = CouponModels.objects.count()
         return context
-
-
 # ======================================================================================================================
 class AdminCouponCreateView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, CreateView):
     model = CouponModels
@@ -164,8 +144,6 @@ class AdminCouponCreateView(LoginRequiredMixin, HasAdminPermission, SuccessMessa
     def form_valid(self, form):
         messages.success(self.request, "کد تخفیف با موفقیت ایجاد شد.")
         return super().form_valid(form)
-
-
 # ======================================================================================================================
 class AdminCouponUpdateView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView):
     model = CouponModels
@@ -176,15 +154,11 @@ class AdminCouponUpdateView(LoginRequiredMixin, HasAdminPermission, SuccessMessa
     def form_valid(self, form):
         messages.success(self.request, "کد تخفیف با موفقیت ویرایش شد.")
         return super().form_valid(form)
-
-
 # ======================================================================================================================
 class AdminCouponDeleteView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, DeleteView):
     model = CouponModels
     template_name = "dashboard/admin/coupon/coupon-delete.html"
     success_url = reverse_lazy('dashboard:admin:coupon-list')
-
-
 # ======================================================================================================================
 class AdminOrdersListView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, ListView):
     template_name = "dashboard/admin/orders/order-list.html"
@@ -226,8 +200,6 @@ class AdminOrdersListView(LoginRequiredMixin, HasAdminPermission, SuccessMessage
         context["total_items"] = self.get_queryset().count()
         context["statuses"] = OrderModels._meta.get_field("status").choices
         return context
-
-
 # ======================================================================================================================
 class AdminOrdersUpdateView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView):
     template_name = "dashboard/admin/orders/order-update.html"
@@ -240,8 +212,6 @@ class AdminOrdersUpdateView(LoginRequiredMixin, HasAdminPermission, SuccessMessa
         context = super().get_context_data(**kwargs)
         context['order_items'] = self.object.items.all()
         return context
-
-
 # ======================================================================================================================
 class AdminOrdersInvoiceVIew(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, DetailView):
     template_name = "dashboard/admin/orders/order-invoice.html"

@@ -6,8 +6,6 @@ from ckeditor.fields import RichTextField
 class ProductStatusModels(models.IntegerChoices):
     publish = 1, "فعال"
     draft = 2, "غیرفعال"
-
-
 # ======================================================================================================================
 class ProductCategoryModels(models.Model):
     title = models.CharField(max_length=255)
@@ -17,7 +15,6 @@ class ProductCategoryModels(models.Model):
 
     def __str__(self):
         return self.title
-
 # ======================================================================================================================
 class ProductModels(models.Model):
     user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
@@ -57,13 +54,16 @@ class ProductModels(models.Model):
 
     def __str__(self):
         return self.title
-
-
-
 # ======================================================================================================================
 class ProductImageModels(models.Model):
     product = models.ForeignKey("shop.ProductModels", on_delete=models.CASCADE)
     file = models.ImageField(upload_to="images/", null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
+# ======================================================================================================================
+class WishListModels(models.Model):
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
+    product = models.ForeignKey("shop.ProductModels", on_delete=models.CASCADE)
+    def __str__(self):
+        return self.product.title
 # ======================================================================================================================

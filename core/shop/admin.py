@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import ProductModels,ProductImageModels,ProductCategoryModels
+from .models import ProductModels,ProductImageModels,ProductCategoryModels,WishListModels
 # ======================================================================================================================
 @admin.register(ProductModels)
 class ProductAdmin(admin.ModelAdmin):
@@ -24,4 +24,9 @@ class ProductImageAdmin(admin.ModelAdmin):
     list_display = ('product','created_date')  # نمایش محصول، تصویر، وضعیت برجسته بودن و تاریخ ایجاد
     list_filter = ('created_date',)  # فیلتر بر اساس وضعیت برجسته بودن و تاریخ ایجاد
 
+# ======================================================================================================================
+@admin.register(WishListModels)
+class WishListModelsAdmin(admin.ModelAdmin):
+    list_display = ('id','user','product')  # نمایش محصول، تصویر، وضعیت برجسته بودن و تاریخ ایجاد
+    list_filter = ('user',)  # فیلتر بر اساس وضعیت برجسته بودن و تاریخ ایجاد
 # ======================================================================================================================

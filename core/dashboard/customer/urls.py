@@ -7,7 +7,9 @@ from .views import (CustomerDashboardHomeView,CustomerSecurityDashboardView,Cust
                     CustomerAddressCreateView,
                     CustomerOrdersListView,
                     CustomerOrdersDetailView,
-                    CustomerOrdersInvoiceView)
+                    CustomerOrdersInvoiceView,
+                    CustomerWishListView,
+                    CustomerWishListDeleteView)
 # ======================================================================================================================
 app_name='customer'
 urlpatterns = [
@@ -24,5 +26,8 @@ urlpatterns = [
     path('orders/list/',CustomerOrdersListView.as_view(),name='orders-list'),
     path('orders/<int:pk>/detail',CustomerOrdersDetailView.as_view(),name='orders-detail'),
     path('orders/<int:pk>/invoice/',CustomerOrdersInvoiceView.as_view(),name='orders-invoice'),
+
+    path('wishlist/',CustomerWishListView.as_view(),name='wishlist'),
+    path('wishlist/<int:pk>/delete/',CustomerWishListDeleteView.as_view(),name='wishlist-delete'),
 ]
 # ======================================================================================================================
