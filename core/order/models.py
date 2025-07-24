@@ -84,8 +84,6 @@ class OrderModels(models.Model):
 
     def get_full_name(self):
         return f"{self.profile.first_name} {self.profile.last_name}"
-
-
 # ======================================================================================================================
 class OrderItemModels(models.Model):
     order = models.ForeignKey(OrderModels, on_delete=models.CASCADE, related_name="items")
@@ -101,6 +99,4 @@ class OrderItemModels(models.Model):
     @property
     def get_total_price(self):
         return self.price * self.quantity
-
-
 # ======================================================================================================================

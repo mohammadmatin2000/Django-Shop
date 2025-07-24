@@ -25,6 +25,7 @@ class ProductModels(models.Model):
     description = RichTextField()
     brief_description = models.TextField(null=True, blank=True)
     stock = models.PositiveIntegerField(default=0)
+    avg_rate = models.FloatField(default=0)
     status = models.IntegerField(choices=ProductStatusModels.choices, default=ProductStatusModels.publish)
     price = models.DecimalField(max_digits=10, decimal_places=0)
     discount_percent = models.IntegerField(default=0)

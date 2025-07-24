@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'dashboard',
     'order',
     'payment',
+    'review',
 
     'widget_tweaks',
     'ckeditor'
