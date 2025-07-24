@@ -80,5 +80,4 @@ class AddToWishlistView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         return JsonResponse({"error": "درخواست نامعتبر."}, status=400)
-
 # ======================================================================================================================
