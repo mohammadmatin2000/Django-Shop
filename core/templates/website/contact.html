@@ -24,6 +24,47 @@
 
     <!-- CSS Front Template -->
     <link rel="stylesheet" href="{% static 'assets/css/theme.min.css' %}?v=1.0">
+    <style>
+        .locat-con {
+            background-color: white;
+            padding: 2rem;
+            margin: 2rem auto;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 720px;
+            font-family: "Vazirmatn", sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .locat-cont h3 {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .locat-cont p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 1.5rem;
+        }
+
+        .locate-spec {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .locate-spec .spec-1,
+        .locate-spec .spec-2 {
+            flex: 1 1 300px;
+            background-color: #ffffff;
+            padding: 1rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+    </style>
 </head>
 
 <body>
@@ -207,6 +248,23 @@
         </div>
     </div>
     <!-- End Contact Form -->
+    <div class="locat-con">
+        <div class="locat-cont">
+            <h3>آدرس :</h3>
+            <p>تهران ، منطقه ۲۲ ، میدان المپیک ، روبروی بیمارستان ایرانیان ، لوازم تحریر و کافی نت شایان</p>
+            <div class="locate-spec">
+                <div class="spec-1">
+                    <h3>ساعت کاری :</h3>
+                    <p>۷:۰۰ صبح الی ۲۱:۰۰ شب</p>
+                </div>
+                <div class="spec-2">
+                    <h3>شماره تماس :</h3>
+                    <p>‌0329 3888 993 98+</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 </main>
 <!-- ========== SECONDARY CONTENTS ========== -->

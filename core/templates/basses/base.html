@@ -42,7 +42,7 @@
         <nav class="js-mega-menu navbar-nav-wrap">
             <!-- Default Logo -->
             <a class="navbar-brand" href="" aria-label="Front">
-                <img class="navbar-brand-logo" src="{% static 'svg/logos/logo.svg' %}" alt="Logo">
+                <img class="navbar-brand-logo" src="{% static 'svg/logos/d53e7ebc-d959-4cea-9a97-fd4d1da07cac_removalai_preview 1.png' %}" alt="Logo">
             </a>
             <!-- End Default Logo -->
 
@@ -146,7 +146,7 @@
                 <div class="d-flex align-items-start flex-column h-100">
                     <!-- Logo -->
                     <a class="w-100 mb-3 mb-lg-auto" href="" aria-label="Front">
-                        <img class="brand" src="{% static 'svg/logos/logo.svg' %}" alt="Logo">
+                        <img class="navbar-brand-logo" src="{% static 'svg/logos/d53e7ebc-d959-4cea-9a97-fd4d1da07cac_removalai_preview 1.png' %}" alt="Logo">
                     </a>
 
                     <!-- End Logo -->
@@ -619,6 +619,7 @@
             success: function (response) {
                 $("#total-cart-item-count").html(response.total_quantity)
                 console.log(response);
+                window.location.reload();
                 // do something with the response data
             },
             error: function (jqXHR, textStatus, errorThrown) {
