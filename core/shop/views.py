@@ -7,8 +7,6 @@ from review.models import ReviewModels
 # ======================================================================================================================
 class ProductsGridView(ListView):
     template_name = "shop/product-grid.html"
-    paginate_by = 10
-
     def get_paginate_by(self, queryset):
 
         page_size = self.request.GET.get("page_size",9)

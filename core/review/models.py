@@ -20,7 +20,7 @@ class ReviewModels(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.user.username
+        return self.description
 # ======================================================================================================================
 @receiver(post_save, sender=ReviewModels)
 def calculate_avg_review(sender, instance, created, **kwargs):
