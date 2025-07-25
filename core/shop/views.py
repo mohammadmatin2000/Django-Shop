@@ -3,6 +3,7 @@ from django.core.exceptions import FieldError
 from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import ProductModels, ProductStatusModels, ProductCategoryModels,WishListModels
+from review.models import ReviewModels
 # ======================================================================================================================
 class ProductsGridView(ListView):
     template_name = "shop/product-grid.html"
@@ -55,6 +56,14 @@ class ProductsGridView(ListView):
 class ProductsDetailView(DetailView):
     template_name = "shop/product-detail.html"
     queryset = ProductModels.objects.filter(status=ProductStatusModels.publish.value)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        product = self.get_object()
+
+        context["reviews"] = ReviewModels.objects.filter(product=product)
+
+        return context
 # ======================================================================================================================
 class AddToWishlistView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):

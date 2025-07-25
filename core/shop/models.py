@@ -53,6 +53,8 @@ class ProductModels(models.Model):
     def is_status(self):
         return self.status == ProductStatusModels.publish
 
+
+
     def __str__(self):
         return self.title
 # ======================================================================================================================

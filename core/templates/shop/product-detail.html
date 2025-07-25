@@ -2,6 +2,7 @@
 {% load static %}
 {% load humanize %}
 {% load shop_tags %}
+
 {% block content %}
 
 <!-- Hero -->
@@ -446,74 +447,111 @@
 
         <div class="col-md-8">
             <div class="ps-md-4">
-                <!-- Heading -->
                 <div class="border-bottom pb-4 mb-4">
                     <div class="row align-items-center">
                         <div class="col-sm mb-2 mb-sm-0">
-                            <h4 class="mb-0">دیدگاه ها</h4>
+                            <h4 class="mb-0">مرتب سازی کنید</h4>
                         </div>
-
-                        <div class="col-sm-auto mb-2 text-center">
-                            <button type="button" class="btn btn-primary btn-transition rounded-pill"
-                                    data-bs-toggle="modal" data-bs-target="#submitReviewModal">
-                                ثبت دیدگاه
-                            </button>
+                        <div class="col-sm-auto">
+                            <select class="form-select form-select-sm">
+                                <option value="mostRecent" selected>اخیرا</option>
+                                <option value="relevant">مربوط</option>
+                                <option value="helpful">مفید است</option>
+                                <option value="newest">جدیدترین</option>
+                            </select>
                         </div>
-                        <!-- End Col -->
                     </div>
-                    <!-- End Row -->
                 </div>
-                <!-- End Heading -->
 
-                <!-- Comment -->
+
                 <ul class="list-comment list-comment-divider mb-5">
-                    <!-- Item -->
-                    {% for review in reviews %}
+                     {% for review in reviews %}
                     <li class="list-comment-item">
+                        <!-- ستاره‌ها -->
                         <div class="d-flex gap-1 mb-3">
-                            {% for i in "12345" %}
-                            {% if i|add:0 <= review.rate %} <span><i class="bi bi-star-fill star-rate"></i></span>
-                            {% else %}
-                            <span><i class="bi bi-star star-rate"></i></span>
-                            {% endif %}
-
+                            {% for _ in review.rate|times %}
+                              <img src="{% static 'svg/illustrations/star.svg' %}" width="16">
                             {% endfor %}
-
                         </div>
 
-                        <!-- Media -->
+                        <!-- کاربر -->
                         <div class="d-flex align-items-center mb-3">
                             <div class="flex-shrink-0">
-                                <img class="avatar avatar-sm avatar-circle" src="{{review.user.user_profile.image.url}}"
-                                     alt="Image Description">
+                                <img class="avatar avatar-sm avatar-circle" src="{{ review.user.user_profile.image.url }}">
                             </div>
-
-                            <div class="flex-grow-1 me-3">
+                            <div class="flex-grow-1 ms-3">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <h5 class="mb-0">{{review.user.user_profile.get_fullname}}</h5>
-                                    <span class="d-block small text-muted">
-                                        {{review.created_date|date:"Y-m-d h:i"}}</span>
+                                    <h5 class="mb-0">{{ review.user.user_profile.get_fullname }}</h5>
+                                    <span class="small text-muted">{{ review.created_date|date:"Y-m-d H:i" }}</span>
                                 </div>
                             </div>
                         </div>
-                        <!-- End Media -->
 
+                        <!-- متن نظر -->
                         <div class="mb-5">
-                            <p>{{review.description}}</p>
+                            <p>{{ review.description }}</p>
                         </div>
 
+                        <div class="mb-2">
+                            <span class="text-dark fw-semibold">{{ review.user.user_profile.first_name }}</span> - خرید تایید شده
+                        </div>
 
-                        <!-- End Media -->
+<!--                        &lt;!&ndash; رأی‌دهی &ndash;&gt;-->
+<!--                        <div class="d-flex align-items-center">-->
+<!--                            <span class="small me-2">آیا این مفید بود؟</span>-->
+<!--                            <div class="d-flex gap-2">-->
+<!--                                <a class="btn btn-white btn-xs" href="javascript:;">Yes</a>-->
+<!--                                <a class="btn btn-white btn-xs" href="javascript:;">نه</a>-->
+<!--                            </div>-->
+<!--                        </div>-->
                     </li>
-                    <!-- End Item -->
+                    {% empty %}
+                    <li>هنوز نظری ثبت نشده 🤷‍♂️</li>
                     {% endfor %}
-
                 </ul>
-                <!-- End Comment -->
 
-
+                <!-- دکمه ثبت نظر -->
+                <div class="d-sm-flex justify-content-sm-end gap-2">
+                    <a class="btn btn-link" href="#">ادامه مطلب <i class="bi-chevron-left small me-1"></i></a>
+                    <button type="button" class="btn btn-primary btn-transition rounded-pill"
+                            onclick="openReviewModal()">یک بررسی بنویسید
+                    </button>
+                </div>
             </div>
         </div>
+
+        <!-- فرم پاپ‌آپ نظر -->
+        <div id="submitReviewModal" class="modal" tabindex="-1" style="display:none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form method="post" action="{% url 'review:submit-review' product_id=object.id %}">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <h5 class="modal-title">ثبت نظر</h5>
+                            <button type="button" class="btn-close" onclick="closeReviewModal()"></button>
+                        </div>
+                        <div class="modal-body">
+                            <label class="form-label">امتیاز</label>
+                            <select name="rate" class="form-select mb-3">
+                                <option value="1">★☆☆☆☆</option>
+                                <option value="2">★★☆☆☆</option>
+                                <option value="3">★★★☆☆</option>
+                                <option value="4">★★★★☆</option>
+                                <option value="5">★★★★★</option>
+                            </select>
+                            <label class="form-label">توضیحات</label>
+                            <textarea name="description" class="form-control" rows="4"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="closeReviewModal()">بستن</button>
+                            <button type="submit" class="btn btn-primary">ارسال نظر</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
         <!-- End Col -->
     </div>
     <!-- End Row -->
@@ -654,6 +692,15 @@
                 // handle the error case
             }
         });
+    }
+</script>
+<script>
+    function openReviewModal() {
+        document.getElementById("submitReviewModal").style.display = "block";
+    }
+
+    function closeReviewModal() {
+        document.getElementById("submitReviewModal").style.display = "none";
     }
 </script>
 

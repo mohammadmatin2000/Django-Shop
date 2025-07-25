@@ -1,10 +1,10 @@
-from django import forms
-from .models import ReviewModels
+from django import template
+register = template.Library()
 # ======================================================================================================================
-class SubmitReviewForm(forms.ModelForm):
-    class Meta:
-        model = ReviewModels
-        fields = ['rate', 'description']
-
-
+@register.filter
+def times(number):
+    try:
+        return range(int(number))
+    except:
+        return []
 # ======================================================================================================================
