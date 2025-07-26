@@ -6,8 +6,9 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.shortcuts import redirect
 from ..permission import HasAdminPermission
-from .forms import AdminPasswordChangeForm, AdminChangeProfileForm, AdminUpdateProductForm, AdminCouponForm,AdminOrdersForm
+from .forms import AdminPasswordChangeForm, AdminChangeProfileForm, AdminUpdateProductForm, AdminCouponForm,AdminOrdersForm,AdminCommentsForm
 from order.models import CouponModels, OrderModels
+from review.models import ReviewModels
 from django.core.exceptions import FieldError
 from shop.models import ProductModels, ProductStatusModels, ProductCategoryModels
 # ======================================================================================================================
@@ -219,4 +220,52 @@ class AdminOrdersInvoiceVIew(LoginRequiredMixin, HasAdminPermission, SuccessMess
 
     def get_queryset(self):
         return OrderModels.objects.all()
+# ======================================================================================================================
+class AdminCommentsListView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, ListView):
+    template_name = "dashboard/admin/comments/comment-list.html"
+    context_object_name = "object_list"
+    def get_paginate_by(self, queryset):
+
+        page_size = self.request.GET.get("page_size",6)
+        if page_size:
+            try:
+                return int(page_size)
+            except ValueError:
+                pass
+        return page_size
+
+    def get_queryset(self):
+        queryset = ReviewModels.objects.all()
+        search = self.request.GET.get("q")
+        if search:
+            try:
+                queryset = queryset.filter(id=int(search))
+            except (ValueError, TypeError):
+                queryset = queryset.none()
+
+        order_by = self.request.GET.get("order_by")
+        try:
+            if order_by:
+                queryset = queryset.order_by(order_by)
+        except FieldError:
+            pass
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total_items"] = self.get_queryset().count()
+        return context
+# ======================================================================================================================
+class AdminCommentsUpdateView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView):
+    template_name = "dashboard/admin/comments/comment-update.html"
+    model = ReviewModels
+    form_class = AdminCommentsForm
+    success_url = reverse_lazy('dashboard:admin:comments-list')
+    success_message = "پیام با موفقیت ویرایش شد"
+# ======================================================================================================================
+class AdminCommentsDeleteView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, DeleteView):
+    template_name = "dashboard/admin/comments/comment-delete.html"
+    model = ReviewModels
+    success_url = reverse_lazy('dashboard:admin:comments-list')
+    success_message = "پیام با موفقیت حذف شد"
 # ======================================================================================================================

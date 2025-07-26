@@ -62,11 +62,14 @@ def formatted_price(value):
     except (ValueError, TypeError):
         return value
 # ======================================================================================================================
-
 @register.filter
 def times(number):
     try:
         return range(int(number))
     except:
         return []
+# ======================================================================================================================
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
 # ======================================================================================================================

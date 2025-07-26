@@ -10,7 +10,10 @@ from .views import (AdminDashboardHomeView, AdminSecurityView, AdminProfileView,
                     AdminCouponUpdateView,
                     AdminOrdersListView,
                     AdminOrdersUpdateView,
-                    AdminOrdersInvoiceVIew)
+                    AdminOrdersInvoiceVIew,
+                    AdminCommentsListView,
+                    AdminCommentsUpdateView,
+                    AdminCommentsDeleteView)
 # ======================================================================================================================
 app_name='admin'
 urlpatterns = [
@@ -32,6 +35,10 @@ urlpatterns = [
     path('orders/list/',AdminOrdersListView.as_view(),name='orders-list'),
     path('orders/<int:pk>/update/',AdminOrdersUpdateView.as_view(),name='orders-update'),
     path('orders/<int:pk>/invoice/',AdminOrdersInvoiceVIew.as_view(),name='orders-invoice'),
+
+    path('comments/list/',AdminCommentsListView.as_view(),name='comments-list'),
+    path('comments/<int:pk>/update/',AdminCommentsUpdateView.as_view(),name='comments-update'),
+    path('comments/<int:pk>/delete/',AdminCommentsDeleteView.as_view(),name='comments-delete'),
 
 ]
 # ======================================================================================================================

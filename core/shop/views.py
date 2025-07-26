@@ -1,15 +1,17 @@
-from django.views.generic import ListView, DetailView,View
+from django.views.generic import ListView, DetailView, View
 from django.core.exceptions import FieldError
 from django.http import JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import ProductModels, ProductStatusModels, ProductCategoryModels,WishListModels
-from review.models import ReviewModels
+from .models import ProductModels, ProductStatusModels, ProductCategoryModels, WishListModels
+from review.models import ReviewModels,ReviewStatusModels
+
 # ======================================================================================================================
 class ProductsGridView(ListView):
     template_name = "shop/product-grid.html"
+
     def get_paginate_by(self, queryset):
 
-        page_size = self.request.GET.get("page_size",9)
+        page_size = self.request.GET.get("page_size", 6)
         if page_size:
             try:
                 return int(page_size)
@@ -42,18 +44,34 @@ class ProductsGridView(ListView):
             pass
         return queryset
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         context['categories'] = ProductCategoryModels.objects.all()
-        context["wishlist_items"] = WishListModels.objects.filter(user=self.request.user).values_list(
-            "product__id", flat=True) if self.request.user.is_authenticated else []
-        context["total_items"] = self.get_queryset().count()
+
+        if self.request.user.is_authenticated:
+            context["wishlist_items"] = WishListModels.objects.filter(
+                user=self.request.user
+            ).values_list("product__id", flat=True)
+        else:
+            context["wishlist_items"] = []
+
+        queryset = self.get_queryset()
+        context["total_items"] = queryset.count()
+        context["products"] = queryset
+
+        context["reviews"] = {
+            product.id: ReviewModels.objects.filter(product=product, status=ReviewStatusModels.accepted)
+            for product in queryset
+        }
 
         return context
 # ======================================================================================================================
 class ProductsDetailView(DetailView):
     template_name = "shop/product-detail.html"
     queryset = ProductModels.objects.filter(status=ProductStatusModels.publish.value)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 

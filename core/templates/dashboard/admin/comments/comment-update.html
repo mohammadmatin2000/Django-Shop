@@ -1,0 +1,69 @@
+{% extends 'dashboard/admin/base.html' %}
+{% load widget_tweaks %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb breadcrumb-light mb-0">
+    <li class="breadcrumb-item active" aria-current="page">ویرایش / ساخت کامنت</li>
+  </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<form action="{{ request.path }}" method="post" class="card">
+  {% csrf_token %}
+
+  <div class="card-header border-bottom">
+    <h5 class="card-header-title">ویرایش کامنت توسط مدیر</h5>
+  </div>
+
+  <div class="card-body">
+    <div class="row d-flex">
+
+      <!-- کاربر -->
+      <div class="col-md-6 mb-3">
+        <label for="{{ form.user.id_for_label }}">کاربر</label>
+        {{ form.user|add_class:"form-select is-valid" }}
+        <div class="text-danger small">{{ form.user.errors }}</div>
+      </div>
+
+      <!-- محصول -->
+      <div class="col-md-6 mb-3">
+        <label for="{{ form.product.id_for_label }}">محصول</label>
+        {{ form.product|add_class:"form-select is-valid" }}
+        <div class="text-danger small">{{ form.product.errors }}</div>
+      </div>
+
+      <!-- توضیح -->
+      <div class="col-md-12 mb-3">
+        <label for="{{ form.description.id_for_label }}">توضیح کامنت</label>
+        {{ form.description|add_class:"form-control is-valid" }}
+        <div class="text-danger small">{{ form.description.errors }}</div>
+      </div>
+
+      <!-- امتیاز -->
+      <div class="col-md-4 mb-3">
+        <label for="{{ form.rate.id_for_label }}">امتیاز</label>
+        {{ form.rate|add_class:"form-control is-valid" }}
+        <div class="text-danger small">{{ form.rate.errors }}</div>
+      </div>
+
+      <!-- وضعیت -->
+      <div class="col-md-4 mb-3">
+        <label for="{{ form.status.id_for_label }}">وضعیت نمایش</label>
+        {{ form.status|add_class:"form-select is-valid" }}
+        <div class="text-danger small">{{ form.status.errors }}</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="card-footer d-flex pt-4 justify-content-end gap-3">
+    {% if object %}
+    <a class="btn btn-danger" href="{% url 'dashboard:admin:comments-delete' pk=object.pk %}">حذف کامنت</a>
+    {% endif %}
+    <a class="btn btn-secondary" href="{% url 'dashboard:admin:comments-list' %}">بازگشت</a>
+    <button type="submit" class="btn btn-primary">ثبت تغییرات</button>
+  </div>
+</form>
+{% endblock %}

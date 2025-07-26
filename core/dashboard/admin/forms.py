@@ -5,8 +5,7 @@ from accounts.models import Profile
 from shop.models import ProductModels
 from order.models import CouponModels
 from order.models import OrderModels
-
-
+from review.models import ReviewModels
 # ======================================================================================================================
 class AdminPasswordChangeForm(auth_forms.PasswordChangeForm):
     error_messages = {
@@ -50,5 +49,16 @@ class AdminOrdersForm(forms.ModelForm):
             'status',
             'address',
             'zip_code',
+        ]
+# ======================================================================================================================
+class AdminCommentsForm(forms.ModelForm):
+    class Meta:
+        model = ReviewModels
+        fields = [
+            'user',
+            'product',
+            'description',
+            'rate',
+            'status',
         ]
 # ======================================================================================================================

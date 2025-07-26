@@ -1,0 +1,31 @@
+{% extends 'dashboard/admin/base.html' %}
+{% load widget_tweaks %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb breadcrumb-light mb-0">
+    <li class="breadcrumb-item active" aria-current="page">حذف کامنت</li>
+  </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body text-center">
+    <h4 class="text-danger">آیا مطمئنی که می‌خواهی این کامنت را حذف کنی؟</h4>
+    <p>کاربر: <strong>{{ object.user.user_profile.get_fullname }}</strong></p>
+    <p>محصول مربوطه: <strong>{{ object.product.title }}</strong></p>
+    <p>متن کامنت: <em>{{ object.description|truncatewords:20 }}</em></p>
+    <p>امتیاز: <strong>{{ object.rate }}</strong></p>
+    <p>شناسه کامنت: <strong>{{ object.pk }}</strong></p>
+
+    <form action="{% url 'dashboard:admin:comments-delete' pk=object.pk %}" method="post">
+      {% csrf_token %}
+      <div class="d-flex justify-content-center gap-3 mt-4">
+        <a href="{% url 'dashboard:admin:comments-list' %}" class="btn btn-secondary">بازگشت</a>
+        <button type="submit" class="btn btn-danger">بله، حذف شود</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
