@@ -7,19 +7,23 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('payment', '0001_initial'),
-        ('order', '0004_ordermodels_final_price_ordermodels_tax_and_more'),
+        ("payment", "0001_initial"),
+        ("order", "0004_ordermodels_final_price_ordermodels_tax_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='ordermodels',
-            name='payment',
-            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.PROTECT, to='payment.paymentmodels'),
+            model_name="ordermodels",
+            name="payment",
+            field=models.ForeignKey(
+                default=0,
+                on_delete=django.db.models.deletion.PROTECT,
+                to="payment.paymentmodels",
+            ),
         ),
         migrations.AlterField(
-            model_name='couponmodels',
-            name='max_usage_limit',
+            model_name="couponmodels",
+            name="max_usage_limit",
             field=models.PositiveIntegerField(),
         ),
     ]

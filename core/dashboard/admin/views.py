@@ -1,4 +1,11 @@
-from django.views.generic import TemplateView, UpdateView, ListView, DeleteView, CreateView, DetailView
+from django.views.generic import (
+    TemplateView,
+    UpdateView,
+    ListView,
+    DeleteView,
+    CreateView,
+    DetailView,
+)
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -6,22 +13,43 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django.shortcuts import redirect
 from ..permission import HasAdminPermission
-from .forms import AdminPasswordChangeForm, AdminChangeProfileForm, AdminUpdateProductForm, AdminCouponForm,AdminOrdersForm,AdminCommentsForm
+from .forms import (
+    AdminPasswordChangeForm,
+    AdminChangeProfileForm,
+    AdminUpdateProductForm,
+    AdminCouponForm,
+    AdminOrdersForm,
+    AdminCommentsForm,
+)
 from order.models import CouponModels, OrderModels
 from review.models import ReviewModels
 from django.core.exceptions import FieldError
 from shop.models import ProductModels, ProductStatusModels, ProductCategoryModels
+
+
 # ======================================================================================================================
 class AdminDashboardHomeView(LoginRequiredMixin, HasAdminPermission, TemplateView):
     template_name = "dashboard/admin/home.html"
+
+
 # ======================================================================================================================
-class AdminSecurityView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, TemplateView, PasswordChangeView):
+class AdminSecurityView(
+    LoginRequiredMixin,
+    HasAdminPermission,
+    SuccessMessageMixin,
+    TemplateView,
+    PasswordChangeView,
+):
     template_name = "dashboard/admin/profile/security.html"
     form_class = AdminPasswordChangeForm
     success_url = reverse_lazy("dashboard:admin:security")
     success_message = "رمز با موفقیت تغییر کرد"
+
+
 # ======================================================================================================================
-class AdminProfileView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView):
+class AdminProfileView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView
+):
     template_name = "dashboard/admin/profile/profile.html"
     form_class = AdminChangeProfileForm
     success_url = reverse_lazy("dashboard:admin:profile")
@@ -29,8 +57,12 @@ class AdminProfileView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMix
 
     def get_object(self, queryset=None):
         return self.request.user.user_profile
+
+
 # ======================================================================================================================
-class AdminProfileImageView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView):
+class AdminProfileImageView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView
+):
     http_method_names = ["post"]
     template_name = "dashboard/admin/profile/profile.html"
     success_url = reverse_lazy("dashboard:admin:profile")
@@ -42,8 +74,12 @@ class AdminProfileImageView(LoginRequiredMixin, HasAdminPermission, SuccessMessa
     def form_valid(self, form):
         messages.error("آپلود عکس به مشکل خورده لطفا دوباره تلاش کنید")
         return redirect(reverse_lazy(self.success_url))
+
+
 # ======================================================================================================================
-class AdminProductListView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, ListView):
+class AdminProductListView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, ListView
+):
     template_name = "dashboard/admin/product/product-list.html"
     paginate_by = 10
 
@@ -84,38 +120,56 @@ class AdminProductListView(LoginRequiredMixin, HasAdminPermission, SuccessMessag
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['categories'] = ProductCategoryModels.objects.all()
+        context["categories"] = ProductCategoryModels.objects.all()
         context["total_items"] = self.get_queryset().count()
 
         return context
+
+
 # ======================================================================================================================
-class AdminProductUpdateView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView):
+class AdminProductUpdateView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView
+):
     template_name = "dashboard/admin/product/product-update.html"
     queryset = ProductModels.objects.all()
     success_message = "محصول شما با موفقیت ویرایش شد "
     form_class = AdminUpdateProductForm
 
     def get_success_url(self):
-        return reverse_lazy('dashboard:admin:product-update', kwargs={'pk': self.object.pk})
+        return reverse_lazy(
+            "dashboard:admin:product-update", kwargs={"pk": self.object.pk}
+        )
+
+
 # ======================================================================================================================
-class AdminProductDeleteView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, DeleteView):
+class AdminProductDeleteView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, DeleteView
+):
     template_name = "dashboard/admin/product/product-delete.html"
     queryset = ProductModels.objects.all()
     success_message = "محصول شما با موفقیت حذف شد"
-    success_url = reverse_lazy('dashboard:admin:products-list')
+    success_url = reverse_lazy("dashboard:admin:products-list")
+
+
 # ======================================================================================================================
-class AdminProductCreateView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, CreateView):
+class AdminProductCreateView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, CreateView
+):
     template_name = "dashboard/admin/product/product-create.html"
     queryset = ProductModels.objects.all()
     success_message = "محصول شما با موفقیت ایجاد شد"
-    success_url = reverse_lazy('dashboard:admin:products-list')
+    success_url = reverse_lazy("dashboard:admin:products-list")
     form_class = AdminUpdateProductForm
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
 # ======================================================================================================================
-class AdminCouponsListView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, ListView):
+class AdminCouponsListView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, ListView
+):
     paginate_by = 10
     model = CouponModels
     template_name = "dashboard/admin/coupon/coupon-list.html"
@@ -135,33 +189,49 @@ class AdminCouponsListView(LoginRequiredMixin, HasAdminPermission, SuccessMessag
         context = super().get_context_data(**kwargs)
         context["total_items"] = CouponModels.objects.count()
         return context
+
+
 # ======================================================================================================================
-class AdminCouponCreateView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, CreateView):
+class AdminCouponCreateView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, CreateView
+):
     model = CouponModels
     form_class = AdminCouponForm
     template_name = "dashboard/admin/coupon/coupon-create.html"
-    success_url = reverse_lazy('dashboard:admin:coupon-list')
+    success_url = reverse_lazy("dashboard:admin:coupon-list")
 
     def form_valid(self, form):
         messages.success(self.request, "کد تخفیف با موفقیت ایجاد شد.")
         return super().form_valid(form)
+
+
 # ======================================================================================================================
-class AdminCouponUpdateView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView):
+class AdminCouponUpdateView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView
+):
     model = CouponModels
     form_class = AdminCouponForm
     template_name = "dashboard/admin/coupon/coupon-update.html"
-    success_url = reverse_lazy('dashboard:admin:coupon-list')
+    success_url = reverse_lazy("dashboard:admin:coupon-list")
 
     def form_valid(self, form):
         messages.success(self.request, "کد تخفیف با موفقیت ویرایش شد.")
         return super().form_valid(form)
+
+
 # ======================================================================================================================
-class AdminCouponDeleteView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, DeleteView):
+class AdminCouponDeleteView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, DeleteView
+):
     model = CouponModels
     template_name = "dashboard/admin/coupon/coupon-delete.html"
-    success_url = reverse_lazy('dashboard:admin:coupon-list')
+    success_url = reverse_lazy("dashboard:admin:coupon-list")
+
+
 # ======================================================================================================================
-class AdminOrdersListView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, ListView):
+class AdminOrdersListView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, ListView
+):
     template_name = "dashboard/admin/orders/order-list.html"
     context_object_name = "object"
     paginate_by = 10
@@ -176,16 +246,13 @@ class AdminOrdersListView(LoginRequiredMixin, HasAdminPermission, SuccessMessage
     def get_queryset(self):
         queryset = OrderModels.objects.all().select_related("user__user_profile")
 
-
         search = self.request.GET.get("search")
         if search and search.isdigit():
             queryset = queryset.filter(id=int(search))
 
-
         status = self.request.GET.get("status")
         if status and status.isdigit():
             queryset = queryset.filter(status=int(status))
-
 
         order_by = self.request.GET.get("order_by")
         try:
@@ -201,32 +268,45 @@ class AdminOrdersListView(LoginRequiredMixin, HasAdminPermission, SuccessMessage
         context["total_items"] = self.get_queryset().count()
         context["statuses"] = OrderModels._meta.get_field("status").choices
         return context
+
+
 # ======================================================================================================================
-class AdminOrdersUpdateView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView):
+class AdminOrdersUpdateView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView
+):
     template_name = "dashboard/admin/orders/order-update.html"
     model = OrderModels
     form_class = AdminOrdersForm
-    success_url = reverse_lazy('dashboard:admin:orders-list')
+    success_url = reverse_lazy("dashboard:admin:orders-list")
     success_message = "سفارش با موفقیت به‌روزرسانی شد."
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['order_items'] = self.object.items.all()
+        context["order_items"] = self.object.items.all()
         return context
+
+
 # ======================================================================================================================
-class AdminOrdersInvoiceVIew(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, DetailView):
+class AdminOrdersInvoiceVIew(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, DetailView
+):
     template_name = "dashboard/admin/orders/order-invoice.html"
     context_object_name = "object"
 
     def get_queryset(self):
         return OrderModels.objects.all()
+
+
 # ======================================================================================================================
-class AdminCommentsListView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, ListView):
+class AdminCommentsListView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, ListView
+):
     template_name = "dashboard/admin/comments/comment-list.html"
     context_object_name = "object_list"
+
     def get_paginate_by(self, queryset):
 
-        page_size = self.request.GET.get("page_size",6)
+        page_size = self.request.GET.get("page_size", 6)
         if page_size:
             try:
                 return int(page_size)
@@ -255,17 +335,27 @@ class AdminCommentsListView(LoginRequiredMixin, HasAdminPermission, SuccessMessa
         context = super().get_context_data(**kwargs)
         context["total_items"] = self.get_queryset().count()
         return context
+
+
 # ======================================================================================================================
-class AdminCommentsUpdateView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView):
+class AdminCommentsUpdateView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, UpdateView
+):
     template_name = "dashboard/admin/comments/comment-update.html"
     model = ReviewModels
     form_class = AdminCommentsForm
-    success_url = reverse_lazy('dashboard:admin:comments-list')
+    success_url = reverse_lazy("dashboard:admin:comments-list")
     success_message = "پیام با موفقیت ویرایش شد"
+
+
 # ======================================================================================================================
-class AdminCommentsDeleteView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, DeleteView):
+class AdminCommentsDeleteView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, DeleteView
+):
     template_name = "dashboard/admin/comments/comment-delete.html"
     model = ReviewModels
-    success_url = reverse_lazy('dashboard:admin:comments-list')
+    success_url = reverse_lazy("dashboard:admin:comments-list")
     success_message = "پیام با موفقیت حذف شد"
+
+
 # ======================================================================================================================

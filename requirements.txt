@@ -9,3 +9,5 @@ django-widget-tweaks
 django-ckeditor
 requests
 psycopg2
+black
+flake8

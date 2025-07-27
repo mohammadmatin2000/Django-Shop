@@ -2,6 +2,7 @@ import requests
 import json
 from django.conf import settings
 
+
 class ZarinpalPayment:
     BASE_URL = "https://api.zarinpal.com/pg/v4/payment/"
     MERCHANT_ID = settings.MERCHANT_ID
@@ -12,7 +13,7 @@ class ZarinpalPayment:
         self.description = description
         self.metadata = {
             "mobile": str(mobile),  # مطمئن شو رشته باشه
-            "email": str(email)
+            "email": str(email),
         }
 
     def payment_request(self):
@@ -24,10 +25,7 @@ class ZarinpalPayment:
             "description": self.description,
             "metadata": self.metadata,
         }
-        headers = {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
+        headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = requests.post(url, headers=headers, data=json.dumps(payload))
         return response.json()
 
@@ -36,12 +34,9 @@ class ZarinpalPayment:
         payload = {
             "merchant_id": self.MERCHANT_ID,
             "amount": self.amount,
-            "authority": authority
+            "authority": authority,
         }
-        headers = {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
+        headers = {"Content-Type": "application/json", "Accept": "application/json"}
         response = requests.post(url, headers=headers, data=json.dumps(payload))
         return response.json()
 

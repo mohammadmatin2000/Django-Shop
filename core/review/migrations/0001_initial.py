@@ -11,22 +11,57 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('shop', '0008_productmodels_avg_rate'),
+        ("shop", "0008_productmodels_avg_rate"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ReviewModels',
+            name="ReviewModels",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('rate', models.IntegerField(default=5, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(5)])),
-                ('status', models.IntegerField(choices=[(0, 'در حال انتطار'), (2, 'تایید شده'), (3, 'رد شده')], default=0)),
-                ('description', models.TextField()),
-                ('created_date', models.DateTimeField(auto_now_add=True)),
-                ('updated_date', models.DateTimeField(auto_now=True)),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='shop.productmodels')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "rate",
+                    models.IntegerField(
+                        default=5,
+                        validators=[
+                            django.core.validators.MinValueValidator(0),
+                            django.core.validators.MaxValueValidator(5),
+                        ],
+                    ),
+                ),
+                (
+                    "status",
+                    models.IntegerField(
+                        choices=[(0, "در حال انتطار"), (2, "تایید شده"), (3, "رد شده")],
+                        default=0,
+                    ),
+                ),
+                ("description", models.TextField()),
+                ("created_date", models.DateTimeField(auto_now_add=True)),
+                ("updated_date", models.DateTimeField(auto_now=True)),
+                (
+                    "product",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="shop.productmodels",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

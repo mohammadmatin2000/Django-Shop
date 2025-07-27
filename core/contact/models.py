@@ -1,4 +1,6 @@
 from django.db import models
+
+
 # ======================================================================================================================
 class ContactMessage(models.Model):
     name = models.CharField(max_length=100)
@@ -11,6 +13,7 @@ class ContactMessage(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+
 # ======================================================================================================================
 class NewsletterSubscriber(models.Model):
     email = models.EmailField(unique=True)
@@ -18,4 +21,6 @@ class NewsletterSubscriber(models.Model):
 
     def __str__(self):
         return self.email
+
+
 # ======================================================================================================================

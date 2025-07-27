@@ -15,31 +15,69 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='ProductCategoryView',
+            name="ProductCategoryView",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=255)),
-                ('slug', models.SlugField(max_length=255)),
-                ('created_date', models.DateTimeField(auto_now_add=True)),
-                ('updated_date', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=255)),
+                ("slug", models.SlugField(max_length=255)),
+                ("created_date", models.DateTimeField(auto_now_add=True)),
+                ("updated_date", models.DateTimeField(auto_now=True)),
             ],
         ),
         migrations.CreateModel(
-            name='ProductView',
+            name="ProductView",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=255)),
-                ('slug', models.SlugField(max_length=255)),
-                ('image', models.ImageField(blank=True, default='images/default.jpg', null=True, upload_to='images/')),
-                ('description', models.TextField()),
-                ('stock', models.PositiveIntegerField(default=0)),
-                ('status', models.IntegerField(choices=[(1, 'فعال'), (2, 'غیر فعال')], default=1)),
-                ('price', models.DecimalField(decimal_places=0, max_digits=10)),
-                ('discount_percent', models.IntegerField(default=0)),
-                ('created_date', models.DateTimeField(auto_now_add=True)),
-                ('updated_date', models.DateTimeField(auto_now=True)),
-                ('category', models.ManyToManyField(blank=True, to='shop.productcategoryview')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=255)),
+                ("slug", models.SlugField(max_length=255)),
+                (
+                    "image",
+                    models.ImageField(
+                        blank=True,
+                        default="images/default.jpg",
+                        null=True,
+                        upload_to="images/",
+                    ),
+                ),
+                ("description", models.TextField()),
+                ("stock", models.PositiveIntegerField(default=0)),
+                (
+                    "status",
+                    models.IntegerField(
+                        choices=[(1, "فعال"), (2, "غیر فعال")], default=1
+                    ),
+                ),
+                ("price", models.DecimalField(decimal_places=0, max_digits=10)),
+                ("discount_percent", models.IntegerField(default=0)),
+                ("created_date", models.DateTimeField(auto_now_add=True)),
+                ("updated_date", models.DateTimeField(auto_now=True)),
+                (
+                    "category",
+                    models.ManyToManyField(blank=True, to="shop.productcategoryview"),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

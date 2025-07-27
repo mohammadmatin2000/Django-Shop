@@ -5,21 +5,23 @@ from django.shortcuts import redirect, get_object_or_404
 from .permission import HasCustomerPermission
 from django.conf import settings
 import requests, json
-from .models import UserAddressModel, OrderModels, OrderItemModels, CouponModels
+from .models import UserAddressModel, OrderModels, CouponModels
 from cart.models import CartModels, CartItemsModels
 from payment.models import PaymentModels, PaymentStatusModels
 from .forms import OrderCreateForm
 from payment import zarinpal_payment
 from django.contrib import messages
+
+
 # ======================================================================================================================
 class OrderCheckOutView(HasCustomerPermission, LoginRequiredMixin, FormView):
-    template_name = 'order/checkout.html'
+    template_name = "order/checkout.html"
     form_class = OrderCreateForm
-    success_url = reverse_lazy('order:complete')
+    success_url = reverse_lazy("order:complete")
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
+        kwargs["user"] = self.request.user
         return kwargs
 
     def get_context_data(self, **kwargs):
@@ -42,7 +44,9 @@ class OrderCheckOutView(HasCustomerPermission, LoginRequiredMixin, FormView):
                     self.request.session.pop("coupon_code", None)
 
                 elif self.request.user in coupon.used_by.all():
-                    messages.warning(self.request, "شما قبلاً از این کد استفاده کرده‌اید.")
+                    messages.warning(
+                        self.request, "شما قبلاً از این کد استفاده کرده‌اید."
+                    )
                     self.request.session.pop("coupon_code", None)
 
                 else:
@@ -53,15 +57,17 @@ class OrderCheckOutView(HasCustomerPermission, LoginRequiredMixin, FormView):
             except CouponModels.DoesNotExist:
                 self.request.session.pop("coupon_code", None)
 
-        context.update({
-            "addresses": UserAddressModel.objects.filter(user=self.request.user),
-            "total_price": total_price,
-            "total_tax": tax,
-            "final_price": final_price,
-            "coupon": coupon,
-            "discount": discount,
-            "checked_coupon_code": coupon_code,
-        })
+        context.update(
+            {
+                "addresses": UserAddressModel.objects.filter(user=self.request.user),
+                "total_price": total_price,
+                "total_tax": tax,
+                "final_price": final_price,
+                "coupon": coupon,
+                "discount": discount,
+                "checked_coupon_code": coupon_code,
+            }
+        )
         return context
 
     def form_valid(self, form):
@@ -71,9 +77,11 @@ class OrderCheckOutView(HasCustomerPermission, LoginRequiredMixin, FormView):
         cart = get_object_or_404(CartModels, user=user)
         cart_items = CartItemsModels.objects.filter(cart=cart)
 
-        address_obj = get_object_or_404(UserAddressModel, id=form.cleaned_data.get('address_id'), user=user)
+        address_obj = get_object_or_404(
+            UserAddressModel, id=form.cleaned_data.get("address_id"), user=user
+        )
 
-        coupon_code = self.request.session.get('coupon_code')
+        coupon_code = self.request.session.get("coupon_code")
         total_price = cart.calculate_total_price()
         tax = round((total_price * 9) / 100)
         final_price = total_price + tax
@@ -109,22 +117,22 @@ class OrderCheckOutView(HasCustomerPermission, LoginRequiredMixin, FormView):
             "metadata": {
                 "mobile": payment.mobile,
                 "email": payment.email,
-            }
+            },
         }
 
-        headers = {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        }
+        headers = {"Content-Type": "application/json", "Accept": "application/json"}
 
-        response = requests.post('https://api.zarinpal.com/pg/v4/payment/request.json', data=json.dumps(data),
-                                 headers=headers)
+        response = requests.post(
+            "https://api.zarinpal.com/pg/v4/payment/request.json",
+            data=json.dumps(data),
+            headers=headers,
+        )
         result = response.json()
 
         print(result)
 
-        if result.get('data') and result['data'].get('code') == 100:
-            authority = result['data']['authority']
+        if result.get("data") and result["data"].get("code") == 100:
+            authority = result["data"]["authority"]
             payment.authority = authority
             payment.save()
 
@@ -136,6 +144,8 @@ class OrderCheckOutView(HasCustomerPermission, LoginRequiredMixin, FormView):
         else:
             messages.error(self.request, "خطا در اتصال به درگاه پرداخت.")
             return redirect("cart:checkout")
+
+
 # ======================================================================================================================
 class CheckCouponView(View):
     def post(self, request, *args, **kwargs):
@@ -165,10 +175,16 @@ class CheckCouponView(View):
             messages.error(request, "❌ کد تخفیف یافت نشد.")
 
         return redirect("order:checkout")
+
+
 # ======================================================================================================================
 class OrderCompleteView(HasCustomerPermission, LoginRequiredMixin, TemplateView):
-    template_name = 'order/complete.html'
+    template_name = "order/complete.html"
+
+
 # ======================================================================================================================
 class OrderFailedView(HasCustomerPermission, LoginRequiredMixin, TemplateView):
-    template_name = 'order/failed.html'
+    template_name = "order/failed.html"
+
+
 # ======================================================================================================================

@@ -7,28 +7,46 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='ContactMessage',
+            name="ContactMessage",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('last_name', models.CharField(max_length=100)),
-                ('phone_number', models.CharField(max_length=20, verbose_name='شماره تماس')),
-                ('email', models.EmailField(max_length=254)),
-                ('message', models.TextField()),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                ("last_name", models.CharField(max_length=100)),
+                (
+                    "phone_number",
+                    models.CharField(max_length=20, verbose_name="شماره تماس"),
+                ),
+                ("email", models.EmailField(max_length=254)),
+                ("message", models.TextField()),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
             ],
         ),
         migrations.CreateModel(
-            name='NewsletterSubscriber',
+            name="NewsletterSubscriber",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('email', models.EmailField(max_length=254, unique=True)),
-                ('subscribed_at', models.DateTimeField(auto_now_add=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("email", models.EmailField(max_length=254, unique=True)),
+                ("subscribed_at", models.DateTimeField(auto_now_add=True)),
             ],
         ),
     ]

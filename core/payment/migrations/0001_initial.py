@@ -7,25 +7,38 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='PaymentModels',
+            name="PaymentModels",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('amount', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('callback_url', models.URLField()),
-                ('description', models.TextField()),
-                ('mobile', models.TextField()),
-                ('email', models.TextField()),
-                ('status', models.IntegerField(choices=[(0, 'در انتطار'), (1, 'موفقیت'), (2, 'شکست خورده')], default=0)),
-                ('authority', models.CharField(blank=True, max_length=255, null=True)),
-                ('ref_id', models.CharField(blank=True, max_length=255, null=True)),
-                ('is_verified', models.BooleanField(default=False)),
-                ('created_date', models.DateTimeField(auto_now_add=True)),
-                ('updated_date', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("amount", models.DecimalField(decimal_places=2, max_digits=10)),
+                ("callback_url", models.URLField()),
+                ("description", models.TextField()),
+                ("mobile", models.TextField()),
+                ("email", models.TextField()),
+                (
+                    "status",
+                    models.IntegerField(
+                        choices=[(0, "در انتطار"), (1, "موفقیت"), (2, "شکست خورده")],
+                        default=0,
+                    ),
+                ),
+                ("authority", models.CharField(blank=True, max_length=255, null=True)),
+                ("ref_id", models.CharField(blank=True, max_length=255, null=True)),
+                ("is_verified", models.BooleanField(default=False)),
+                ("created_date", models.DateTimeField(auto_now_add=True)),
+                ("updated_date", models.DateTimeField(auto_now=True)),
             ],
         ),
     ]

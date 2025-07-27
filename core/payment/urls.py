@@ -1,8 +1,9 @@
 from django.urls import path
 from .views import ZarinpalVerifyView
+
 # ======================================================================================================================
-app_name = 'payment'
+app_name = "payment"
 urlpatterns = [
-    path('verify/', ZarinpalVerifyView.as_view()),
+    path("verify/", ZarinpalVerifyView.as_view()),
 ]
 # ======================================================================================================================

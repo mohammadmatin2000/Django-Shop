@@ -3,12 +3,11 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.sessions.models import Session
 from .models import User, Profile
 
+
 # ======================================================================================================================
 # Custom Django Admin Configuration for User model
 class CustomUserAdmin(UserAdmin):
-    model = (
-        User  # Specifies the model that this admin class is based on
-    )
+    model = User  # Specifies the model that this admin class is based on
 
     # Defines the fields displayed in the admin panel list view
     list_display = (
@@ -39,9 +38,7 @@ class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (
             "Authentication",
-            {
-                "fields": ("email", "password")
-            },
+            {"fields": ("email", "password")},
         ),
         (
             "Permissions",
@@ -51,21 +48,17 @@ class CustomUserAdmin(UserAdmin):
                     "is_superuser",
                     "is_active",
                     "is_verified",
-                    "type"
+                    "type",
                 )
             },
         ),
         (
             "Group Permissions",
-            {
-                "fields": ("groups", "user_permissions")
-            },
+            {"fields": ("groups", "user_permissions")},
         ),
         (
             "Important Date",
-            {
-                "fields": ("last_login",)
-            },
+            {"fields": ("last_login",)},
         ),
     )
 
@@ -86,10 +79,15 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
     )
+
+
 class SessionAdmin(admin.ModelAdmin):
     def _session_data(self, obj):
         return obj.get_decoded()
-    list_display = ['session_key', '_session_data', 'expire_date']
+
+    list_display = ["session_key", "_session_data", "expire_date"]
+
+
 # ======================================================================================================================
 # Registers the User model with the custom admin configuration
 admin.site.register(User, CustomUserAdmin)
@@ -99,4 +97,3 @@ admin.site.register(Profile)
 
 admin.site.register(Session, SessionAdmin)
 # ======================================================================================================================
-

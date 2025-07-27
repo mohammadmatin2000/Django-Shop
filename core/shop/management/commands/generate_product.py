@@ -10,8 +10,9 @@ from accounts.models import User, UserType
 # مسیر اصلی فایل‌ها
 BASE_DIR = Path(__file__).resolve().parent
 
+
 class Command(BaseCommand):
-    help = 'Generate fake products'
+    help = "Generate fake products"
 
     def handle(self, *args, **options):
         fake = Faker("fa_IR")
@@ -19,15 +20,23 @@ class Command(BaseCommand):
         try:
             user = User.objects.get(type=UserType.admin.value)
         except User.DoesNotExist:
-            self.stdout.write(self.style.ERROR('Admin user does not exist'))
+            self.stdout.write(self.style.ERROR("Admin user does not exist"))
             return
 
         # لیست تصاویر موجود
         image_list = [
-            "./images/img1.png", "./images/img2.png", "./images/img3.png",
-            "./images/img4.png", "./images/img5.png", "./images/img6.png",
-            "./images/img7.png", "./images/img8.png", "./images/img9.png",
-            "./images/img10.png", "./images/img11.png", "./images/img12.png",
+            "./images/img1.png",
+            "./images/img2.png",
+            "./images/img3.png",
+            "./images/img4.png",
+            "./images/img5.png",
+            "./images/img6.png",
+            "./images/img7.png",
+            "./images/img8.png",
+            "./images/img9.png",
+            "./images/img10.png",
+            "./images/img11.png",
+            "./images/img12.png",
             "./images/img13.png",
         ]
 
@@ -40,7 +49,7 @@ class Command(BaseCommand):
 
         for i in range(num_products):
             selected_image = shuffled_images[i % len(shuffled_images)]
-            title = ' '.join([fake.word() for _ in range(2)])
+            title = " ".join([fake.word() for _ in range(2)])
             slug = slugify(title, allow_unicode=True)
             description = fake.paragraph(nb_sentences=10)
             brief_description = fake.paragraph(nb_sentences=1)
@@ -69,4 +78,6 @@ class Command(BaseCommand):
                 )
                 product.category.set(selected_categories)
 
-        self.stdout.write(self.style.SUCCESS(f'Successfully generated {num_products} fake products'))
+        self.stdout.write(
+            self.style.SUCCESS(f"Successfully generated {num_products} fake products")
+        )

@@ -4,7 +4,10 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from django import forms
 from django.core.exceptions import ValidationError
+
 User = get_user_model()
+
+
 # ======================================================================================================================
 class CustomSignupForm(forms.ModelForm):
     password1 = forms.CharField(label="رمز عبور", widget=forms.PasswordInput)
@@ -12,18 +15,18 @@ class CustomSignupForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['email']
+        fields = ["email"]
 
     def clean_email(self):
-        email = self.cleaned_data.get('email')
+        email = self.cleaned_data.get("email")
         if User.objects.filter(email=email).exists():
             raise ValidationError("این ایمیل قبلاً ثبت شده است.")
         return email
 
     def clean(self):
         cleaned_data = super().clean()
-        p1 = cleaned_data.get('password1')
-        p2 = cleaned_data.get('password2')
+        p1 = cleaned_data.get("password1")
+        p2 = cleaned_data.get("password2")
 
         if p1 and p2 and p1 != p2:
             raise ValidationError("رمز عبور و تکرار آن یکسان نیستند.")
@@ -32,16 +35,20 @@ class CustomSignupForm(forms.ModelForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.username = self.cleaned_data['email']  # اگر فقط با ایمیل لاگین می‌کنی
-        user.set_password(self.cleaned_data['password1'])
+        user.username = self.cleaned_data["email"]  # اگر فقط با ایمیل لاگین می‌کنی
+        user.set_password(self.cleaned_data["password1"])
         if commit:
             user.save()
         return user
+
+
 # ======================================================================================================================
 class CustomAuthenticationForm(AuthenticationForm):
     def confirm_login_allowed(self, user):
         if not user.is_active:
-            raise ValidationError("حساب کاربری شما غیرفعال است.", code='inactive')
+            raise ValidationError("حساب کاربری شما غیرفعال است.", code="inactive")
+
+
 # ======================================================================================================================
 class SetPasswordForm(forms.Form):
     """
@@ -87,4 +94,6 @@ class SetPasswordForm(forms.Form):
         if commit:
             self.user.save()
         return self.user
+
+
 # ======================================================================================================================

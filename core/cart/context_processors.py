@@ -1,4 +1,6 @@
 from .models import CartModels
+
+
 # ======================================================================================================================
 def cart_item_count(request):
     if request.user.is_authenticated:
@@ -9,7 +11,7 @@ def cart_item_count(request):
             total_quantity = 0
     else:
         total_quantity = 0
-    return {
-        'total_quantity': total_quantity
-    }
+    return {"total_quantity": total_quantity}
+
+
 # ======================================================================================================================

@@ -6,23 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('order', '0003_useraddressmodel'),
+        ("order", "0003_useraddressmodel"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='ordermodels',
-            name='final_price',
+            model_name="ordermodels",
+            name="final_price",
             field=models.DecimalField(decimal_places=0, default=0, max_digits=10),
         ),
         migrations.AddField(
-            model_name='ordermodels',
-            name='tax',
+            model_name="ordermodels",
+            name="tax",
             field=models.DecimalField(decimal_places=0, default=0, max_digits=10),
         ),
         migrations.AlterField(
-            model_name='ordermodels',
-            name='total_price',
+            model_name="ordermodels",
+            name="total_price",
             field=models.DecimalField(decimal_places=0, max_digits=12),
         ),
     ]

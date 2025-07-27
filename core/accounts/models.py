@@ -5,11 +5,15 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from .validators import validate_iranian_cellphone_number
+
+
 # ======================================================================================================================
 class UserType(models.IntegerChoices):
     customer = 1, _("customer")
     admin = 2, _("admin")
     superuser = 3, _("superuser")
+
+
 # ======================================================================================================================
 class UserManager(BaseUserManager):
     """
@@ -44,6 +48,8 @@ class UserManager(BaseUserManager):
         if extra_fields.get("is_superuser") is not True:
             raise ValueError(_("Superuser must have is_superuser=True."))
         return self.create_user(email, password, **extra_fields)
+
+
 # ======================================================================================================================
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_("email address"), unique=True)
@@ -51,7 +57,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_verified = models.BooleanField(default=False)
     type = models.IntegerField(
-        choices=UserType.choices, default=UserType.customer.value)
+        choices=UserType.choices, default=UserType.customer.value
+    )
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
@@ -63,13 +70,21 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
 # ======================================================================================================================
 class Profile(models.Model):
-    user = models.OneToOneField('User', on_delete=models.CASCADE, related_name="user_profile")
+    user = models.OneToOneField(
+        "User", on_delete=models.CASCADE, related_name="user_profile"
+    )
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    phone_number = models.CharField(max_length=12, validators=[validate_iranian_cellphone_number])
-    image = models.ImageField(upload_to="profile/", default="profile/default.png", blank=True, null=True)
+    phone_number = models.CharField(
+        max_length=12, validators=[validate_iranian_cellphone_number]
+    )
+    image = models.ImageField(
+        upload_to="profile/", default="profile/default.png", blank=True, null=True
+    )
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -77,9 +92,13 @@ class Profile(models.Model):
         if self.first_name or self.last_name:
             return self.first_name + " " + self.last_name
         return "کاربر جدید"
+
+
 # ======================================================================================================================
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance, pk=instance.pk)
+
+
 # ======================================================================================================================

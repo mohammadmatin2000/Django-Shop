@@ -3,11 +3,15 @@ from django.utils import timezone
 from shop.models import ProductModels
 from payment.models import PaymentModels
 from accounts.models import Profile
+
+
 # ======================================================================================================================
 class OrderStatusModels(models.IntegerChoices):
     PENDING = 1, "در انتظار"
     SUCCESS = 2, "موفق"
     FAILED = 3, "ناموفق"
+
+
 # ======================================================================================================================
 class CouponModels(models.Model):
     code = models.CharField(max_length=20, unique=True)
@@ -23,9 +27,11 @@ class CouponModels(models.Model):
 
     def __str__(self):
         return f"{self.code} - {self.discount_percent}%"
+
+
 # ======================================================================================================================
 class UserAddressModel(models.Model):
-    user = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
     address = models.CharField(max_length=250)
     state = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
@@ -35,19 +41,33 @@ class UserAddressModel(models.Model):
 
     def __str__(self):
         return f"{self.address}"
+
+
 # ======================================================================================================================
 class OrderModels(models.Model):
-    user = models.ForeignKey("accounts.User", on_delete=models.PROTECT, related_name="orders")
+    user = models.ForeignKey(
+        "accounts.User", on_delete=models.PROTECT, related_name="orders"
+    )
     address = models.CharField(max_length=255)
     state = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
     zip_code = models.CharField(max_length=20)
-    payment = models.ForeignKey(PaymentModels, on_delete=models.SET_NULL, null=True, blank=True)
+    payment = models.ForeignKey(
+        PaymentModels, on_delete=models.SET_NULL, null=True, blank=True
+    )
     tax = models.DecimalField(max_digits=10, decimal_places=0, default=0)
     final_price = models.DecimalField(max_digits=10, decimal_places=0, default=0)
     total_price = models.DecimalField(max_digits=12, decimal_places=0)
-    status = models.IntegerField(choices=OrderStatusModels.choices, default=OrderStatusModels.PENDING)
-    coupon = models.ForeignKey(CouponModels, on_delete=models.SET_NULL, null=True, blank=True, related_name="orders")
+    status = models.IntegerField(
+        choices=OrderStatusModels.choices, default=OrderStatusModels.PENDING
+    )
+    coupon = models.ForeignKey(
+        CouponModels,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="orders",
+    )
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -58,7 +78,7 @@ class OrderModels(models.Model):
     def get_status(self):
         return {
             "value": self.status,
-            "label": dict(OrderStatusModels.choices).get(self.status, 'نامشخص')
+            "label": dict(OrderStatusModels.choices).get(self.status, "نامشخص"),
         }
 
     @property
@@ -84,11 +104,19 @@ class OrderModels(models.Model):
 
     def get_full_name(self):
         return f"{self.profile.first_name} {self.profile.last_name}"
+
+
 # ======================================================================================================================
 class OrderItemModels(models.Model):
-    order = models.ForeignKey(OrderModels, on_delete=models.CASCADE, related_name="items")
-    product = models.ForeignKey(ProductModels, on_delete=models.PROTECT, related_name="product_items")
-    price = models.DecimalField(max_digits=10, decimal_places=2)  # قیمت واحد در زمان خرید
+    order = models.ForeignKey(
+        OrderModels, on_delete=models.CASCADE, related_name="items"
+    )
+    product = models.ForeignKey(
+        ProductModels, on_delete=models.PROTECT, related_name="product_items"
+    )
+    price = models.DecimalField(
+        max_digits=10, decimal_places=2
+    )  # قیمت واحد در زمان خرید
     quantity = models.PositiveIntegerField()
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
@@ -99,4 +127,6 @@ class OrderItemModels(models.Model):
     @property
     def get_total_price(self):
         return self.price * self.quantity
+
+
 # ======================================================================================================================
