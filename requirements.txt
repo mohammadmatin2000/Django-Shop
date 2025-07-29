@@ -13,3 +13,6 @@ black
 flake8
 gunicorn
 django-debug-toolbar
+django-storages[boto3]
+pytest
+pytest-django

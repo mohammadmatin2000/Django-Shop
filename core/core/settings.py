@@ -187,3 +187,14 @@ INTERNAL_IPS = [
     "172.20.10.5",
 ]
 
+
+
+DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+
+AWS_ACCESS_KEY_ID = config("MINIO_ACCESS_KEY", default="minioadmin")
+AWS_SECRET_ACCESS_KEY = config("MINIO_SECRET_KEY", default="minioadmin")
+AWS_STORAGE_BUCKET_NAME = config("MINIO_BUCKET_NAME", default="mybucket")
+AWS_S3_ENDPOINT_URL = config("MINIO_ENDPOINT", default="http://127.0.0.1:9000")
+AWS_S3_ADDRESSING_STYLE = "path"
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
