@@ -1,0 +1,107 @@
+{% extends 'dashboard/admin/base.html' %}
+{% load humanize %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light mb-0">
+        <li class="breadcrumb-item active" aria-current="page">مشترکین خبرنامه</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header border-bottom">
+        <h5>لیست مشترکین خبرنامه</h5>
+        <h6>تعداد کل مشترکین: {{ total_items }}</h6>
+    </div>
+
+    <div class="card-body">
+        <form method="get" action="{% url 'dashboard:admin:newsletter-list' %}" class="row g-3 mb-4">
+            <div class="col-md-10">
+                <input type="text" class="form-control" name="q" placeholder="جستجو بر اساس ایمیل"
+                       value="{{ request.GET.q }}">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">جستجو</button>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>ایمیل</th>
+                    <th>تاریخ عضویت</th>
+                    <th>عملیات</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for object in object_list %}
+                <tr>
+                    <td>{{ object.id }}</td>
+                    <td>{{ object.email }}</td>
+                    <td>{{ object.subscribed_at|date:"Y/m/d H:i" }}</td>
+                    <td>
+                        <a href="{% url 'dashboard:admin:newsletter-detail' pk=object.pk %}"
+                           class="btn btn-sm btn-info">جزئیات</a>
+                        <a href="{% url 'dashboard:admin:newsletter-delete' pk=object.pk %}"
+                           class="btn btn-sm btn-danger">حذف</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center">موردی یافت نشد.</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+        <!-- Pagination -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <button class="page-link" onclick="changePage(`{{ page_obj.previous_page_number }}`)"
+                            aria-label="Previous">
+                            <span aria-hidden="true">
+                                <i class="bi-chevron-double-right small"></i>
+                            </span>
+                    </button>
+                </li>
+                {% endif %}
+                {{page_obj.page_range}}
+                {% for i in page_obj.paginator.page_range %}
+                {% if page_obj.number == i %}
+                <li class="page-item active"><a class="page-link">{{ i }}</a></li>
+                {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                <li class="page-item">
+                    <button class="page-link" onclick="changePage(`{{i}}`)">{{ i }}</button>
+                </li>
+
+                {% endif %}
+
+                {% endfor %}
+
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <button class="page-link" onclick="changePage(`{{ page_obj.next_page_number }}`)"
+                            aria-label="Previous">
+                                <span aria-hidden="true">
+                                    <i class="bi-chevron-double-left small"></i>
+                                </span>
+                    </button>
+                </li>
+                {% endif %}
+
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

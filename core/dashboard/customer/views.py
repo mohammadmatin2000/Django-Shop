@@ -10,6 +10,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
+from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from django.shortcuts import redirect
 from ..permission import HasCustomerPermission
@@ -42,8 +43,6 @@ class CustomerSecurityDashboardView(
     form_class = CustomerPasswordChangeForm
     success_url = reverse_lazy("dashboard:customer:security")
     success_message = "رمز با موفقیت تغییر کرد"
-
-
 # ======================================================================================================================
 class CustomerProfileDashboardView(
     LoginRequiredMixin, HasCustomerPermission, SuccessMessageMixin, UpdateView
@@ -55,8 +54,6 @@ class CustomerProfileDashboardView(
 
     def get_object(self, queryset=None):
         return self.request.user.user_profile
-
-
 # ======================================================================================================================
 class CustomerProfileImageDashboardView(
     LoginRequiredMixin, HasCustomerPermission, SuccessMessageMixin, UpdateView
@@ -72,8 +69,6 @@ class CustomerProfileImageDashboardView(
     def form_valid(self, form):
         messages.error("آپلود عکس به مشکل خورده لطفا دوباره تلاش کنید")
         return redirect(reverse_lazy(self.success_url))
-
-
 # ======================================================================================================================
 class CustomerAddressListView(LoginRequiredMixin, HasCustomerPermission, ListView):
     template_name = "dashboard/customer/address/address-list.html"
@@ -86,8 +81,6 @@ class CustomerAddressListView(LoginRequiredMixin, HasCustomerPermission, ListVie
             except FieldError:
                 pass
         return queryset
-
-
 # ======================================================================================================================
 class CustomerAddressCreateView(
     LoginRequiredMixin, HasCustomerPermission, SuccessMessageMixin, CreateView
@@ -178,6 +171,16 @@ class CustomerOrdersListView(LoginRequiredMixin, HasCustomerPermission, ListView
         context["total_items"] = self.get_queryset().count()
         return context
 
+
+# ======================================================================================================================
+class CustomerOrdersDeleteView(LoginRequiredMixin, HasCustomerPermission, SuccessMessageMixin, DeleteView):
+    model = OrderModels
+    template_name = 'dashboard/customer/orders/order-delete.html'
+    success_url = reverse_lazy('dashboard:customer:orders-list')
+    success_message = "سفارش با موفقیت حذف شد."
+
+    def get_queryset(self):
+        return OrderModels.objects.filter(user=self.request.user)
 
 # ======================================================================================================================
 class CustomerOrdersDetailView(LoginRequiredMixin, HasCustomerPermission, DetailView):

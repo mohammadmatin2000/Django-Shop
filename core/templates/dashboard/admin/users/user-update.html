@@ -1,0 +1,43 @@
+{% extends 'dashboard/admin/base.html' %}
+{% load widget_tweaks %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb breadcrumb-light mb-0">
+    <li class="breadcrumb-item"><a href="{% url 'dashboard:admin:users-list' %}">لیست کاربران</a></li>
+    <li class="breadcrumb-item active" aria-current="page">ویرایش کاربر</li>
+  </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    <h5>ویرایش کاربر {{ object.username }}</h5>
+  </div>
+  <div class="card-body">
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="mb-3">
+        <label class="form-label">نام</label>
+        {{ form.first_name|add_class:"form-control" }}
+      </div>
+      <div class="mb-3">
+        <label class="form-label">نام خانوادگی</label>
+        {{ form.last_name|add_class:"form-control" }}
+      </div>
+      <div class="form-check mb-3">
+        {{ form.is_active }}
+        <label class="form-check-label">فعال</label>
+      </div>
+      <div class="form-check mb-3">
+        {{ form.is_staff }}
+        <label class="form-check-label">ادمین</label>
+      </div>
+
+      <button type="submit" class="btn btn-success">ذخیره</button>
+      <a href="{% url 'dashboard:admin:users-list' %}" class="btn btn-secondary">بازگشت</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

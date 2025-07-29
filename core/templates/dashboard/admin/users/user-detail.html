@@ -1,0 +1,28 @@
+{% extends 'dashboard/admin/base.html' %}
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb breadcrumb-light mb-0">
+    <li class="breadcrumb-item"><a href="{% url 'dashboard:admin:users-list' %}">لیست کاربران</a></li>
+    <li class="breadcrumb-item active" aria-current="page">جزئیات کاربر</li>
+  </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header">
+    <h5>جزئیات کاربر {{ object.username }}</h5>
+  </div>
+  <div class="card-body">
+    <p><strong>ایمیل:</strong> {{ object.user.email }}</p>
+    <p><strong>نام:</strong> {{ object.first_name }}</p>
+    <p><strong>نام خانوادگی:</strong> {{ object.last_name }}</p>
+    <p><strong>تاریخ عضویت:</strong> {{ object.date_joined|date:"Y/m/d H:i" }}</p>
+    <p><strong>وضعیت:</strong> {% if object.user.is_active %}فعال{% else %}غیرفعال{% endif %}</p>
+
+    <a href="{% url 'dashboard:admin:user-update' pk=object.id %}" class="btn btn-warning">ویرایش</a>
+    <a href="{% url 'dashboard:admin:user-delete' pk=object.id %}" class="btn btn-danger">حذف</a>
+    <a href="{% url 'dashboard:admin:users-list' %}" class="btn btn-secondary">بازگشت</a>
+  </div>
+</div>
+{% endblock %}

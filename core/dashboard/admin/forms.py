@@ -6,6 +6,7 @@ from shop.models import ProductModels
 from order.models import CouponModels
 from order.models import OrderModels
 from review.models import ReviewModels
+from accounts.models import Profile,User
 
 
 # ======================================================================================================================

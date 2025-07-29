@@ -1,0 +1,31 @@
+{% extends 'dashboard/admin/base.html' %}
+{% load widget_tweaks %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb breadcrumb-light mb-0">
+    <li class="breadcrumb-item active" aria-current="page">حذف پیام تماس</li>
+  </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body text-center">
+    <h4 class="text-danger">آیا مطمئن هستید که می‌خواهید این پیام را حذف کنید؟</h4>
+    <p>نام فرستنده: <strong>{{ object.name }} {{ object.last_name }}</strong></p>
+    <p>ایمیل: <strong>{{ object.email }}</strong></p>
+    <p>شماره تماس: <strong>{{ object.phone_number }}</strong></p>
+    <p>متن پیام: <em>{{ object.message|truncatewords:20 }}</em></p>
+    <p>شناسه پیام: <strong>{{ object.pk }}</strong></p>
+
+    <form action="{% url 'dashboard:admin:contact-delete' pk=object.pk %}" method="post">
+      {% csrf_token %}
+      <div class="d-flex justify-content-center gap-3 mt-4">
+        <a href="{% url 'dashboard:admin:contact-list' %}" class="btn btn-secondary">بازگشت</a>
+        <button type="submit" class="btn btn-danger">بله، حذف شود</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

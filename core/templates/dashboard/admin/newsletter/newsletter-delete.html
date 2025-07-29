@@ -1,0 +1,27 @@
+{% extends 'dashboard/admin/base.html' %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb breadcrumb-light mb-0">
+        <li class="breadcrumb-item active" aria-current="page">حذف مشترک خبرنامه</li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body text-center">
+        <h4 class="text-danger">آیا مطمئن هستید که می‌خواهید این مشترک را حذف کنید؟</h4>
+        <p><strong>ایمیل:</strong> {{ object.email }}</p>
+        <p><strong>تاریخ عضویت:</strong> {{ object.subscribed_at|date:"Y/m/d H:i" }}</p>
+
+        <form method="post" action="{% url 'dashboard:admin:newsletter-delete' pk=object.pk %}">
+            {% csrf_token %}
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <a href="{% url 'dashboard:admin:newsletter-list' %}" class="btn btn-secondary">بازگشت</a>
+                <button type="submit" class="btn btn-danger">بله، حذف شود</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

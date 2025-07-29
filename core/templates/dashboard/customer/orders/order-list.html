@@ -131,7 +131,16 @@
                                aria-label="مشاهده جزئیات سفارش {{ object.id }}">
                                 مشاهده سفارش
                             </a>
+
+                            <!-- فرم حذف -->
+                            <form method="post" action="{% url 'dashboard:customer:orders-delete' pk=object.pk %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm" aria-label="حذف سفارش {{ object.id }}" >
+                                    <i class="bi-trash" ></i> حذف سفارش
+                                </button>
+                            </form>
                         </div>
+
                     </div>
 
                 </div>

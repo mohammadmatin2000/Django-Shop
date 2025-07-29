@@ -1,0 +1,27 @@
+{% extends 'dashboard/admin/base.html' %}
+{% load humanize %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb breadcrumb-light mb-0">
+    <li class="breadcrumb-item"><a href="{% url 'dashboard:admin:newsletter-list' %}">خبرنامه</a></li>
+    <li class="breadcrumb-item active" aria-current="page">جزئیات اشتراک</li>
+  </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header border-bottom">
+    <h5>جزئیات اشتراک ایمیل</h5>
+  </div>
+  <div class="card-body">
+    <p><strong>ایمیل:</strong> {{ object.email }}</p>
+    <p><strong>تاریخ اشتراک:</strong> {{ object.subscribed_at|date:"Y/m/d H:i" }}</p>
+
+    <div class="d-flex justify-content-start gap-2 mt-4">
+      <a href="{% url 'dashboard:admin:newsletter-list' %}" class="btn btn-secondary">بازگشت به لیست</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

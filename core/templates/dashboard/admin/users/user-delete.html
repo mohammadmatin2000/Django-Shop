@@ -1,0 +1,27 @@
+{% extends 'dashboard/admin/base.html' %}
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb breadcrumb-light mb-0">
+    <li class="breadcrumb-item"><a href="{% url 'dashboard:admin:users-list' %}">لیست کاربران</a></li>
+    <li class="breadcrumb-item active" aria-current="page">حذف کاربر</li>
+  </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-body text-center">
+    <h4 class="text-danger">آیا مطمئنی که می‌خواهی کاربر {{ object.username }} را حذف کنی؟</h4>
+    <p>ایمیل: <strong>{{ object.email }}</strong></p>
+    <p>آیدی کاربر: <strong>{{ object.pk }}</strong></p>
+
+    <form action="" method="post">
+      {% csrf_token %}
+      <div class="d-flex justify-content-center gap-3 mt-4">
+        <a href="{% url 'dashboard:admin:users-list' %}" class="btn btn-secondary">بازگشت</a>
+        <button type="submit" class="btn btn-danger">بله، حذف شود</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

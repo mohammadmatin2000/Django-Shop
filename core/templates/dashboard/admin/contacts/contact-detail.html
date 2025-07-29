@@ -1,0 +1,31 @@
+{% extends 'dashboard/admin/base.html' %}
+{% load widget_tweaks %}
+
+{% block breadcrumb %}
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb breadcrumb-light mb-0">
+    <li class="breadcrumb-item"><a href="{% url 'dashboard:admin:contact-list' %}">پیام‌های تماس</a></li>
+    <li class="breadcrumb-item active" aria-current="page">جزئیات پیام</li>
+  </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="card-header border-bottom">
+    <h4>جزئیات پیام شماره {{ object.pk }}</h4>
+  </div>
+  <div class="card-body">
+    <p><strong>نام فرستنده:</strong> {{ object.name }} {{ object.last_name }}</p>
+    <p><strong>ایمیل:</strong> {{ object.email }}</p>
+    <p><strong>شماره تماس:</strong> {{ object.phone_number }}</p>
+    <p><strong>تاریخ ارسال:</strong> {{ object.created_at|date:"Y/m/d H:i" }}</p>
+    <p><strong>متن پیام:</strong> {{ object.message }} </p>
+
+    <div class="d-flex justify-content-center gap-3 mt-4">
+      <a href="{% url 'dashboard:admin:contact-list' %}" class="btn btn-secondary">بازگشت به لیست پیام‌ها</a>
+      <a href="{% url 'dashboard:admin:contact-delete' pk=object.pk %}" class="btn btn-danger">حذف پیام</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
