@@ -9,7 +9,11 @@
 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/> </a>
 <a href="https://jquery.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/jquery/jquery-vertical.svg" alt="jquery" width="60" height="40"/> </a>
 <a href="https://www.w3.org/html/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/> </a>
+<a href="https://www.gunicorn.org" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/gunicorn/gunicorn-icon.svg" alt="gunicorn" width="40" height="40"/> </a>
+<a href="https://www.nginx.com" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/nginx/nginx-icon.svg" alt="nginx" width="40" height="40"/> </a>
+<a href="https://www.nginx.com" target="_blank" rel="noreferrer"> <img src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Pytest_logo.svg" alt="nginx" width="40" height="40"/> </a>
 <a href="https://www.w3schools.com/css/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/> </a>
+<a href="https://min.io/" target="_blank" rel="noreferrer"> <img src="https://dl.min.io/logo/Minio_logo_light/Minio_logo_light.svg" alt="Minio" width="50" height="50"/> </a>
 
 </p>
 
@@ -55,6 +59,9 @@ I separate all codes and files for use it on [Development](#development) or [Dep
 ### Reformatted code
 I reformat all codes depends on PEP8 rule with [Flake8 and Black](#flake8-and-black)
 
+### Testing system
+I used [Pytest](#pytest) for testing system and test various parts of site
+
 
 <img width="1894" height="912" alt="Screenshot 2025-07-27 233927" src="https://github.com/user-attachments/assets/f6332793-1093-46b1-ae75-8c4d9e067932" />
 
@@ -80,7 +87,8 @@ This shop has 3 types of user :
 Superuser can remove or add some stuff that admin couldn't
 
 Each of them has a specific profile that has own properties
-
+### Sitemap
+A sitemap is a file where you provide information about the pages, videos, and other files on your site, and the relationships between them
 
 ### Payment Method
 I used <a href='https://www.zarinpal.com/'>ZarinPal</a> for my Payment Method
@@ -142,18 +150,19 @@ As i said <a href='https://pypi.org/project/flake8-django/'>Flake8</a> and <a hr
 docker-comopose exec backend sh -c "black . -l 78 && flake8"
 ```
 
-<hr>
 
 ## Deployment
 ```bash
 docker-compose -f docker-compose-deployment.yml up --build -d
 ```
-By running this command everything creat and run automaticlly, after everything is over you can oppen <a href='127.0.0.1:8000'>127.0.0.1:8000</a> on your browser to see the resault
+By running this command everything creat and run automaticlly, after everything is over you can oppen <a href='127.0.0.1:8000'>127.0.0.1</a> on your browser to see the resault
 
 This version of website is for <b>normal user</b> to take a look to site
 
 This version has some tools that it is not exist in [Development](#development) like :
-
+### Gunicorn and Nginx
+To set your project to deployment mode, you have to change DEBUG mode to False . This thing is a good way to make your site more secure but there is a disadvantages, statics and medias doesn't serve moreover django can't transfer requests on website so it's the time that <a href='https://gunicorn.org/'>Gunicorn</a> and <a href='https://nginx.org/en/'>Nginx</a> come .
+<hr>
 
 
 <hr>
