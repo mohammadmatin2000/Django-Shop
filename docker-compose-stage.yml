@@ -35,7 +35,7 @@ services:
       PG_NAME: default_database
       PG_HOST: db
       PG_PORT: 5432
-      DEBUG: False
+      DEBUG: True
     expose:
       - 8000
     depends_on:

@@ -27,7 +27,7 @@ SECRET_KEY = config(
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config("DEBUG", default=False, cast=bool)
+DEBUG = config("DEBUG", default=True, cast=bool)
 
 ALLOWED_HOSTS = ["*"]
 
@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "review",
     "widget_tweaks",
     "ckeditor",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -63,6 +64,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -175,3 +177,13 @@ MERCHANT_ID = config("MERCHANT_ID", default="4ced0a1e-4ad8-4309-9668-3ea3ae8e889
 ZARINPAL_MERCHANT_ID = "4ced0a1e-4ad8-4309-9668-3ea3ae8e8897"
 
 ZARINPAL_CALLBACK_URL = "http://127.0.0.1:8000/payment/verify/"
+
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+    "172.18.0.1",
+    "172.18.0.4",
+
+    "172.20.10.5",
+]
+

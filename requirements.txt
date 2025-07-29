@@ -12,3 +12,4 @@ psycopg2
 black
 flake8
 gunicorn
+django-debug-toolbar
