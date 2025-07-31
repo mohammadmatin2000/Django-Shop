@@ -54,7 +54,11 @@ INSTALLED_APPS = [
     "widget_tweaks",
     "ckeditor",
     "debug_toolbar",
+    "django.contrib.sitemaps",
+    "django.contrib.sites",
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
