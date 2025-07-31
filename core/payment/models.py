@@ -16,8 +16,8 @@ class PaymentModels(models.Model):
     mobile = models.TextField()
     email = models.TextField()
     status = models.IntegerField(
-        choices=PaymentStatusModels.choices, default=PaymentStatusModels.pending
-    )
+        choices=PaymentStatusModels.choices,
+        default=PaymentStatusModels.pending)
     authority = models.CharField(max_length=255, null=True, blank=True)
     ref_id = models.CharField(max_length=255, null=True, blank=True)
     is_verified = models.BooleanField(default=False)

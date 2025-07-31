@@ -15,7 +15,8 @@ class OrderCreateForm(forms.Form):
         from .models import UserAddressModel
 
         address_id = self.cleaned_data.get("address_id")
-        if not UserAddressModel.objects.filter(id=address_id, user=self.user).exists():
+        if not UserAddressModel.objects.filter(
+                id=address_id, user=self.user).exists():
             raise forms.ValidationError("آدرس انتخاب شده معتبر نیست.")
         return address_id
 
@@ -33,7 +34,8 @@ class OrderCreateForm(forms.Form):
             raise forms.ValidationError("کپن منقضی شده است.")
 
         if self.user in coupon.used_by.all():
-            raise forms.ValidationError("شما قبلاً از این کپن استفاده کرده‌اید.")
+            raise forms.ValidationError(
+                "شما قبلاً از این کپن استفاده کرده‌اید.")
 
         return code
 

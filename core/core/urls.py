@@ -5,11 +5,9 @@ from django.conf import settings
 from django.contrib.sitemaps.views import sitemap
 from website.sitemap import StaticViewSitemap
 from shop.sitemap import ProductSitemap
+
 # ======================================================================================================================
-sitemaps_dict = {
-    'static': StaticViewSitemap,
-    'products': ProductSitemap
-}
+sitemaps_dict = {"static": StaticViewSitemap, "products": ProductSitemap}
 # ======================================================================================================================
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -22,17 +20,19 @@ urlpatterns = [
     path("order/", include("order.urls")),
     path("payment/", include("payment.urls")),
     path("review/", include("review.urls")),
-
-    path('sitemap.xml', sitemap, {'sitemaps': sitemaps_dict}, name='sitemap'),
+    path("sitemap.xml", sitemap, {"sitemaps": sitemaps_dict}, name="sitemap"),
 ]
 # ======================================================================================================================
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)
 # ======================================================================================================================
 if settings.DEBUG:
     import debug_toolbar
+
     urlpatterns += [
-        path('__debug__/', include(debug_toolbar.urls)),
+        path("__debug__/", include(debug_toolbar.urls)),
     ]
 # ======================================================================================================================

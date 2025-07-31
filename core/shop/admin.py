@@ -23,8 +23,10 @@ class ProductAdmin(admin.ModelAdmin):
         "category",
         "created_date",
     )  # فیلتر کردن محصولات بر اساس دسته‌بندی و تاریخ ایجاد
-    ordering = ("-created_date",)  # مرتب‌سازی محصولات بر اساس تاریخ ایجاد به صورت نزولی
-    prepopulated_fields = {"slug": ("title",)}  # پر کردن خودکار فیلد slug بر اساس نام
+    # مرتب‌سازی محصولات بر اساس تاریخ ایجاد به صورت نزولی
+    ordering = ("-created_date",)
+    # پر کردن خودکار فیلد slug بر اساس نام
+    prepopulated_fields = {"slug": ("title",)}
     date_hierarchy = "created_date"  # امکان فیلتر بر اساس تاریخ
 
 
@@ -36,8 +38,10 @@ class ProductCategoryAdmin(admin.ModelAdmin):
         "created_date",
     )  # نمایش نام، والد، وضعیت فعال بودن و تاریخ ایجاد
     search_fields = ("title",)  # جستجو بر اساس نام دسته‌بندی
-    list_filter = ("created_date",)  # فیلتر بر اساس وضعیت فعال بودن و تاریخ ایجاد
-    prepopulated_fields = {"slug": ("title",)}  # پر کردن خودکار slug بر اساس نام
+    # فیلتر بر اساس وضعیت فعال بودن و تاریخ ایجاد
+    list_filter = ("created_date",)
+    # پر کردن خودکار slug بر اساس نام
+    prepopulated_fields = {"slug": ("title",)}
 
 
 # ======================================================================================================================
@@ -47,7 +51,8 @@ class ProductImageAdmin(admin.ModelAdmin):
         "product",
         "created_date",
     )  # نمایش محصول، تصویر، وضعیت برجسته بودن و تاریخ ایجاد
-    list_filter = ("created_date",)  # فیلتر بر اساس وضعیت برجسته بودن و تاریخ ایجاد
+    # فیلتر بر اساس وضعیت برجسته بودن و تاریخ ایجاد
+    list_filter = ("created_date",)
 
 
 # ======================================================================================================================

@@ -26,9 +26,8 @@ class Command(BaseCommand):
             # ایجاد دسته‌بندی
             ProductCategoryModels.objects.create(title=title, slug=slug)
 
-        self.stdout.write(
-            self.style.SUCCESS(f"{num_categories} categories generated successfully")
-        )
+        self.stdout.write(self.style.SUCCESS(
+            f"{num_categories} categories generated successfully"))
 
 
 # ======================================================================================================================

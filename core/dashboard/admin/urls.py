@@ -82,15 +82,28 @@ urlpatterns = [
         AdminCommentsDeleteView.as_view(),
         name="comments-delete",
     ),
-
     path("contact/list/", AdminContactListView.as_view(), name="contact-list"),
-    path("contact/<int:pk>/detail/", AdminContactMessageDetailView.as_view(), name="contact-detail"),
-    path("contact/<int:pk>/delete/", AdminContactMessageDeleteView.as_view(), name="contact-delete"),
-
+    path(
+        "contact/<int:pk>/detail/",
+        AdminContactMessageDetailView.as_view(),
+        name="contact-detail",
+    ),
+    path(
+        "contact/<int:pk>/delete/",
+        AdminContactMessageDeleteView.as_view(),
+        name="contact-delete",
+    ),
     path("newsletter/list/", AdminNewsletterListView.as_view(), name="newsletter-list"),
-    path("newsletter/<int:pk>/detail/", AdminNewsletterDetailView.as_view(), name="newsletter-detail"),
-    path("newsletter/<int:pk>/delete/", AdminNewsletterDeleteView.as_view(), name="newsletter-delete"),
-
+    path(
+        "newsletter/<int:pk>/detail/",
+        AdminNewsletterDetailView.as_view(),
+        name="newsletter-detail",
+    ),
+    path(
+        "newsletter/<int:pk>/delete/",
+        AdminNewsletterDeleteView.as_view(),
+        name="newsletter-delete",
+    ),
     path("users/list/", AdminUserListView.as_view(), name="users-list"),
     path("users/<int:pk>/detail/", AdminUserDetailView.as_view(), name="user-detail"),
     path("users/<int:pk>/edit/", AdminUserUpdateView.as_view(), name="user-update"),

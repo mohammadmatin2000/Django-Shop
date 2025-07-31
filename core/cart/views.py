@@ -15,7 +15,8 @@ class CartAddProductsView(View):
         quantity = int(request.POST.get("quantity", 1))
 
         if not product_id:
-            return JsonResponse({"error": "product_id is required"}, status=400)
+            return JsonResponse(
+                {"error": "product_id is required"}, status=400)
 
         product = ProductModels.objects.filter(id=product_id).first()
         if not product:
@@ -41,13 +42,15 @@ class CartDeleteView(View):
         product_id = request.POST.get("product_id")
 
         if not product_id:
-            return JsonResponse({"error": "product_id is required"}, status=400)
+            return JsonResponse(
+                {"error": "product_id is required"}, status=400)
 
         cart = CartModels.objects.filter(user=request.user).first()
         if not cart:
             return JsonResponse({"error": "سبد خرید یافت نشد"}, status=404)
 
-        CartItemsModels.objects.filter(cart=cart, product_id=product_id).delete()
+        CartItemsModels.objects.filter(
+            cart=cart, product_id=product_id).delete()
 
         return JsonResponse({"status": "محصول حذف شد"})
 
@@ -63,7 +66,8 @@ class CartUpdateQuantityView(View):
         if not cart:
             return JsonResponse({"error": "سبد خرید یافت نشد"}, status=404)
 
-        item = CartItemsModels.objects.filter(cart=cart, product_id=product_id).first()
+        item = CartItemsModels.objects.filter(
+            cart=cart, product_id=product_id).first()
         if item:
             item.quantity = quantity
             item.save()

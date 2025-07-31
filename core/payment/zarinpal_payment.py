@@ -25,8 +25,11 @@ class ZarinpalPayment:
             "description": self.description,
             "metadata": self.metadata,
         }
-        headers = {"Content-Type": "application/json", "Accept": "application/json"}
-        response = requests.post(url, headers=headers, data=json.dumps(payload))
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json"}
+        response = requests.post(
+            url, headers=headers, data=json.dumps(payload))
         return response.json()
 
     def payment_verify(self, authority):
@@ -36,8 +39,11 @@ class ZarinpalPayment:
             "amount": self.amount,
             "authority": authority,
         }
-        headers = {"Content-Type": "application/json", "Accept": "application/json"}
-        response = requests.post(url, headers=headers, data=json.dumps(payload))
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json"}
+        response = requests.post(
+            url, headers=headers, data=json.dumps(payload))
         return response.json()
 
     def get_gateway_url(self, authority):

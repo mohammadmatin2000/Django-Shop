@@ -38,11 +38,9 @@ def similar_products(context, product):
 
     base_queryset = (
         ProductModels.objects.filter(
-            status=ProductStatusModels.publish.value, category__in=products_category
-        )
-        .exclude(id=product.id)
-        .distinct()
-    )
+            status=ProductStatusModels.publish.value,
+            category__in=products_category) .exclude(
+            id=product.id) .distinct())
 
     similar_products = list(base_queryset[:4])
 
@@ -86,7 +84,7 @@ def formatted_price(value):
 def times(number):
     try:
         return range(int(number))
-    except:
+    except BaseException:
         return []
 
 

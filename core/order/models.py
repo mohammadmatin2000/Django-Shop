@@ -56,7 +56,8 @@ class OrderModels(models.Model):
         PaymentModels, on_delete=models.SET_NULL, null=True, blank=True
     )
     tax = models.DecimalField(max_digits=10, decimal_places=0, default=0)
-    final_price = models.DecimalField(max_digits=10, decimal_places=0, default=0)
+    final_price = models.DecimalField(
+        max_digits=10, decimal_places=0, default=0)
     total_price = models.DecimalField(max_digits=12, decimal_places=0)
     status = models.IntegerField(
         choices=OrderStatusModels.choices, default=OrderStatusModels.PENDING
@@ -78,7 +79,10 @@ class OrderModels(models.Model):
     def get_status(self):
         return {
             "value": self.status,
-            "label": dict(OrderStatusModels.choices).get(self.status, "نامشخص"),
+            "label": dict(
+                OrderStatusModels.choices).get(
+                self.status,
+                "نامشخص"),
         }
 
     @property

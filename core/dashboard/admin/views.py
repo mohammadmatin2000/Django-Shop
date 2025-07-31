@@ -27,13 +27,15 @@ from order.models import CouponModels, OrderModels
 from review.models import ReviewModels
 from django.core.exceptions import FieldError
 from shop.models import ProductModels, ProductStatusModels, ProductCategoryModels
-from contact.models import ContactMessage,NewsletterSubscriber
+from contact.models import ContactMessage, NewsletterSubscriber
 from accounts.models import Profile
 
 
-
 # ======================================================================================================================
-class AdminDashboardHomeView(LoginRequiredMixin, HasAdminPermission, TemplateView):
+class AdminDashboardHomeView(
+        LoginRequiredMixin,
+        HasAdminPermission,
+        TemplateView):
     template_name = "dashboard/admin/home.html"
 
 
@@ -364,7 +366,9 @@ class AdminCommentsDeleteView(
 
 
 # ======================================================================================================================
-class AdminContactListView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, ListView):
+class AdminContactListView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, ListView
+):
     template_name = "dashboard/admin/contacts/contact-list.html"
     context_object_name = "object"
     paginate_by = 10
@@ -381,16 +385,17 @@ class AdminContactListView(LoginRequiredMixin, HasAdminPermission, SuccessMessag
         context["total_items"] = self.get_queryset().count()
         return context
 
+
 # ======================================================================================================================
 class AdminContactMessageDetailView(LoginRequiredMixin, DetailView):
     model = ContactMessage
     template_name = "dashboard/admin/contacts/contact-detail.html"
     context_object_name = "object"
+
+
 # ======================================================================================================================
 class AdminContactMessageDeleteView(
-    LoginRequiredMixin,
-    SuccessMessageMixin,
-    DeleteView
+    LoginRequiredMixin, SuccessMessageMixin, DeleteView
 ):
     model = ContactMessage
     template_name = "dashboard/admin/contacts/contact-delete.html"
@@ -400,8 +405,12 @@ class AdminContactMessageDeleteView(
     def get_queryset(self):
 
         return ContactMessage.objects.all()
+
+
 # ======================================================================================================================
-class AdminNewsletterListView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, ListView):
+class AdminNewsletterListView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, ListView
+):
     template_name = "dashboard/admin/newsletter/newsletter-list.html"
     context_object_name = "object_list"
     paginate_by = 10
@@ -418,16 +427,26 @@ class AdminNewsletterListView(LoginRequiredMixin, HasAdminPermission, SuccessMes
         context["total_items"] = self.get_queryset().count()
         return context
 
+
 # ======================================================================================================================
 
-class AdminNewsletterDetailView(LoginRequiredMixin, HasAdminPermission, DetailView):
+
+class AdminNewsletterDetailView(
+        LoginRequiredMixin,
+        HasAdminPermission,
+        DetailView):
     model = NewsletterSubscriber
     template_name = "dashboard/admin/newsletter/newsletter-detail.html"
     context_object_name = "object"
+
+
 # ======================================================================================================================
 
+
 # حذف مشترک خبرنامه
-class AdminNewsletterDeleteView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, DeleteView):
+class AdminNewsletterDeleteView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, DeleteView
+):
     model = NewsletterSubscriber
     template_name = "dashboard/admin/newsletter/newsletter-delete.html"
     success_url = reverse_lazy("dashboard:admin:newsletter-list")
@@ -435,8 +454,12 @@ class AdminNewsletterDeleteView(LoginRequiredMixin, HasAdminPermission, SuccessM
 
     def get_queryset(self):
         return NewsletterSubscriber.objects.all()
+
+
 # ======================================================================================================================
-class AdminUserListView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, ListView):
+class AdminUserListView(
+    LoginRequiredMixin, HasAdminPermission, SuccessMessageMixin, ListView
+):
     template_name = "dashboard/admin/users/user-list.html"
     context_object_name = "object_list"
     paginate_by = 10
@@ -446,8 +469,7 @@ class AdminUserListView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMi
         search = self.request.GET.get("q")
         if search:
             queryset = queryset.filter(
-                Q(first_name__icontains=search) |
-                Q(last_name__icontains=search)
+                Q(first_name__icontains=search) | Q(last_name__icontains=search)
             )
         return queryset
 
@@ -455,6 +477,8 @@ class AdminUserListView(LoginRequiredMixin, HasAdminPermission, SuccessMessageMi
         context = super().get_context_data(**kwargs)
         context["total_items"] = self.get_queryset().count()
         return context
+
+
 # ======================================================================================================================
 class AdminUserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = Profile
@@ -466,15 +490,21 @@ class AdminUserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def form_valid(self, form):
         return super().form_valid(form)
+
+
 # ======================================================================================================================
 class AdminUserDetailView(LoginRequiredMixin, DetailView):
     model = Profile
     template_name = "dashboard/admin/users/user-detail.html"
     context_object_name = "object_list"
+
+
 # ======================================================================================================================
 class AdminUserDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Profile
     template_name = "dashboard/admin/users/user-delete.html"
     success_url = reverse_lazy("dashboard:admin:user-list")
     success_message = "کاربر با موفقیت حذف شد."
+
+
 # ======================================================================================================================

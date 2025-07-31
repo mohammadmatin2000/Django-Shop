@@ -3,7 +3,6 @@ from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordResetView
 from django.views import View
 from django.shortcuts import render, redirect
-
 from django.contrib import messages
 from .forms import CustomAuthenticationForm, CustomSignupForm
 from .utils.email_thread import EmailThread
@@ -19,7 +18,8 @@ class SignupView(View):
         form = CustomSignupForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "ثبت‌نام با موفقیت انجام شد! اکنون وارد شوید.")
+            messages.success(
+                request, "ثبت‌نام با موفقیت انجام شد! اکنون وارد شوید.")
             return redirect("accounts:login")
         return render(request, "accounts/signup.html", {"form": form})
 
@@ -42,7 +42,7 @@ class CustomPasswordResetView(PasswordResetView):
     success_url = reverse_lazy("password_reset_done")
 
     def form_valid(self, form):
-        # ارسال ایمیل به صورت Thread
+
         opts = {
             "use_https": self.request.is_secure(),
             "token_generator": self.token_generator,
@@ -56,7 +56,9 @@ class CustomPasswordResetView(PasswordResetView):
             context = self.get_email_context(user)
             subject = self.get_subject()
             message = self.get_message(user, context)
-            EmailThread(subject, message, self.from_email, [user.email]).start()
+            EmailThread(
+                subject, message, self.from_email, [
+                    user.email]).start()
         return super().form_valid(form)
 
 

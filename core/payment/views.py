@@ -12,18 +12,16 @@ class ZarinpalVerifyView(View):
         status = request.GET.get("Status")
 
         if not authority:
-            return render(
-                request, "payment/failed.html", {"message": "اطلاعات پرداخت ناقص است."}
-            )
+            return render(request, "payment/failed.html",
+                          {"message": "اطلاعات پرداخت ناقص است."})
 
         payment = get_object_or_404(PaymentModels, authority=authority)
 
         if status != "OK":
             payment.status = 2
             payment.save()
-            return render(
-                request, "order/failed.html", {"message": "پرداخت توسط کاربر لغو شد."}
-            )
+            return render(request, "order/failed.html",
+                          {"message": "پرداخت توسط کاربر لغو شد."})
 
         payload = {
             "MerchantID": settings.MERCHANT_ID,
@@ -51,9 +49,8 @@ class ZarinpalVerifyView(View):
         else:
             payment.status = 2
             payment.save()
-            return render(
-                request, "payment/complete.html", {"message": "پرداخت تایید نشد."}
-            )
+            return render(request, "payment/complete.html",
+                          {"message": "پرداخت تایید نشد."})
 
 
 # ======================================================================================================================

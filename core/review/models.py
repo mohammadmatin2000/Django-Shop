@@ -22,8 +22,8 @@ class ReviewModels(models.Model):
         default=5, validators=[MinValueValidator(0), MaxValueValidator(5)]
     )
     status = models.IntegerField(
-        choices=ReviewStatusModels.choices, default=ReviewStatusModels.pending.value
-    )
+        choices=ReviewStatusModels.choices,
+        default=ReviewStatusModels.pending.value)
     description = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)

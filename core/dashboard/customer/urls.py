@@ -38,7 +38,11 @@ urlpatterns = [
     ),
     path("address/create/", CustomerAddressCreateView.as_view(), name="address-create"),
     path("orders/list/", CustomerOrdersListView.as_view(), name="orders-list"),
-    path("orders/<int:pk>/delete/", CustomerOrdersDeleteView.as_view(), name="orders-delete"),
+    path(
+        "orders/<int:pk>/delete/",
+        CustomerOrdersDeleteView.as_view(),
+        name="orders-delete",
+    ),
     path(
         "orders/<int:pk>/detail",
         CustomerOrdersDetailView.as_view(),

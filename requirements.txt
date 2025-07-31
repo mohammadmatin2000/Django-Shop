@@ -16,3 +16,4 @@ django-debug-toolbar
 django-storages[boto3]
 pytest
 pytest-django
+autopep8

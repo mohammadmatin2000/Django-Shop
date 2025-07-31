@@ -11,7 +11,9 @@ User = get_user_model()
 # ======================================================================================================================
 class CustomSignupForm(forms.ModelForm):
     password1 = forms.CharField(label="رمز عبور", widget=forms.PasswordInput)
-    password2 = forms.CharField(label="تأیید رمز عبور", widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label="تأیید رمز عبور",
+        widget=forms.PasswordInput)
 
     class Meta:
         model = User
@@ -35,7 +37,8 @@ class CustomSignupForm(forms.ModelForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.username = self.cleaned_data["email"]  # اگر فقط با ایمیل لاگین می‌کنی
+        # اگر فقط با ایمیل لاگین می‌کنی
+        user.username = self.cleaned_data["email"]
         user.set_password(self.cleaned_data["password1"])
         if commit:
             user.save()
@@ -46,7 +49,9 @@ class CustomSignupForm(forms.ModelForm):
 class CustomAuthenticationForm(AuthenticationForm):
     def confirm_login_allowed(self, user):
         if not user.is_active:
-            raise ValidationError("حساب کاربری شما غیرفعال است.", code="inactive")
+            raise ValidationError(
+                "حساب کاربری شما غیرفعال است.",
+                code="inactive")
 
 
 # ======================================================================================================================

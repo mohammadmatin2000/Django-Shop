@@ -4,7 +4,8 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect, get_object_or_404
 from .permission import HasCustomerPermission
 from django.conf import settings
-import requests, json
+import requests
+import json
 from .models import UserAddressModel, OrderModels, CouponModels
 from cart.models import CartModels, CartItemsModels
 from payment.models import PaymentModels, PaymentStatusModels
@@ -50,7 +51,8 @@ class OrderCheckOutView(HasCustomerPermission, LoginRequiredMixin, FormView):
                     self.request.session.pop("coupon_code", None)
 
                 else:
-                    discount = round((total_price * coupon.discount_percent) / 100)
+                    discount = round(
+                        (total_price * coupon.discount_percent) / 100)
                     final_price -= discount
                     final_price = max(final_price, 0)
 
@@ -59,15 +61,15 @@ class OrderCheckOutView(HasCustomerPermission, LoginRequiredMixin, FormView):
 
         context.update(
             {
-                "addresses": UserAddressModel.objects.filter(user=self.request.user),
+                "addresses": UserAddressModel.objects.filter(
+                    user=self.request.user),
                 "total_price": total_price,
                 "total_tax": tax,
                 "final_price": final_price,
                 "coupon": coupon,
                 "discount": discount,
                 "checked_coupon_code": coupon_code,
-            }
-        )
+            })
         return context
 
     def form_valid(self, form):
@@ -94,7 +96,8 @@ class OrderCheckOutView(HasCustomerPermission, LoginRequiredMixin, FormView):
                     coupon = None
                     self.request.session.pop("coupon_code", None)
                 else:
-                    discount = round((total_price * coupon.discount_percent) / 100)
+                    discount = round(
+                        (total_price * coupon.discount_percent) / 100)
                     final_price -= discount
                     final_price = max(final_price, 0)
             except CouponModels.DoesNotExist:
@@ -120,7 +123,9 @@ class OrderCheckOutView(HasCustomerPermission, LoginRequiredMixin, FormView):
             },
         }
 
-        headers = {"Content-Type": "application/json", "Accept": "application/json"}
+        headers = {
+            "Content-Type": "application/json",
+            "Accept": "application/json"}
 
         response = requests.post(
             "https://api.zarinpal.com/pg/v4/payment/request.json",
@@ -140,7 +145,8 @@ class OrderCheckOutView(HasCustomerPermission, LoginRequiredMixin, FormView):
             order = OrderModels.payment = payment
             order.save()
 
-            return redirect(f"https://www.zarinpal.com/pg/StartPay/{authority}")
+            return redirect(
+                f"https://www.zarinpal.com/pg/StartPay/{authority}")
         else:
             messages.error(self.request, "خطا در اتصال به درگاه پرداخت.")
             return redirect("cart:checkout")
@@ -164,7 +170,8 @@ class CheckCouponView(View):
             if not coupon.is_valid():
                 messages.error(request, "❌ این کد تخفیف منقضی شده است.")
             elif user in coupon.used_by.all():
-                messages.warning(request, "❌ شما قبلاً از این کد استفاده کرده‌اید.")
+                messages.warning(
+                    request, "❌ شما قبلاً از این کد استفاده کرده‌اید.")
             else:
                 request.session["coupon_code"] = coupon.code
                 messages.success(
@@ -178,7 +185,10 @@ class CheckCouponView(View):
 
 
 # ======================================================================================================================
-class OrderCompleteView(HasCustomerPermission, LoginRequiredMixin, TemplateView):
+class OrderCompleteView(
+        HasCustomerPermission,
+        LoginRequiredMixin,
+        TemplateView):
     template_name = "order/complete.html"
 
 

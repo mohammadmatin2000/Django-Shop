@@ -1,5 +1,7 @@
 from django.contrib import sitemaps
 from django.urls import reverse
+
+
 # ======================================================================================================================
 class StaticViewSitemap(sitemaps.Sitemap):
     priority = 0.3
@@ -11,5 +13,6 @@ class StaticViewSitemap(sitemaps.Sitemap):
     def location(self, item):
 
         return reverse(f"website:{item}")
+
 
 # ======================================================================================================================

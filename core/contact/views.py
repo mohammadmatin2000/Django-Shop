@@ -26,7 +26,8 @@ class NewsletterSubscribeView(View):
             form.save()
             messages.success(request, "عضویت شما در خبرنامه انجام شد.")
         else:
-            messages.error(request, "ایمیل معتبر وارد کنید یا قبلاً عضو شده‌اید.")
+            messages.error(
+                request, "ایمیل معتبر وارد کنید یا قبلاً عضو شده‌اید.")
         return redirect(request.META.get("HTTP_REFERER", "/"))
 
 

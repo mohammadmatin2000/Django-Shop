@@ -23,7 +23,12 @@ class OrderAdmin(admin.ModelAdmin):
         "address",
     ]
     list_filter = ["status", "created_date", "updated_date"]
-    search_fields = ["user__email", "user__username", "address", "city", "zip_code"]
+    search_fields = [
+        "user__email",
+        "user__username",
+        "address",
+        "city",
+        "zip_code"]
     date_hierarchy = "created_date"
     inlines = [OrderItemInline]
     readonly_fields = ["created_date", "updated_date"]

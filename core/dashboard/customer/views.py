@@ -43,6 +43,8 @@ class CustomerSecurityDashboardView(
     form_class = CustomerPasswordChangeForm
     success_url = reverse_lazy("dashboard:customer:security")
     success_message = "رمز با موفقیت تغییر کرد"
+
+
 # ======================================================================================================================
 class CustomerProfileDashboardView(
     LoginRequiredMixin, HasCustomerPermission, SuccessMessageMixin, UpdateView
@@ -54,6 +56,8 @@ class CustomerProfileDashboardView(
 
     def get_object(self, queryset=None):
         return self.request.user.user_profile
+
+
 # ======================================================================================================================
 class CustomerProfileImageDashboardView(
     LoginRequiredMixin, HasCustomerPermission, SuccessMessageMixin, UpdateView
@@ -69,8 +73,13 @@ class CustomerProfileImageDashboardView(
     def form_valid(self, form):
         messages.error("آپلود عکس به مشکل خورده لطفا دوباره تلاش کنید")
         return redirect(reverse_lazy(self.success_url))
+
+
 # ======================================================================================================================
-class CustomerAddressListView(LoginRequiredMixin, HasCustomerPermission, ListView):
+class CustomerAddressListView(
+        LoginRequiredMixin,
+        HasCustomerPermission,
+        ListView):
     template_name = "dashboard/customer/address/address-list.html"
 
     def get_queryset(self):
@@ -81,6 +90,8 @@ class CustomerAddressListView(LoginRequiredMixin, HasCustomerPermission, ListVie
             except FieldError:
                 pass
         return queryset
+
+
 # ======================================================================================================================
 class CustomerAddressCreateView(
     LoginRequiredMixin, HasCustomerPermission, SuccessMessageMixin, CreateView
@@ -98,9 +109,9 @@ class CustomerAddressCreateView(
         super().form_valid(form)
         return redirect(
             reverse_lazy(
-                "dashboard:customer:address-edit", kwargs={"pk": form.instance.pk}
-            )
-        )
+                "dashboard:customer:address-edit",
+                kwargs={
+                    "pk": form.instance.pk}))
 
     def get_success_url(self):
         return reverse_lazy("dashboard:customer:address-list")
@@ -120,8 +131,9 @@ class CustomerAddressEditView(
 
     def get_success_url(self):
         return reverse_lazy(
-            "dashboard:customer:address-edit", kwargs={"pk": self.get_object().pk}
-        )
+            "dashboard:customer:address-edit",
+            kwargs={
+                "pk": self.get_object().pk})
 
 
 # ======================================================================================================================
@@ -138,7 +150,10 @@ class CustomerAddressDeleteView(
 
 
 # ======================================================================================================================
-class CustomerOrdersListView(LoginRequiredMixin, HasCustomerPermission, ListView):
+class CustomerOrdersListView(
+        LoginRequiredMixin,
+        HasCustomerPermission,
+        ListView):
     template_name = "dashboard/customer/orders/order-list.html"
     context_object_name = "object_list"
     paginate_by = 10
@@ -152,9 +167,8 @@ class CustomerOrdersListView(LoginRequiredMixin, HasCustomerPermission, ListView
 
     def get_queryset(self):
 
-        queryset = OrderModels.objects.filter(user=self.request.user).prefetch_related(
-            "items"
-        )
+        queryset = OrderModels.objects.filter(
+            user=self.request.user).prefetch_related("items")
         search = self.request.GET.get("q")
         if search:
             queryset = queryset.filter(title__icontains=search)
@@ -173,17 +187,23 @@ class CustomerOrdersListView(LoginRequiredMixin, HasCustomerPermission, ListView
 
 
 # ======================================================================================================================
-class CustomerOrdersDeleteView(LoginRequiredMixin, HasCustomerPermission, SuccessMessageMixin, DeleteView):
+class CustomerOrdersDeleteView(
+    LoginRequiredMixin, HasCustomerPermission, SuccessMessageMixin, DeleteView
+):
     model = OrderModels
-    template_name = 'dashboard/customer/orders/order-delete.html'
-    success_url = reverse_lazy('dashboard:customer:orders-list')
+    template_name = "dashboard/customer/orders/order-delete.html"
+    success_url = reverse_lazy("dashboard:customer:orders-list")
     success_message = "سفارش با موفقیت حذف شد."
 
     def get_queryset(self):
         return OrderModels.objects.filter(user=self.request.user)
 
+
 # ======================================================================================================================
-class CustomerOrdersDetailView(LoginRequiredMixin, HasCustomerPermission, DetailView):
+class CustomerOrdersDetailView(
+        LoginRequiredMixin,
+        HasCustomerPermission,
+        DetailView):
     template_name = "dashboard/customer/orders/order-detail.html"
     context_object_name = "object"
 
@@ -192,7 +212,10 @@ class CustomerOrdersDetailView(LoginRequiredMixin, HasCustomerPermission, Detail
 
 
 # ======================================================================================================================
-class CustomerOrdersInvoiceView(LoginRequiredMixin, HasCustomerPermission, DetailView):
+class CustomerOrdersInvoiceView(
+        LoginRequiredMixin,
+        HasCustomerPermission,
+        DetailView):
     template_name = "dashboard/customer/orders/invoice.html"
     context_object_name = "object"
 
@@ -201,7 +224,10 @@ class CustomerOrdersInvoiceView(LoginRequiredMixin, HasCustomerPermission, Detai
 
 
 # ======================================================================================================================
-class CustomerWishListView(LoginRequiredMixin, HasCustomerPermission, ListView):
+class CustomerWishListView(
+        LoginRequiredMixin,
+        HasCustomerPermission,
+        ListView):
     template_name = "dashboard/customer/wishlist/wishlist.html"
 
     paginate_by = 10
@@ -237,7 +263,10 @@ class CustomerWishListView(LoginRequiredMixin, HasCustomerPermission, ListView):
 
 
 # ======================================================================================================================
-class CustomerWishListDeleteView(LoginRequiredMixin, HasCustomerPermission, DeleteView):
+class CustomerWishListDeleteView(
+        LoginRequiredMixin,
+        HasCustomerPermission,
+        DeleteView):
     http_method_names = ["post"]
     success_url = reverse_lazy("dashboard:customer:wishlist")
     success_message = "محصول با موفقیت از لیست حذف شد"

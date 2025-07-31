@@ -8,7 +8,7 @@ register = template.Library()
 def times(number):
     try:
         return range(int(number))
-    except:
+    except BaseException:
         return []
 
 

@@ -59,7 +59,8 @@ class Command(BaseCommand):
             discount_percent = fake.random_int(min=0, max=50)
 
             num_categories = random.randint(1, min(4, len(categories)))
-            selected_categories = random.sample(list(categories), num_categories)
+            selected_categories = random.sample(
+                list(categories), num_categories)
 
             with open(BASE_DIR / selected_image, "rb") as image_file:
                 image_obj = File(image_file, name=Path(selected_image).name)
@@ -78,6 +79,5 @@ class Command(BaseCommand):
                 )
                 product.category.set(selected_categories)
 
-        self.stdout.write(
-            self.style.SUCCESS(f"Successfully generated {num_products} fake products")
-        )
+        self.stdout.write(self.style.SUCCESS(
+            f"Successfully generated {num_products} fake products"))

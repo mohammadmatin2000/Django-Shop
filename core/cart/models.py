@@ -11,14 +11,16 @@ class CartModels(models.Model):
         return str(self.user)
 
     def calculate_total_price(self):
-        return sum(
-            item.product.get_price() * item.quantity for item in self.items.all()
-        )
+        return sum(item.product.get_price() *
+                   item.quantity for item in self.items.all())
 
 
 # ======================================================================================================================
 class CartItemsModels(models.Model):
-    cart = models.ForeignKey(CartModels, on_delete=models.CASCADE, related_name="items")
+    cart = models.ForeignKey(
+        CartModels,
+        on_delete=models.CASCADE,
+        related_name="items")
     product = models.ForeignKey("shop.ProductModels", on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0)
     created_date = models.DateTimeField(auto_now_add=True)
