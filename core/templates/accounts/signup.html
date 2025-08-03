@@ -1,7 +1,6 @@
 {% extends 'basses/base.html' %}
 
 {% block content %}
-<!-- Form -->
 <div class="container content-space-3 content-space-t-lg-4 content-space-b-lg-3">
     <div class="flex-grow-1 mx-auto" style="max-width: 28rem;">
         <!-- Heading -->
@@ -59,6 +58,22 @@
                 {% endif %}
             </div>
 
+            <!-- Captcha -->
+            <div class="mb-4">
+                <label class="form-label d-block mb-2 text-center">کد امنیتی</label>
+                <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">
+                    <!-- فیلد ورود کد -->
+                    <div style="min-width: 150px;">
+                        {{ form.captcha }}
+                        {% if form.captcha.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ form.captcha.errors.0 }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
             <!-- Privacy Checkbox -->
             <div class="form-check mb-3">
                 <input type="checkbox" class="form-check-input" id="signupHeroFormPrivacyCheck"
@@ -88,16 +103,10 @@
             </div>
             {% endif %}
         </form>
-
-        <!-- End Form -->
     </div>
 </div>
-<!-- End Form -->
 {% endblock content %}
+
 {% block extra_js %}
-<script>
-    // INITIALIZATION OF TOGGLE PASSWORD
-    // =======================================================
-    new HSTogglePassword('.js-toggle-password')
-</script>
+
 {% endblock extra_js %}

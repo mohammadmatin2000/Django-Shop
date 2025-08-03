@@ -6,8 +6,6 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import CustomAuthenticationForm, CustomSignupForm
 from .utils.email_thread import EmailThread
-
-
 # ======================================================================================================================
 class SignupView(View):
     def get(self, request):

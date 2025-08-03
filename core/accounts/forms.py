@@ -4,16 +4,15 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth import get_user_model
 from django import forms
 from django.core.exceptions import ValidationError
-
+from captcha.fields import CaptchaField
 User = get_user_model()
-
-
 # ======================================================================================================================
 class CustomSignupForm(forms.ModelForm):
     password1 = forms.CharField(label="رمز عبور", widget=forms.PasswordInput)
     password2 = forms.CharField(
         label="تأیید رمز عبور",
         widget=forms.PasswordInput)
+    captcha = CaptchaField(label="کد امنیتی")
 
     class Meta:
         model = User
@@ -37,23 +36,20 @@ class CustomSignupForm(forms.ModelForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        # اگر فقط با ایمیل لاگین می‌کنی
         user.username = self.cleaned_data["email"]
         user.set_password(self.cleaned_data["password1"])
         if commit:
             user.save()
         return user
-
-
 # ======================================================================================================================
 class CustomAuthenticationForm(AuthenticationForm):
+    captcha = CaptchaField(label="کد امنیتی")
+
     def confirm_login_allowed(self, user):
         if not user.is_active:
             raise ValidationError(
                 "حساب کاربری شما غیرفعال است.",
                 code="inactive")
-
-
 # ======================================================================================================================
 class SetPasswordForm(forms.Form):
     """
@@ -99,6 +95,4 @@ class SetPasswordForm(forms.Form):
         if commit:
             self.user.save()
         return self.user
-
-
 # ======================================================================================================================

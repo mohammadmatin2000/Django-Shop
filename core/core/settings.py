@@ -56,7 +56,14 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "django.contrib.sitemaps",
     "django.contrib.sites",
+    "storages",
+    "captcha",
 ]
+
+
+MULTI_CAPTCHA_ADMIN = {
+    'engine': 'simple-captcha',
+}
 
 SITE_ID = 1
 
@@ -143,7 +150,24 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "/static/"
-MEDIA_URL = "/media/"
+
+AWS_ACCESS_KEY_ID = 'minioadmin'
+AWS_SECRET_ACCESS_KEY = 'minioadmin'
+AWS_STORAGE_BUCKET_NAME = 'mybucket'
+
+AWS_S3_ENDPOINT_URL = 'http://127.0.0.1:9000'  # برای اتصال برنامه داخل داکر
+MINIO_ENDPOINT = 'http://minio:9000'
+
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+MEDIA_URL = f'http://127.0.0.1:9000/{AWS_STORAGE_BUCKET_NAME}/'  # برای مرورگر
+
+
+
+
+
+
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_ROOT = BASE_DIR / "media"
@@ -162,7 +186,7 @@ EMAIL_PORT = config("EMAIL_PORT", default=25, cast=int)
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
-EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=True, cast=bool)
+EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=False, cast=bool)
 
 DEFAULT_FROM_EMAIL = "matin20001313@gmail.com"
 # برای زمان اعتبار توکن reset
@@ -192,12 +216,5 @@ INTERNAL_IPS = [
 ]
 
 
-DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
-AWS_ACCESS_KEY_ID = config("MINIO_ACCESS_KEY", default="minioadmin")
-AWS_SECRET_ACCESS_KEY = config("MINIO_SECRET_KEY", default="minioadmin")
-AWS_STORAGE_BUCKET_NAME = config("MINIO_BUCKET_NAME", default="mybucket")
-AWS_S3_ENDPOINT_URL = config("MINIO_ENDPOINT", default="http://127.0.0.1:9000")
-AWS_S3_ADDRESSING_STYLE = "path"
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
+

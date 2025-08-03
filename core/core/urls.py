@@ -21,6 +21,7 @@ urlpatterns = [
     path("payment/", include("payment.urls")),
     path("review/", include("review.urls")),
     path("sitemap.xml", sitemap, {"sitemaps": sitemaps_dict}, name="sitemap"),
+    path('captcha/', include('captcha.urls')),
 ]
 # ======================================================================================================================
 if settings.DEBUG:

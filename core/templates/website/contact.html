@@ -1,73 +1,70 @@
 {% extends 'basses/base.html' %}
 {% load static %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
 
-<head>
-    <!-- Required Meta Tags Always Come First -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Title -->
-    <title>درباره ما</title>
+<!-- Required Meta Tags Always Come First -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="./favicon.ico">
+<!-- Title -->
+<title>درباره ما</title>
 
-    <!-- Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<!-- Favicon -->
+<link rel="shortcut icon" href="./favicon.ico">
 
-    <!-- CSS Implementing Plugins -->
-    <link rel="stylesheet" href="{% static 'assets/css/vendor.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/vendor/bootstrap-icons/font/bootstrap-icons.css' %}">
+<!-- Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
-    <!-- CSS Front Template -->
-    <link rel="stylesheet" href="{% static 'assets/css/theme.min.css' %}?v=1.0">
-    <style>
-        .locat-con {
-            background-color: white;
-            padding: 2rem;
-            margin: 2rem auto;
-            border-radius: 1rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            max-width: 720px;
-            font-family: "Vazirmatn", sans-serif;
-            direction: rtl;
-            text-align: right;
-        }
+<!-- CSS Implementing Plugins -->
+<link rel="stylesheet" href="{% static 'assets/css/vendor.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/vendor/bootstrap-icons/font/bootstrap-icons.css' %}">
 
-        .locat-cont h3 {
-            font-size: 1.4rem;
-            color: #2c3e50;
-            margin-bottom: 0.5rem;
-        }
+<!-- CSS Front Template -->
+<link rel="stylesheet" href="{% static 'assets/css/theme.min.css' %}?v=1.0">
+<style>
+    .locat-con {
+        background-color: white;
+        padding: 2rem;
+        margin: 2rem auto;
+        border-radius: 1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        max-width: 720px;
+        font-family: "Vazirmatn", sans-serif;
+        direction: rtl;
+        text-align: right;
+    }
 
-        .locat-cont p {
-            font-size: 1.1rem;
-            color: #555;
-            margin-bottom: 1.5rem;
-        }
+    .locat-cont h3 {
+        font-size: 1.4rem;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+    }
 
-        .locate-spec {
-            display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
+    .locat-cont p {
+        font-size: 1.1rem;
+        color: #555;
+        margin-bottom: 1.5rem;
+    }
 
-        .locate-spec .spec-1,
-        .locate-spec .spec-2 {
-            flex: 1 1 300px;
-            background-color: #ffffff;
-            padding: 1rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-        }
-    </style>
-</head>
+    .locate-spec {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
 
-<body>
+    .locate-spec .spec-1,
+    .locate-spec .spec-2 {
+        flex: 1 1 300px;
+        background-color: #ffffff;
+        padding: 1rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+</style>
+
+
 <main id="content" role="main">
     <!-- Hero -->
     <div class="position-relative bg-img-start"
@@ -196,33 +193,45 @@
                     <!-- Form -->
                     <form action="{% url 'contact:contact-us' %}" method="post" novalidate>
                         {% csrf_token %}
-
                         <div class="row gx-3">
                             <div class="col-sm-6 mb-3">
-                                <label for="id_first_name" class="form-label">نام</label>
-                                <input type="text" name="name" id="id_first_name"
+                                <label for="id_name" class="form-label">نام</label>
+                                <input type="text" name="name" id="id_name" value=""
                                        class="form-control form-control-lg" placeholder="نام" required>
+                                {% if form.name.errors %}
+                                <div class="invalid-feedback d-block">{{ form.name.errors.0 }}</div>
+                                {% endif %}
                             </div>
 
                             <div class="col-sm-6 mb-3">
                                 <label for="id_last_name" class="form-label">نام خانوادگی</label>
-                                <input type="text" name="last_name" id="id_last_name"
+                                <input type="text" name="last_name" id="id_last_name" value=""
                                        class="form-control form-control-lg" placeholder="نام خانوادگی" required>
+                                {% if form.last_name.errors %}
+                                <div class="invalid-feedback d-block">{{ form.last_name.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
 
                         <div class="row gx-3">
                             <div class="col-sm-6 mb-3">
                                 <label for="id_email" class="form-label">آدرس ایمیل</label>
-                                <input type="email" name="email" id="id_email" class="form-control form-control-lg"
-                                       placeholder="email@site.com" required>
+                                <input type="email" name="email" id="id_email" value=""
+                                       class="form-control form-control-lg" placeholder="email@site.com" required>
+                                {% if form.email.errors %}
+                                <div class="invalid-feedback d-block">{{ form.email.errors.0 }}</div>
+                                {% endif %}
                             </div>
 
                             <div class="col-sm-6 mb-3">
                                 <label for="id_phone_number" class="form-label">شماره همراه <span
                                         class="form-label-secondary">(اختیاری)</span></label>
                                 <input type="text" name="phone_number" id="id_phone_number"
-                                       class="form-control form-control-lg" placeholder="+9891200000">
+                                       value="" class="form-control form-control-lg"
+                                       placeholder="+9891200000">
+                                {% if form.phone_number.errors %}
+                                <div class="invalid-feedback d-block">{{ form.phone_number.errors.0 }}</div>
+                                {% endif %}
                             </div>
                         </div>
 
@@ -230,6 +239,23 @@
                             <label for="id_message" class="form-label">توضیحات</label>
                             <textarea name="message" id="id_message" class="form-control form-control-lg"
                                       placeholder="توضیحات خود را وارد نمایید" rows="4" required></textarea>
+                            {% if form.message.errors %}
+                            <div class="invalid-feedback d-block">{{ form.message.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <!-- بخش کپچا -->
+                        <div class="mb-4 text-center">
+                            <label class="form-label mb-2">کد امنیتی</label>
+                            <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">
+                                <div style="min-width: 150px;">
+                                    {{ form.captcha }}
+                                    {% if form.captcha.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.captcha.errors.0 }}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
                         </div>
 
                         <div class="d-grid">
@@ -240,6 +266,7 @@
                             <p class="form-text">تیکت ها در اسرع وقت پاسخ داده خواهند شد</p>
                         </div>
                     </form>
+
 
                     <!-- End Form -->
                 </div>
@@ -336,7 +363,4 @@
         new HSGoTo('.js-go-to')
     })()
 </script>
-</body>
-
-</html>
 {% endblock content %}
