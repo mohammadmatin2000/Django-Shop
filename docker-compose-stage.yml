@@ -52,6 +52,16 @@ services:
       PG_PORT: 5432
       DEBUG: True
 
+      EMAIL_HOST: smtp.gmail.com
+      EMAIL_PORT: 587
+      EMAIL_HOST_USER: mohammadmatin13872008@gmail.com
+      EMAIL_HOST_PASSWORD: "ghzs yckd jiyd grse"
+      EMAIL_USE_TLS: "True"
+      EMAIL_USE_SSL: "False"
+      DOMAIN: 127.0.0.1
+      PROTOCOL: http
+
+
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
       MINIO_BUCKET_NAME: mybucket

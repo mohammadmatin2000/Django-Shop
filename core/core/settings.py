@@ -178,19 +178,48 @@ STATICFILES_DIRS = [
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = config("EMAIL_HOST", default="smtp.gmail.com")
-EMAIL_PORT = config("EMAIL_PORT", default=25, cast=int)
+EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="")
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="ghzs yckd jiyd grse")
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
 EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=False, cast=bool)
+DEFAULT_FROM_EMAIL = "mohammadmatin13872008@gmail.com"
+PASSWORD_RESET_TIMEOUT = 60 * 60 * 48
 
-DEFAULT_FROM_EMAIL = "matin20001313@gmail.com"
-# برای زمان اعتبار توکن reset
-PASSWORD_RESET_TIMEOUT = 60 * 60 * 48  # 48 ساعت
+DOMAIN = config("DOMAIN", default="127.0.0.1")
+PROTOCOL = config("PROTOCOL", default="http")
+
+
+# settings.py
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'django_debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'yourapp': {  # اسم اپلیکیشن خودتو بذار
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
+
 
 
 AUTH_USER_MODEL = "accounts.User"

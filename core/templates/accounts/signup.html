@@ -11,7 +11,7 @@
         <!-- End Heading -->
 
         <!-- Form -->
-        <form action="{% url 'accounts:signup' %}" method="post" class="js-validate needs-validation" novalidate>
+        <form action="{% url 'signup' %}" method="post" class="js-validate needs-validation" novalidate>
             {% csrf_token %}
 
             <!-- Email -->
@@ -91,7 +91,7 @@
 
             <!-- Redirect -->
             <div class="text-center">
-                <p>حساب دارید؟ <a class="link" href="{% url 'accounts:login' %}">وارد شوید</a></p>
+                <p>حساب دارید؟ <a class="link" href="{% url 'login' %}">وارد شوید</a></p>
             </div>
 
             <!-- نمایش ارورهای فرم کلی -->

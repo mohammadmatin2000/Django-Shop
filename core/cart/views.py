@@ -5,8 +5,6 @@ from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from shop.models import ProductModels
-
-
 # ======================================================================================================================
 @method_decorator([csrf_exempt, login_required], name="dispatch")
 class CartAddProductsView(View):
@@ -33,8 +31,6 @@ class CartAddProductsView(View):
         item.save()
 
         return JsonResponse({"status": "محصول اضافه شد"})
-
-
 # ======================================================================================================================
 @method_decorator([csrf_exempt, login_required], name="dispatch")
 class CartDeleteView(View):
@@ -53,8 +49,6 @@ class CartDeleteView(View):
             cart=cart, product_id=product_id).delete()
 
         return JsonResponse({"status": "محصول حذف شد"})
-
-
 # ======================================================================================================================
 @method_decorator([csrf_exempt, login_required], name="dispatch")
 class CartUpdateQuantityView(View):
@@ -73,9 +67,8 @@ class CartUpdateQuantityView(View):
             item.save()
 
         return JsonResponse({"status": "بروزرسانی انجام شد"})
-
-
 # ======================================================================================================================
+@method_decorator(login_required, name="dispatch")
 class CartSummaryView(TemplateView):
     template_name = "cart/cart-summary.html"
 
@@ -109,6 +102,4 @@ class CartSummaryView(TemplateView):
             }
         )
         return context
-
-
 # ======================================================================================================================
