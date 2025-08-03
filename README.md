@@ -62,6 +62,16 @@ I reformat all codes depends on PEP8 rule with [Flake8 and Black](#flake8-and-bl
 ### Testing system
 I used [Pytest](#pytest) for testing system and test various parts of site
 
+### reCAPTCHA Simple
+Why reCAPTCHA v2 (Simple reCAPTCHA)?
+
+reCAPTCHA v2 provides a simple and user-friendly way to protect your site from bots by asking users to verify that they are human. Unlike reCAPTCHA v3, which runs invisibly and assigns a risk score, reCAPTCHA v2 uses a straightforward checkbox or image selection challenge to block automated access.
+
+Because it involves direct user interaction, reCAPTCHA v2 can be more reliable in distinguishing real users from bots, especially in scenarios where visible verification is acceptable or desired.
+
+To use reCAPTCHA v2, you need to register your site keys in the reCAPTCHA Admin Console, then include the necessary scripts and widget on your site.
+
+
 
 <img width="1894" height="912" alt="Screenshot 2025-07-27 233927" src="https://github.com/user-attachments/assets/f6332793-1093-46b1-ae75-8c4d9e067932" />
 
