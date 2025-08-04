@@ -146,8 +146,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
+
 
 STATIC_URL = "/static/"
 
@@ -155,23 +154,21 @@ AWS_ACCESS_KEY_ID = 'minioadmin'
 AWS_SECRET_ACCESS_KEY = 'minioadmin'
 AWS_STORAGE_BUCKET_NAME = 'mybucket'
 
-AWS_S3_ENDPOINT_URL = 'http://127.0.0.1:9000'  # برای اتصال برنامه داخل داکر
-MINIO_ENDPOINT = 'http://minio:9000'
+# آدرس داخلی برای اتصال از داخل کانتینر
+AWS_S3_ENDPOINT_URL = 'http://minio:9000'
 
+# آدرس عمومی برای مرورگر و نمایش تصویر
+MEDIA_URL = 'http://127.0.0.1:9000/mybucket/'
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# استفاده از استوریج سفارشی برای تولید لینک صحیح
+DEFAULT_FILE_STORAGE = 'core.storage_backends.PublicMediaStorage'
 
-MEDIA_URL = f'http://127.0.0.1:9000/{AWS_STORAGE_BUCKET_NAME}/'  # برای مرورگر
-
-
-
-
+SECURE_SSL_REDIRECT = False
 
 
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_ROOT = BASE_DIR / "media"
-
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
@@ -188,37 +185,9 @@ EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=False, cast=bool)
 DEFAULT_FROM_EMAIL = "mohammadmatin13872008@gmail.com"
 PASSWORD_RESET_TIMEOUT = 60 * 60 * 48
 
-DOMAIN = config("DOMAIN", default="127.0.0.1")
-PROTOCOL = config("PROTOCOL", default="http")
 
 
-# settings.py
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-        'file': {
-            'class': 'logging.FileHandler',
-            'filename': 'django_debug.log',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-        'yourapp': {  # اسم اپلیکیشن خودتو بذار
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-    },
-}
 
 
 

@@ -21,12 +21,9 @@ services:
       MINIO_SECRET_KEY: minioadmin
     volumes:
       - minio_data:/data
-    expose:
-      - 9000
-      - 9001
     ports:
-      - "9000:9000"   # API endpoint
-      - "9001:9001"   # Web UI
+      - "9000:9000"   
+      - "9001:9001"
     restart: always
 
   backend:
