@@ -4,11 +4,6 @@ from decouple import config
 # ======================================================================================================================
 BASE_DIR = Path(__file__).resolve().parent.parent  # مسیر ریشه پروژه
 # ======================================================================================================================
-# امنیت پروژه
-SECRET_KEY = config("SECRET_KEY", default="...")  # کلید مخفی برای امنیت پروژه
-DEBUG = config("DEBUG", default=True, cast=bool)  # حالت دیباگ فقط برای توسعه
-ALLOWED_HOSTS = ["*"]  # لیست میزبان‌های مجاز
-# ======================================================================================================================
 # برنامه‌های نصب‌شده در پروژه
 INSTALLED_APPS = [
     # اپ‌های پیش‌فرض جنگو
@@ -72,18 +67,7 @@ TEMPLATES = [
 # ======================================================================================================================
 WSGI_APPLICATION = "core.wsgi.application"  # ورود به اپلیکیشن WSGI
 # ======================================================================================================================
-# تنظیمات پایگاه داده
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",  # استفاده از PostgreSQL
-        "NAME": config("PG_NAME", default="default_database"),
-        "USER": config("PG_USER", default="username"),
-        "PASSWORD": config("PG_PASSWORD", default="password"),
-        "HOST": config("PG_HOST", default="db"),
-        "PORT": config("PG_PORT", cast=int, default=5432),
-    }
-}
-# ======================================================================================================================
+
 # اعتبارسنجی رمز عبور کاربران
 AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},

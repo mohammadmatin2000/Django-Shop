@@ -47,7 +47,7 @@ services:
       PG_NAME: default_database
       PG_HOST: db
       PG_PORT: 5432
-      DEBUG: True
+      DEBUG: False
 
       EMAIL_HOST: smtp.gmail.com
       EMAIL_PORT: 587
