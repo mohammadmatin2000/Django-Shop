@@ -121,7 +121,7 @@ For setup this site and walk through it you need to have <a href='https://www.do
 ## Clone it
 Next step is cloning this project
 ```bash
-git clone https://github.com/Benfoxyy/Django-Online-Shop.git
+https://github.com/mohammadmatin2000/Django-Shop.git
 ```
 
 ## Docker
